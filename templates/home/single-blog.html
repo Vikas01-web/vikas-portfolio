@@ -1,0 +1,312 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ blog.title }} — Vikas Kumar
+    </title>
+
+    <meta
+        name="description"
+        content="{{ blog.excerpt }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/single-blog.css' %}"
+    >
+
+</head>
+
+
+<body class="single-blog-page">
+
+
+    <!-- =====================================================
+         MAIN ARTICLE CONTAINER
+    ====================================================== -->
+
+    <main class="single-blog-container">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <div class="single-blog-top">
+
+            <a
+                href="{% url 'home' %}#blog"
+                class="single-blog-back"
+            >
+                <span>←</span>
+                BACK TO BLOG
+            </a>
+
+
+            <div class="single-blog-section">
+                08 / BLOG
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ARTICLE HEADER
+        ================================================== -->
+
+        <header class="single-blog-header">
+
+
+            <!-- CATEGORY -->
+
+            <div class="single-blog-category">
+                {{ blog.category }}
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1>
+                {{ blog.title }}
+            </h1>
+
+
+            <!-- EXCERPT -->
+
+            <p class="single-blog-excerpt">
+                {{ blog.excerpt }}
+            </p>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="single-blog-meta">
+
+
+                <!-- AUTHOR -->
+
+                <div class="single-blog-author">
+
+                    <div class="single-blog-avatar">
+                        VK
+                    </div>
+
+
+                    <div class="single-blog-author-info">
+
+                        <strong>
+                            Vikas Kumar
+                        </strong>
+
+                        <span>
+                            Software Developer
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DATE / READ TIME -->
+
+                <div class="single-blog-details">
+
+                    <span>
+                        {{ blog.read_time }} MIN READ
+                    </span>
+
+                    <i>•</i>
+
+                    <span>
+                        {{ blog.published_date|date:"M d, Y" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HERO IMAGE
+        ================================================== -->
+
+        <figure class="single-blog-hero">
+
+            <img
+                src="{% static blog.image %}"
+                alt="{{ blog.title }}"
+            >
+
+            <figcaption>
+                NOTES FROM THE BUILD · {{ blog.category }}
+            </figcaption>
+
+        </figure>
+
+
+        <!-- =================================================
+             ARTICLE LAYOUT
+        ================================================== -->
+
+        <div class="single-blog-layout">
+
+
+            <!-- =================================================
+                 SIDEBAR
+            ================================================== -->
+
+            <aside class="single-blog-sidebar">
+
+                <div class="single-blog-toc">
+
+                    <span class="single-blog-toc-title">
+                        ARTICLE INFO
+                    </span>
+
+                    <span>
+                        CATEGORY
+                    </span>
+
+                    <strong>
+                        {{ blog.category }}
+                    </strong>
+
+                    <span>
+                        READING TIME
+                    </span>
+
+                    <strong>
+                        {{ blog.read_time }} MIN
+                    </strong>
+
+                    <span>
+                        PUBLISHED
+                    </span>
+
+                    <strong>
+                        {{ blog.published_date|date:"M d, Y" }}
+                    </strong>
+
+                </div>
+
+            </aside>
+
+
+            <!-- =================================================
+                 ARTICLE CONTENT
+            ================================================== -->
+
+            <article class="single-blog-content">
+
+
+                <!-- LEAD -->
+
+                <p class="single-blog-lead">
+                    {{ blog.excerpt }}
+                </p>
+
+
+                <!-- BODY -->
+
+                <div class="single-blog-body">
+
+                    {{ blog.content|linebreaks }}
+
+                </div>
+
+
+                <!-- =================================================
+                     SHARE
+                ================================================== -->
+
+                <div class="single-blog-share">
+
+                    <span class="single-blog-share-title">
+                        SHARE ARTICLE
+                    </span>
+
+
+                    <div class="single-blog-share-links">
+
+                        <a
+                            href="#"
+                            aria-label="Share on LinkedIn"
+                            class="blog-share-link"
+                            data-share="linkedin"
+                        >
+                            IN
+                        </a>
+
+
+                        <a
+                            href="#"
+                            aria-label="Share on X"
+                            class="blog-share-link"
+                            data-share="x"
+                        >
+                            X
+                        </a>
+
+
+                        <a
+                            href="#"
+                            class="copy-blog-link"
+                            aria-label="Copy article link"
+                        >
+                            ↗
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </article>
+
+        </div>
+
+
+        <!-- =================================================
+             BACK TO BLOG
+        ================================================== -->
+
+        <div class="single-blog-bottom">
+
+            <a href="{% url 'home' %}#blog">
+
+                <span>←</span>
+
+                BACK TO ALL ARTICLES
+
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         MAIN JS
+    ====================================================== -->
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

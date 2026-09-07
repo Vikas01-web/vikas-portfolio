@@ -1,0 +1,461 @@
+/* =========================================================
+   VIKAS.DEV — PREMIUM PAGE LOADER
+========================================================= */
+
+.page-loader {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    z-index: 999999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f5f1e8;
+    color: #151515;
+
+    overflow: hidden;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity 0.75s cubic-bezier(.76, 0, .24, 1),
+        visibility 0.75s ease;
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+.page-loader::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(21, 21, 21, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(21, 21, 21, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 70px 70px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ORANGE GLOW
+========================================================= */
+
+.page-loader::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -180px;
+    bottom: -180px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 153, 25, 0.10);
+
+    filter: blur(20px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   INNER
+========================================================= */
+
+.loader-inner {
+    position: relative;
+
+    width: min(620px, calc(100% - 50px));
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   VK MARK
+========================================================= */
+
+.loader-mark {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 76px;
+    height: 76px;
+
+    margin-bottom: 55px;
+
+    border: 1px solid rgba(21, 21, 21, 0.25);
+
+    border-radius: 50%;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    overflow: hidden;
+}
+
+
+/* rotating circle */
+
+.loader-mark::before {
+    content: "";
+
+    position: absolute;
+    inset: 7px;
+
+    border: 1px dashed rgba(21, 21, 21, 0.25);
+
+    border-radius: 50%;
+
+    animation: loaderRotate 8s linear infinite;
+}
+
+
+/* orange dot */
+
+.loader-mark::after {
+    content: "";
+
+    position: absolute;
+
+    top: 4px;
+    right: 4px;
+
+    width: 9px;
+    height: 9px;
+
+    background: #ff9919;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 5px rgba(255, 153, 25, 0.12);
+
+    animation: loaderBlink 1.2s ease-in-out infinite;
+}
+
+
+@keyframes loaderRotate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+@keyframes loaderBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: scale(0.7);
+    }
+
+}
+
+
+/* =========================================================
+   LOADER INFO
+========================================================= */
+
+.loader-info {
+    width: 100%;
+}
+
+
+/* =========================================================
+   TOP LINE
+========================================================= */
+
+.loader-topline {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+
+/* =========================================================
+   PERCENTAGE
+========================================================= */
+
+#loader-percent {
+    display: block;
+
+    min-width: 90px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: clamp(48px, 8vw, 92px);
+
+    line-height: 0.8;
+
+    font-weight: 800;
+
+    letter-spacing: -5px;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   PROGRESS TRACK
+========================================================= */
+
+.loader-progress {
+    position: relative;
+
+    width: 100%;
+    height: 3px;
+
+    background: rgba(21, 21, 21, 0.13);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+#loader-progress-bar {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 0%;
+    height: 100%;
+
+    display: block;
+
+    background: #ff9919;
+
+    transform-origin: left center;
+
+    box-shadow:
+        0 0 18px rgba(255, 153, 25, 0.45);
+
+    transition:
+        width 0.08s linear;
+}
+
+
+/* small moving highlight */
+
+#loader-progress-bar::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 80px;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    filter: blur(5px);
+
+    animation: progressGlow 1s linear infinite;
+}
+
+
+@keyframes progressGlow {
+
+    from {
+        transform: translateX(-100px);
+    }
+
+    to {
+        transform: translateX(20px);
+    }
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.loader-status {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 10px;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+
+    color: #77716a;
+}
+
+
+/* =========================================================
+   STATUS DOT
+========================================================= */
+
+.loader-dot {
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+
+    background: #ff9919;
+
+    border-radius: 50%;
+
+    animation: statusPulse 1s ease-in-out infinite;
+}
+
+
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: scale(0.6);
+    }
+
+}
+
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+.page-loader.loader-complete {
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   BODY LOCK
+========================================================= */
+
+html.loader-active,
+body.loader-active {
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .loader-inner {
+        width: calc(100% - 36px);
+    }
+
+    .loader-mark {
+        width: 62px;
+        height: 62px;
+
+        margin-bottom: 42px;
+
+        font-size: 17px;
+    }
+
+    .loader-topline {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    #loader-percent {
+        font-size: 62px;
+        letter-spacing: -4px;
+    }
+
+    .loader-status {
+        font-size: 8px;
+        letter-spacing: 1.4px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .loader-mark::before,
+    .loader-mark::after,
+    .loader-dot,
+    #loader-progress-bar::after {
+        animation: none;
+    }
+
+    .page-loader {
+        transition: opacity 0.3s ease;
+    }
+
+}

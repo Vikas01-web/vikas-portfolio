@@ -1,0 +1,25 @@
+@media (max-width: 1000px) {
+    .nav-links { display: none; }
+    .hero, .about, .ocarius { grid-template-columns: 1fr; }
+    .hero-visual { min-height: 500px; }
+    .project-grid { grid-template-columns: repeat(2, 1fr); }
+    .stack-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 650px) {
+    .navbar { padding: 16px 18px; }
+    .brand span:last-child, .nav-cv { display: none; }
+    .section { width: min(100% - 30px, var(--max)); padding: 90px 0; }
+    .section-number { top: 35px; font-size: 46px; }
+    h1 { font-size: 54px; }
+    h2 { font-size: 46px; }
+    .hero { padding-top: 120px; }
+    .hero-visual { min-height: 430px; }
+    .developer-placeholder { width: 240px; height: 350px; }
+    .code-card { left: 0; top: 25px; width: 210px; }
+    .floating-note { right: 0; bottom: 40px; }
+    .tech-strip { bottom: 20px; gap: 10px; font-size: 9px; }
+    .project-grid, .stack-grid, .signal-grid, .credential-grid, .education-grid { grid-template-columns: 1fr; }
+    .timeline { margin-left: 25px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+    .contact-links, .footer { flex-direction: column; align-items: stretch; }
+}

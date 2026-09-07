@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Work — Vikas Kumar{% endblock %}
+{% block content %}
+<section class="section work-page">
+    <p class="eyebrow">ALL WORK</p>
+    <h1>Selected <span>projects.</span></h1>
+    <div class="project-grid">
+        {% for project in projects %}
+        <article class="project-card">
+            <div class="project-image"><span>{{ project.category }}</span></div>
+            <div class="project-content">
+                <small>{{ project.status }}</small>
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description }}</p>
+                <a href="{% url 'project_detail' project.slug %}">VIEW PROJECT →</a>
+            </div>
+        </article>
+        {% empty %}
+        <p>No projects have been added in the admin yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

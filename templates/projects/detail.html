@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} — Vikas Kumar{% endblock %}
+{% block content %}
+<section class="section project-detail">
+    <p class="eyebrow">{{ project.category }} · {{ project.status }}</p>
+    <h1>{{ project.title }}</h1>
+    <p>{{ project.description }}</p>
+    {% if project.technologies %}<p><strong>Stack:</strong> {{ project.technologies }}</p>{% endif %}
+    <div class="hero-actions">
+        {% if project.live_url %}<a class="button button-primary" href="{{ project.live_url }}" target="_blank" rel="noreferrer">LIVE PROJECT ↗</a>{% endif %}
+        {% if project.github_url %}<a class="button button-ghost" href="{{ project.github_url }}" target="_blank" rel="noreferrer">GITHUB ↗</a>{% endif %}
+    </div>
+</section>
+{% endblock %}

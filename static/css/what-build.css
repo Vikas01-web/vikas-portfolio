@@ -1,0 +1,761 @@
+/* =========================================================
+   WHAT I BUILD
+   Premium Editorial Card Section
+========================================================= */
+
+.what-build {
+    position: relative;
+    width: 100%;
+    padding: 50px 0 10px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.what-build-container {
+    width: min(1400px, calc(100% - 96px));
+    margin: 0 auto;
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.what-build-header {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 70px;
+    margin-bottom: 74px;
+}
+
+.what-build-index {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding-top: 10px;
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    color: var(--text-muted);
+}
+
+.what-build-index span:last-child {
+    color: var(--text-primary);
+}
+
+.what-build-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(255, 159, 28, 0.11);
+}
+
+.what-build-heading-wrap {
+    max-width: 930px;
+}
+
+.what-build-kicker {
+    margin: 0 0 20px;
+
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    color: var(--text-muted);
+}
+
+.what-build-title {
+    margin: 0;
+
+    font-family: var(--font-display);
+    font-size: clamp(58px, 7.1vw, 112px);
+    font-weight: 800;
+    line-height: 0.86;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+
+    color: var(--text-primary);
+}
+
+.what-build-title span {
+    display: block;
+    color: var(--accent);
+}
+
+.what-build-intro {
+    max-width: 650px;
+    margin: 30px 0 0;
+
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.65;
+
+    color: var(--text-secondary);
+}
+
+/* =========================================================
+   CARDS GRID
+========================================================= */
+
+.what-build-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+/* =========================================================
+   BASE CARD
+========================================================= */
+
+.build-card {
+    position: relative;
+    min-height: 500px;
+    padding: 34px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(23, 20, 17, 0.10);
+    border-radius: var(--radius-lg);
+
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+
+    transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.4s ease,
+        box-shadow 0.5s ease;
+}
+
+.build-card:hover {
+    transform: translateY(-8px);
+
+    border-color: rgba(255, 159, 28, 0.42);
+
+    box-shadow:
+        0 24px 60px rgba(23, 20, 17, 0.10);
+}
+
+/* =========================================================
+   CARD VARIATIONS
+========================================================= */
+
+.build-card--web {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 159, 28, 0.075),
+            transparent 46%
+        ),
+        var(--bg-secondary);
+}
+
+.build-card--backend {
+    background:
+        linear-gradient(
+            145deg,
+            #171411 0%,
+            #211c17 100%
+        );
+
+    color: var(--text-white);
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+.build-card--ai {
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255, 159, 28, 0.15),
+            transparent 32%
+        ),
+        var(--bg-tertiary);
+}
+
+.build-card--product {
+    background:
+        linear-gradient(
+            145deg,
+            #171411 0%,
+            #211c17 100%
+        );
+
+    color: var(--text-white);
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.build-card-top {
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.build-card-number {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+
+    color: var(--accent);
+}
+
+.build-card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(23, 20, 17, 0.30);
+    border-radius: 50%;
+
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+
+    color: var(--text-primary);
+
+    transition:
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.build-card:hover .build-card-arrow {
+    transform: rotate(45deg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.build-card--backend .build-card-arrow,
+.build-card--product .build-card-arrow {
+    border-color: rgba(255, 255, 255, 0.24);
+    color: var(--text-white);
+}
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.build-card-icon {
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 126px;
+    height: 126px;
+
+    border: 1px solid rgba(23, 20, 17, 0.12);
+    border-radius: 50%;
+
+    color: var(--accent);
+
+    opacity: 0.95;
+
+    transition:
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.4s ease,
+        background 0.4s ease;
+}
+
+.build-card-icon span {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.build-card:hover .build-card-icon {
+    transform: scale(1.08) rotate(8deg);
+    border-color: rgba(255, 159, 28, 0.45);
+    background: rgba(255, 159, 28, 0.035);
+}
+
+.build-card--backend .build-card-icon,
+.build-card--product .build-card-icon {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.build-card-content {
+    position: relative;
+    z-index: 4;
+
+    max-width: 460px;
+    margin-top: 106px;
+}
+
+.build-card-label {
+    margin: 0 0 18px;
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: var(--text-muted);
+}
+
+/* Dark cards label */
+
+.build-card--backend .build-card-label,
+.build-card--product .build-card-label {
+    color: rgba(255, 255, 255, 0.52);
+}
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.build-card-title {
+    margin: 0;
+
+    font-family: var(--font-display);
+    font-size: clamp(42px, 4vw, 68px);
+    font-weight: 800;
+    line-height: 0.90;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+
+    color: var(--text-primary);
+}
+
+.build-card-title span {
+    display: block;
+    color: var(--accent);
+}
+
+/* IMPORTANT:
+   Dark card title first line must be WHITE.
+========================================================= */
+
+.build-card--backend .build-card-title,
+.build-card--product .build-card-title {
+    color: #ffffff !important;
+}
+
+.build-card--backend .build-card-title span,
+.build-card--product .build-card-title span {
+    color: var(--accent) !important;
+}
+
+/* =========================================================
+   CARD DESCRIPTION
+========================================================= */
+
+.build-card-text {
+    max-width: 410px;
+    margin: 27px 0 0;
+
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+
+    color: var(--text-secondary);
+}
+
+.build-card--backend .build-card-text,
+.build-card--product .build-card-text {
+    color: rgba(255, 255, 255, 0.62);
+}
+
+/* =========================================================
+   TAGS
+========================================================= */
+
+.build-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 28px;
+}
+
+.build-card-tags span {
+    padding: 8px 11px;
+
+    border: 1px solid rgba(23, 20, 17, 0.12);
+    border-radius: 999px;
+
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: var(--text-secondary);
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.build-card:hover .build-card-tags span {
+    border-color: rgba(255, 159, 28, 0.22);
+}
+
+.build-card--backend .build-card-tags span,
+.build-card--product .build-card-tags span {
+    border-color: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.62);
+}
+
+/* =========================================================
+   BOTTOM ACCENT LINE
+========================================================= */
+
+.build-card::before {
+    content: "";
+
+    position: absolute;
+    left: 34px;
+    right: 34px;
+    bottom: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            rgba(255, 159, 28, 0)
+        );
+
+    transform: scaleX(0);
+    transform-origin: left center;
+
+    transition:
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.build-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* =========================================================
+   SOFT BACKGROUND NUMBER
+   Gives cards a little editorial depth
+========================================================= */
+
+.build-card::after {
+    content: attr(data-number);
+
+    position: absolute;
+    right: 26px;
+    top: 46px;
+
+    font-family: var(--font-display);
+    font-size: 150px;
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+
+    color: rgba(23, 20, 17, 0.035);
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.build-card--backend::after,
+.build-card--product::after {
+    color: rgba(255, 255, 255, 0.035);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.what-build-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 35px;
+
+    margin-top: 28px;
+    padding-top: 26px;
+
+    border-top: 1px solid rgba(23, 20, 17, 0.11);
+}
+
+.what-build-footer-line {
+    display: none;
+}
+
+.what-build-footer p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 22px;
+
+    margin: 0;
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: var(--text-muted);
+}
+
+.what-build-footer p span:last-child {
+    color: var(--accent);
+}
+
+.what-build-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 18px;
+
+    border: 1px solid rgba(23, 20, 17, 0.17);
+    border-radius: 999px;
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+
+    color: var(--text-primary);
+
+    transition:
+        background 0.35s ease,
+        color 0.35s ease,
+        border-color 0.35s ease;
+}
+
+.what-build-link span {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1;
+
+    transition:
+        transform 0.35s ease;
+}
+
+.what-build-link:hover {
+    background: var(--surface-dark);
+    border-color: var(--surface-dark);
+    color: #ffffff;
+}
+
+.what-build-link:hover span {
+    transform: translate(3px, -3px);
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .what-build {
+        padding: 120px 0 100px;
+    }
+
+    .what-build-container {
+        width: min(100% - 56px, 1400px);
+    }
+
+    .what-build-header {
+        grid-template-columns: 170px minmax(0, 1fr);
+        gap: 45px;
+    }
+
+    .build-card {
+        min-height: 460px;
+    }
+
+    .build-card-content {
+        max-width: 390px;
+    }
+
+    .build-card-title {
+        font-size: clamp(40px, 4.7vw, 60px);
+    }
+}
+
+/* =========================================================
+   MOBILE / TABLET
+========================================================= */
+
+@media (max-width: 820px) {
+
+    .what-build {
+        padding: 100px 0 80px;
+    }
+
+    .what-build-container {
+        width: min(100% - 36px, 1400px);
+    }
+
+    .what-build-header {
+        display: block;
+        margin-bottom: 56px;
+    }
+
+    .what-build-index {
+        margin-bottom: 28px;
+    }
+
+    .what-build-title {
+        font-size: clamp(52px, 13vw, 82px);
+    }
+
+    .what-build-intro {
+        margin-top: 24px;
+        font-size: 16px;
+    }
+
+    .what-build-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .build-card {
+        min-height: 450px;
+    }
+
+    .build-card-content {
+        max-width: 500px;
+    }
+
+    .build-card-title {
+        font-size: clamp(44px, 10vw, 64px);
+    }
+
+    .what-build-footer {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .what-build-link {
+        justify-self: flex-start;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .what-build {
+        padding: 82px 0 70px;
+    }
+
+    .what-build-container {
+        width: calc(100% - 28px);
+    }
+
+    .what-build-title {
+        font-size: clamp(45px, 15vw, 68px);
+    }
+
+    .what-build-kicker {
+        font-size: 9px;
+    }
+
+    .build-card {
+        min-height: 415px;
+        padding: 25px;
+        border-radius: 22px;
+    }
+
+    .build-card-content {
+        margin-top: 76px;
+    }
+
+    .build-card-title {
+        font-size: 42px;
+    }
+
+    .build-card-text {
+        font-size: 14px;
+    }
+
+    .build-card-icon {
+        right: 24px;
+        bottom: 24px;
+
+        width: 92px;
+        height: 92px;
+    }
+
+    .build-card-icon span {
+        font-size: 23px;
+    }
+
+    .build-card::before {
+        left: 25px;
+        right: 25px;
+    }
+
+    .build-card::after {
+        font-size: 110px;
+        right: 18px;
+        top: 45px;
+    }
+
+    .what-build-footer p {
+        gap: 11px;
+        font-size: 9px;
+    }
+
+    .what-build-link {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .build-card,
+    .build-card-icon,
+    .build-card-arrow,
+    .build-card::before,
+    .what-build-link,
+    .what-build-link span {
+        transition: none !important;
+    }
+}
