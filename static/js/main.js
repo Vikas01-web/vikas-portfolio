@@ -1,45 +1,247 @@
 /* =========================================================
-   VIKAS KUMAR — MAIN JS
-   NAVBAR + LOADER + SECTIONS + BLOG
-========================================================= */
+   VIKAS KUMAR — MAIN.JS
+   COMPLETE FIXED VERSION
+   =========================================================
+   FIXES:
+   1. No broken DOMContentLoaded scope
+   2. Navbar hides on DOWN scroll and shows on UP scroll
+   3. Mobile menu works reliably
+   4. Active nav supports HOME / ABOUT / WORK / EXPERIENCE /
+      CERTIFICATES / SKILLS / BLOG / CONTACT
+   5. WORK covers What I Build + Projects
+   6. CERTIFICATES uses #certificates and also supports
+      #certifications as a compatibility fallback
+   7. Smooth scrolling works even when sections are dynamic
+   8. Section animations run from Hero through Footer
+   9. Skills and Blog are included in active navigation
+   10. No duplicate global constants or broken scope references
+   11. Loader cannot leave the page permanently locked
+   12. Reduced-motion support
+   13. Resize/mobile safety
+   14. Contact and footer interactions
+   ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-
+(function () {
     "use strict";
 
-    /* =====================================================
-       HELPERS
-    ===================================================== */
+    /* =========================================================
+       GLOBAL HELPERS
+       ========================================================= */
 
-    const qs = (selector, scope = document) =>
-        scope.querySelector(selector);
+    const qs = (selector, scope = document) => {
+        if (!selector) {
+            return null;
+        }
 
-    const qsa = (selector, scope = document) =>
-        Array.from(scope.querySelectorAll(selector));
+        try {
+            return scope.querySelector(selector);
+        } catch (error) {
+            return null;
+        }
+    };
+
+
+    const qsa = (selector, scope = document) => {
+        if (!selector) {
+            return [];
+        }
+
+        try {
+            return Array.from(scope.querySelectorAll(selector));
+        } catch (error) {
+            return [];
+        }
+    };
+
 
     const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
     ).matches;
+
 
     const desktopQuery = window.matchMedia(
         "(min-width: 801px)"
     );
 
 
-    /* =====================================================
-       PAGE LOADER
-    ===================================================== */
+    const MOBILE_BREAKPOINT = 800;
 
-    const loader = qs("#page-loader");
-    const loaderProgress = qs("#loader-progress-bar");
-    const loaderPercent = qs("#loader-percent");
-    const loaderStatus = qs("#loader-status-text");
+
+    let header = null;
+    let menuButton = null;
+    let mobileMenu = null;
+    let navbarLinks = [];
+    let lastScrollY = 0;
+    let scrollTicking = false;
+    let activeNavTargets = [];
+
+
+    /* =========================================================
+       DOM READY
+       ========================================================= */
+
+    function boot() {
+
+        header = qs(".site-header");
+
+        menuButton = qs(
+            ".navbar-menu-button"
+        );
+
+        mobileMenu = qs(
+            ".navbar-mobile-menu"
+        );
+
+        navbarLinks = qsa(
+            ".navbar-link"
+        );
+
+
+        initLoader();
+
+        if (header) {
+            header.style.transform =
+                "translate3d(0, 0, 0)";
+        }
+
+        initNavbar();
+
+        initSmoothScrolling();
+
+        initActiveNavigation();
+
+        initGlobalSectionReveal();
+
+        initHero();
+
+        initAbout();
+
+        initWhatBuild();
+
+        initProjects();
+
+        initExperience();
+
+        initCertificates();
+
+        initSkills();
+
+        initBlog();
+
+        initContact();
+
+        initFooter();
+
+        initImageLoading();
+
+        initGlobalKeyboardSupport();
+
+        initResizeSupport();
+
+        document.body.classList.add(
+            "page-ready"
+        );
+
+
+        /*
+         * Run once after layout has settled.
+         * This is important for Django templates because
+         * images and fonts can change section offsets.
+         */
+
+        window.setTimeout(() => {
+
+            updateActiveNavigation();
+
+            handleNavbarScroll();
+
+        }, 150);
+
+
+        window.setTimeout(() => {
+
+            updateActiveNavigation();
+
+        }, 800);
+
+    }
+
 
     if (
-        loader &&
-        loaderProgress &&
-        loaderPercent
+        document.readyState === "loading"
     ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            boot,
+            { once: true }
+        );
+
+    } else {
+
+        boot();
+
+    }
+
+
+    /* =========================================================
+       PAGE LOADER
+       ========================================================= */
+
+    function initLoader() {
+
+        const loader =
+            qs("#page-loader");
+
+
+        if (!loader) {
+
+            document.documentElement.classList.remove(
+                "loader-active"
+            );
+
+            document.body.classList.remove(
+                "loader-active"
+            );
+
+            return;
+        }
+
+
+        const progressBar =
+            qs(
+                "#loader-progress-bar",
+                loader
+            );
+
+
+        const percentText =
+            qs(
+                "#loader-percent",
+                loader
+            );
+
+
+        const statusText =
+            qs(
+                "#loader-status-text",
+                loader
+            );
+
+
+        const statuses = [
+            "Loading portfolio",
+            "Preparing interface",
+            "Loading components",
+            "Initializing experience",
+            "Almost ready"
+        ];
+
+
+        let progress = 0;
+
+        let finished = false;
+
 
         document.documentElement.classList.add(
             "loader-active"
@@ -50,77 +252,19 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        const loaderStatuses = [
-            "Loading portfolio",
-            "Preparing interface",
-            "Loading components",
-            "Initializing experience",
-            "Almost ready"
-        ];
+        const updateLoader = () => {
 
+            if (
+                finished ||
+                !loader.isConnected
+            ) {
 
-        let progress = 0;
-        let statusIndex = 0;
-
-
-        const updateLoaderStatus = (value) => {
-
-            if (!loaderStatus) return;
-
-            const nextIndex = Math.min(
-                Math.floor(value / 20),
-                loaderStatuses.length - 1
-            );
-
-            if (nextIndex === statusIndex) {
                 return;
+
             }
 
-            statusIndex = nextIndex;
 
-            loaderStatus.style.opacity = "0";
-
-            window.setTimeout(() => {
-
-                loaderStatus.textContent =
-                    loaderStatuses[statusIndex];
-
-                loaderStatus.style.opacity = "1";
-
-            }, 120);
-        };
-
-
-        const finishLoader = () => {
-
-            window.setTimeout(() => {
-
-                loader.classList.add(
-                    "loader-complete"
-                );
-
-                document.documentElement.classList.remove(
-                    "loader-active"
-                );
-
-                document.body.classList.remove(
-                    "loader-active"
-                );
-
-
-                window.setTimeout(() => {
-
-                    loader.style.display = "none";
-
-                }, 850);
-
-            }, 450);
-        };
-
-
-        const animateLoader = () => {
-
-            let increment;
+            let increment = 0;
 
 
             if (progress < 30) {
@@ -146,31 +290,53 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            progress += increment;
+            progress = Math.min(
+                progress + increment,
+                100
+            );
 
 
-            if (progress >= 100) {
-                progress = 100;
+            if (progressBar) {
+
+                progressBar.style.width =
+                    `${progress}%`;
+
             }
 
 
-            loaderProgress.style.width =
-                `${progress}%`;
+            if (percentText) {
+
+                percentText.textContent =
+                    `${Math.floor(progress)
+                        .toString()
+                        .padStart(2, "0")}%`;
+
+            }
 
 
-            loaderPercent.textContent =
-                `${Math.floor(progress)
-                    .toString()
-                    .padStart(2, "0")}%`;
+            if (statusText) {
+
+                const index =
+                    Math.min(
+                        Math.floor(
+                            progress / 20
+                        ),
+                        statuses.length - 1
+                    );
 
 
-            updateLoaderStatus(progress);
+                statusText.textContent =
+                    statuses[index];
+
+            }
 
 
-            if (progress < 100) {
+            if (
+                progress < 100
+            ) {
 
                 window.setTimeout(
-                    animateLoader,
+                    updateLoader,
                     70 + Math.random() * 80
                 );
 
@@ -179,479 +345,480 @@ document.addEventListener("DOMContentLoaded", () => {
                 finishLoader();
 
             }
+
         };
 
 
-        window.setTimeout(
-            animateLoader,
-            reducedMotion ? 0 : 100
+        const finishLoader = () => {
+
+            if (finished) {
+
+                return;
+
+            }
+
+
+            finished = true;
+
+
+            window.setTimeout(
+                () => {
+
+                    loader.classList.add(
+                        "loader-complete"
+                    );
+
+
+                    loader.classList.add(
+                        "is-hidden"
+                    );
+
+
+                    document.documentElement.classList.remove(
+                        "loader-active"
+                    );
+
+
+                    document.body.classList.remove(
+                        "loader-active"
+                    );
+
+
+                    window.setTimeout(
+                        () => {
+
+                            if (
+                                loader &&
+                                loader.parentNode
+                            ) {
+
+                                loader.style.display =
+                                    "none";
+
+                            }
+
+                        },
+                        850
+                    );
+
+                },
+                reducedMotion ? 0 : 400
+            );
+
+        };
+
+
+        updateLoader();
+
+
+        /*
+         * If assets are already loaded, never wait forever
+         * for the simulated percentage animation.
+         */
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                window.setTimeout(
+                    () => {
+
+                        progress = 100;
+
+                        if (progressBar) {
+
+                            progressBar.style.width =
+                                "100%";
+
+                        }
+
+                        if (percentText) {
+
+                            percentText.textContent =
+                                "100%";
+
+                        }
+
+                        finishLoader();
+
+                    },
+                    reducedMotion ? 0 : 250
+                );
+
+            },
+            { once: true }
         );
+
+
+        /*
+         * Absolute safety fallback.
+         * A slow or broken resource should never trap
+         * the visitor behind the loader.
+         */
+
+        window.setTimeout(
+            () => {
+
+                if (!finished) {
+
+                    progress = 100;
+
+                    finishLoader();
+
+                }
+
+            },
+            7000
+        );
+
     }
 
 
-    /* =====================================================
-       NAVBAR
-    ===================================================== */
+    /* =========================================================
+       NAVBAR — MOBILE MENU
+       ========================================================= */
 
-    const header = qs(".site-header");
-    const menuButton = qs(".navbar-menu-button");
-    const navbarLinks = qsa(".navbar-link");
+    function initNavbar() {
 
-    let lastScrollY = Math.max(
-        window.scrollY,
-        0
-    );
+        if (!header) {
 
-    let scrollTicking = false;
-
-
-    /* =====================================================
-       MOBILE MENU
-    ===================================================== */
-
-    const closeMenu = () => {
-
-        if (!header || !menuButton) {
             return;
+
         }
 
-        header.classList.remove(
-            "menu-active"
-        );
 
-        menuButton.classList.remove(
-            "is-open"
-        );
+        if (menuButton) {
 
-        menuButton.setAttribute(
-            "aria-expanded",
-            "false"
-        );
+            menuButton.addEventListener(
+                "click",
+                (event) => {
 
-        document.body.classList.remove(
-            "menu-open"
-        );
-    };
+                    event.preventDefault();
 
+                    event.stopPropagation();
 
-    const openMenu = () => {
+                    toggleMobileMenu();
 
-        if (!header || !menuButton) {
-            return;
+                }
+            );
+
         }
+
+
+        qsa(
+            ".navbar-mobile-menu a",
+            mobileMenu || document
+        ).forEach(
+            (link) => {
+
+                link.addEventListener(
+                    "click",
+                    () => {
+
+                        closeMobileMenu();
+
+                    }
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeMobileMenu();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            (event) => {
+
+                if (
+                    !header.classList.contains(
+                        "menu-active"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    mobileMenu &&
+                    mobileMenu.contains(
+                        event.target
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    menuButton &&
+                    menuButton.contains(
+                        event.target
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                closeMobileMenu();
+
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            onScroll,
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    window.innerWidth >
+                    MOBILE_BREAKPOINT
+                ) {
+
+                    closeMobileMenu();
+
+                }
+
+            }
+        );
+
+
+        handleNavbarScroll();
+
+    }
+
+
+    function toggleMobileMenu() {
+
+        if (!header) {
+
+            return;
+
+        }
+
+
+        const isOpen =
+            header.classList.contains(
+                "menu-active"
+            );
+
+
+        if (isOpen) {
+
+            closeMobileMenu();
+
+        } else {
+
+            openMobileMenu();
+
+        }
+
+    }
+
+
+    function openMobileMenu() {
+
+        if (!header) {
+
+            return;
+
+        }
+
 
         header.classList.add(
             "menu-active"
         );
 
-        menuButton.classList.add(
-            "is-open"
+
+        header.classList.remove(
+            "nav-hidden"
         );
 
-        menuButton.setAttribute(
-            "aria-expanded",
-            "true"
-        );
+
+        if (mobileMenu) {
+
+            mobileMenu.classList.add(
+                "is-open"
+            );
+
+        }
+
+
+        if (menuButton) {
+
+            menuButton.classList.add(
+                "is-open"
+            );
+
+
+            menuButton.classList.add(
+                "is-active"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-label",
+                "Close navigation"
+            );
+
+        }
+
 
         document.body.classList.add(
             "menu-open"
         );
-    };
 
-
-    if (menuButton) {
-
-        menuButton.addEventListener(
-            "click",
-            () => {
-
-                const isOpen =
-                    header?.classList.contains(
-                        "menu-active"
-                    );
-
-                if (isOpen) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-
-            }
-        );
     }
 
 
-    document.addEventListener(
-        "keydown",
-        (event) => {
+    function closeMobileMenu() {
 
-            if (event.key === "Escape") {
-                closeMenu();
-            }
+        if (header) {
 
-        }
-    );
-
-
-    /* =====================================================
-       SMOOTH SCROLL
-    ===================================================== */
-
-    const scrollToTarget = (target) => {
-
-        if (!target) return;
-
-
-        const headerHeight =
-            header?.offsetHeight || 0;
-
-
-        const top =
-            target.getBoundingClientRect().top +
-            window.scrollY -
-            headerHeight -
-            20;
-
-
-        window.scrollTo({
-            top: Math.max(top, 0),
-            behavior: reducedMotion
-                ? "auto"
-                : "smooth"
-        });
-    };
-
-
-    qsa('a[href^="#"]').forEach(
-        (link) => {
-
-            link.addEventListener(
-                "click",
-                (event) => {
-
-                    const href =
-                        link.getAttribute("href");
-
-
-                    if (
-                        !href ||
-                        href === "#"
-                    ) {
-                        return;
-                    }
-
-
-                    const targetId =
-                        href.substring(1);
-
-
-                    const target =
-                        qs(`#${CSS.escape(targetId)}`);
-
-
-                    if (!target) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-                    closeMenu();
-
-                    scrollToTarget(target);
-
-                }
-            );
-        }
-    );
-
-
-    /* =====================================================
-       ACTIVE NAVIGATION
-       
-       VERY IMPORTANT:
-       Blog included here.
-    ===================================================== */
-
-    const navGroups = [
-
-        {
-            link: '.navbar-link[href="#home"]',
-            sections: ["#home"]
-        },
-
-        {
-            link: '.navbar-link[href="#about"]',
-            sections: ["#about"]
-        },
-
-        {
-            link: '.navbar-link[href="#projects"]',
-            sections: [
-                "#what-i-build",
-                "#projects"
-            ]
-        },
-
-        {
-            link: '.navbar-link[href="#experience"]',
-            sections: [
-                "#experience"
-            ]
-        },
-
-        {
-            link: '.navbar-link[href="#certifications"]',
-            sections: [
-                "#certifications"
-            ]
-        },
-
-        /*
-         * SECTION 07
-         */
-        {
-            link: '.navbar-link[href="#skills"]',
-            sections: [
-                "#skills"
-            ]
-        },
-
-        /*
-         * SECTION 08
-         */
-        {
-            link: '.navbar-link[href="#blog"]',
-            sections: [
-                "#blog"
-            ]
-        },
-
-        {
-            link: '.navbar-link[href="#contact"]',
-            sections: [
-                "#contact"
-            ]
-        }
-
-    ];
-
-
-    const navTargets = navGroups
-        .map((group) => {
-
-            const link =
-                qs(group.link);
-
-
-            const sections =
-                group.sections
-                    .map((selector) =>
-                        qs(selector)
-                    )
-                    .filter(Boolean);
-
-
-            return {
-                link,
-                sections
-            };
-
-        })
-        .filter(
-            (group) =>
-                group.link &&
-                group.sections.length
-        );
-
-
-    const clearActiveLinks = () => {
-
-        navbarLinks.forEach(
-            (link) => {
-
-                link.classList.remove(
-                    "is-active"
-                );
-
-                link.classList.remove(
-                    "active"
-                );
-
-                link.removeAttribute(
-                    "aria-current"
-                );
-
-            }
-        );
-    };
-
-
-    const setActiveLink = (activeLink) => {
-
-        clearActiveLinks();
-
-
-        if (!activeLink) {
-            return;
-        }
-
-
-        activeLink.classList.add(
-            "is-active"
-        );
-
-        activeLink.setAttribute(
-            "aria-current",
-            "page"
-        );
-    };
-
-
-    /*
-     * Find which section is closest to the
-     * top navigation area.
-     */
-    const updateActiveNav = () => {
-
-        if (!navTargets.length) {
-            return;
-        }
-
-
-        const marker =
-            window.scrollY +
-            (header?.offsetHeight || 0) +
-            120;
-
-
-        let currentGroup = null;
-
-        let closestDistance = Infinity;
-
-
-        navTargets.forEach(
-            (group) => {
-
-                group.sections.forEach(
-                    (section) => {
-
-                        const top =
-                            section.offsetTop;
-
-
-                        const bottom =
-                            top +
-                            section.offsetHeight;
-
-
-                        if (
-                            marker >= top &&
-                            marker < bottom
-                        ) {
-
-                            currentGroup =
-                                group;
-
-                            return;
-                        }
-
-
-                        /*
-                         * Fallback for very large/small sections.
-                         */
-                        const distance =
-                            Math.abs(
-                                top - marker
-                            );
-
-
-                        if (
-                            distance <
-                            closestDistance &&
-                            top <= marker
-                        ) {
-
-                            closestDistance =
-                                distance;
-
-                            currentGroup =
-                                group;
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-        /*
-         * At page top, always Home.
-         */
-        if (window.scrollY < 80) {
-
-            const homeGroup =
-                navTargets.find(
-                    (group) =>
-                        group.link.getAttribute(
-                            "href"
-                        ) === "#home"
-                );
-
-
-            if (homeGroup) {
-                currentGroup =
-                    homeGroup;
-            }
-        }
-
-
-        if (currentGroup) {
-
-            setActiveLink(
-                currentGroup.link
+            header.classList.remove(
+                "menu-active"
             );
 
         }
 
-    };
+
+        if (mobileMenu) {
+
+            mobileMenu.classList.remove(
+                "is-open"
+            );
+
+        }
+
+        if (header) {
+            header.style.transform =
+                "translate3d(0, 0, 0)";
+        }
 
 
-    /* =====================================================
-       INITIAL NAV DETECTION
-    ===================================================== */
+        if (menuButton) {
 
-    updateActiveNav();
-
-
-    window.setTimeout(
-        updateActiveNav,
-        200
-    );
+            menuButton.classList.remove(
+                "is-open"
+            );
 
 
-    /* =====================================================
-       NAVBAR SCROLL BEHAVIOUR
-    ===================================================== */
+            menuButton.classList.remove(
+                "is-active"
+            );
 
-    const handleNavbarScroll = () => {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-label",
+                "Open navigation"
+            );
+
+        }
+
+
+        document.body.classList.remove(
+            "menu-open"
+        );
+
+    }
+
+
+    /* =========================================================
+       NAVBAR — SCROLL UP / DOWN
+       ========================================================= */
+
+    function setNavbarVisibility(hidden) {
 
         if (!header) {
             return;
         }
 
+        header.classList.toggle(
+            "nav-hidden",
+            hidden
+        );
+
+        /*
+         * Keep the behavior reliable even if the CSS class
+         * is missing or overridden by another stylesheet.
+         */
+        if (hidden) {
+
+            const height =
+                Math.max(
+                    header.offsetHeight || 0,
+                    1
+                );
+
+            header.style.transform =
+                `translate3d(0, -${height + 12}px, 0)`;
+
+        } else {
+
+            header.style.transform =
+                "translate3d(0, 0, 0)";
+
+        }
+
+    }
+
+
+    function handleNavbarScroll() {
+
+        if (!header) {
+            return;
+        }
 
         const currentY =
             Math.max(
-                window.scrollY,
+                window.scrollY || 0,
                 0
             );
 
+        const difference =
+            currentY - lastScrollY;
 
-        /*
-         * Scrolled state
-         */
+
         if (currentY > 35) {
 
             header.classList.add(
@@ -668,1167 +835,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-         * Hide when scrolling down.
+         * Never hide the navbar while the mobile menu is open.
          */
         if (
-            currentY > lastScrollY &&
-            currentY > 180
+            header.classList.contains(
+                "menu-active"
+            )
         ) {
 
-            header.classList.add(
-                "nav-hidden"
-            );
+            setNavbarVisibility(false);
 
-            closeMenu();
+            lastScrollY = currentY;
 
-        } else {
+            return;
 
-            header.classList.remove(
-                "nav-hidden"
-            );
+        }
+
+
+        /*
+         * Navbar is always visible at the top.
+         */
+        if (currentY <= 80) {
+
+            setNavbarVisibility(false);
+
+            lastScrollY = currentY;
+
+            return;
+
+        }
+
+
+        /*
+         * Ignore very small movements.
+         */
+        if (Math.abs(difference) < 6) {
+
+            lastScrollY = currentY;
+
+            return;
+
+        }
+
+
+        /*
+         * Scroll DOWN -> hide.
+         */
+        if (
+            difference > 0 &&
+            currentY > 150
+        ) {
+
+            setNavbarVisibility(true);
+
+        }
+
+
+        /*
+         * Scroll UP -> show.
+         */
+        else if (
+            difference < 0
+        ) {
+
+            setNavbarVisibility(false);
 
         }
 
 
         lastScrollY = currentY;
-    };
+
+    }
 
 
-    /* =====================================================
-       COMBINED SCROLL
-    ===================================================== */
-
-    const onScroll = () => {
+    function onScroll() {
 
         if (scrollTicking) {
             return;
         }
 
-
         scrollTicking = true;
-
 
         window.requestAnimationFrame(
             () => {
 
                 handleNavbarScroll();
-                updateActiveNav();
+
+                updateActiveNavigation();
 
                 scrollTicking = false;
 
             }
         );
-    };
-
-
-    window.addEventListener(
-        "scroll",
-        onScroll,
-        { passive: true }
-    );
-
-
-    /* =====================================================
-       HERO
-    ===================================================== */
-
-    const hero = qs(".hero");
-
-
-    if (hero) {
-
-        window.setTimeout(
-            () => {
-
-                hero.classList.add(
-                    "hero-loaded"
-                );
-
-            },
-            120
-        );
-    }
-
-
-    /* =====================================================
-       HERO PORTRAIT PARALLAX
-    ===================================================== */
-
-    const heroPortrait =
-        qs(".hero-portrait");
-
-
-    if (
-        heroPortrait &&
-        !reducedMotion
-    ) {
-
-        const photo =
-            qs(
-                ".hero-photo",
-                heroPortrait
-            );
-
-
-        const photoCard =
-            qs(
-                ".hero-photo-card",
-                heroPortrait
-            );
-
-
-        const photoFrame =
-            qs(
-                ".hero-photo-frame",
-                heroPortrait
-            );
-
-
-        heroPortrait.addEventListener(
-            "mousemove",
-            (event) => {
-
-                if (!desktopQuery.matches) {
-                    return;
-                }
-
-
-                const rect =
-                    heroPortrait.getBoundingClientRect();
-
-
-                const x =
-                    (
-                        (event.clientX -
-                            rect.left) /
-                        rect.width -
-                        0.5
-                    ) * 2;
-
-
-                const y =
-                    (
-                        (event.clientY -
-                            rect.top) /
-                        rect.height -
-                        0.5
-                    ) * 2;
-
-
-                if (photo) {
-
-                    photo.style.transform =
-                        `translate3d(${x * 5}px, ${y * -4}px, 0) scale(1.018)`;
-                }
-
-
-                if (photoCard) {
-
-                    photoCard.style.transform =
-                        `translate3d(${x * 10}px, ${y * 8}px, 0) rotate(${x * 2}deg)`;
-                }
-
-
-                if (photoFrame) {
-
-                    photoFrame.style.transform =
-                        `translate(-50%, -45%) translate3d(${x * 4}px, ${y * 3}px, 0)`;
-                }
-
-            }
-        );
-
-
-        heroPortrait.addEventListener(
-            "mouseleave",
-            () => {
-
-                if (photo) {
-                    photo.style.transform = "";
-                }
-
-                if (photoCard) {
-                    photoCard.style.transform = "";
-                }
-
-                if (photoFrame) {
-                    photoFrame.style.transform =
-                        "translate(-50%, -45%)";
-                }
-
-            }
-        );
 
     }
 
+    /* =========================================================
+       SMOOTH SCROLL
+       ========================================================= */
 
-    /* =====================================================
-       ABOUT ANIMATION
-    ===================================================== */
+    function initSmoothScrolling() {
 
-    const aboutSection =
-        qs(".about");
-
-
-    if (
-        aboutSection &&
-        !reducedMotion
-    ) {
-
-        const aboutPhoto =
-            qs(
-                ".about-image",
-                aboutSection
-            );
-
-
-        const aboutTitle =
-            qs(
-                ".about-content h2",
-                aboutSection
-            );
-
-
-        const aboutLead =
-            qs(
-                ".about-lead",
-                aboutSection
-            );
-
-
-        const aboutTexts =
-            qsa(
-                ".about-text",
-                aboutSection
-            );
-
-
-        const aboutValues =
-            qsa(
-                ".about-value",
-                aboutSection
-            );
-
-
-        const aboutBottomItems =
-            qsa(
-                ".about-bottom-item",
-                aboutSection
-            );
-
-
-        const aboutButton =
-            qs(
-                ".about-button",
-                aboutSection
-            );
-
-
-        if (aboutPhoto) {
-
-            aboutPhoto.style.opacity = "0";
-
-            aboutPhoto.style.transform =
-                "scale(1.08) translateY(24px)";
-
-            aboutPhoto.style.transition =
-                "opacity 1000ms ease, transform 1100ms ease";
-        }
-
-
-        if (aboutTitle) {
-
-            aboutTitle.style.opacity = "0";
-
-            aboutTitle.style.transform =
-                "translateX(-30px)";
-
-            aboutTitle.style.transition =
-                "opacity 800ms ease, transform 800ms ease";
-        }
-
-
-        if (aboutLead) {
-
-            aboutLead.style.opacity = "0";
-
-            aboutLead.style.transform =
-                "translateY(18px)";
-
-            aboutLead.style.transition =
-                "opacity 700ms ease, transform 700ms ease";
-        }
-
-
-        aboutTexts.forEach(
-            (text, index) => {
-
-                text.style.opacity = "0";
-
-                text.style.transform =
-                    "translateY(15px)";
-
-                text.style.transition =
-                    "opacity 650ms ease, transform 650ms ease";
-
-                text.style.transitionDelay =
-                    `${120 + index * 110}ms`;
-
-            }
-        );
-
-
-        aboutValues.forEach(
-            (value, index) => {
-
-                value.style.opacity = "0";
-
-                value.style.transform =
-                    "translateX(25px)";
-
-                value.style.transition =
-                    "opacity 650ms ease, transform 650ms ease";
-
-                value.style.transitionDelay =
-                    `${index * 90}ms`;
-
-            }
-        );
-
-
-        aboutBottomItems.forEach(
-            (item, index) => {
-
-                item.style.opacity = "0";
-
-                item.style.transform =
-                    "translateY(18px)";
-
-                item.style.transition =
-                    "opacity 600ms ease, transform 600ms ease";
-
-                item.style.transitionDelay =
-                    `${index * 90}ms`;
-
-            }
-        );
-
-
-        if (aboutButton) {
-
-            aboutButton.style.opacity = "0";
-
-            aboutButton.style.transform =
-                "translateY(15px) scale(.98)";
-
-            aboutButton.style.transition =
-                "opacity 650ms ease, transform 650ms ease";
-        }
-
-
-        const revealAbout = () => {
-
-            if (aboutPhoto) {
-
-                aboutPhoto.style.opacity = "1";
-
-                aboutPhoto.style.transform =
-                    "scale(1) translateY(0)";
-            }
-
-
-            if (aboutTitle) {
-
-                aboutTitle.style.opacity = "1";
-
-                aboutTitle.style.transform =
-                    "translateX(0)";
-            }
-
-
-            if (aboutLead) {
-
-                aboutLead.style.opacity = "1";
-
-                aboutLead.style.transform =
-                    "translateY(0)";
-            }
-
-
-            aboutTexts.forEach(
-                (text) => {
-
-                    text.style.opacity = "1";
-
-                    text.style.transform =
-                        "translateY(0)";
-
-                }
-            );
-
-
-            aboutValues.forEach(
-                (value) => {
-
-                    value.style.opacity = "1";
-
-                    value.style.transform =
-                        "translateX(0)";
-
-                }
-            );
-
-
-            aboutBottomItems.forEach(
-                (item) => {
-
-                    item.style.opacity = "1";
-
-                    item.style.transform =
-                        "translateY(0)";
-
-                }
-            );
-
-
-            if (aboutButton) {
-
-                aboutButton.style.opacity = "1";
-
-                aboutButton.style.transform =
-                    "translateY(0) scale(1)";
-            }
-
-        };
-
-
-        if (
-            "IntersectionObserver" in window
-        ) {
-
-            const aboutObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    entry.isIntersecting
-                                ) {
-
-                                    revealAbout();
-
-                                    observer.unobserve(
-                                        aboutSection
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.15
-                    }
-                );
-
-
-            aboutObserver.observe(
-                aboutSection
-            );
-
-        } else {
-
-            revealAbout();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       WHAT I BUILD ANIMATION
-    ===================================================== */
-
-    const buildSection =
-        qs(".what-build");
-
-
-    if (
-        buildSection &&
-        !reducedMotion
-    ) {
-
-        const buildHeader =
-            qs(
-                ".what-build-header",
-                buildSection
-            );
-
-
-        const buildIndex =
-            qs(
-                ".what-build-index",
-                buildSection
-            );
-
-
-        const buildHeading =
-            qs(
-                ".what-build-heading-wrap",
-                buildSection
-            );
-
-
-        const buildCards =
-            qsa(
-                ".build-card",
-                buildSection
-            );
-
-
-        const buildFooter =
-            qs(
-                ".what-build-footer",
-                buildSection
-            );
-
-
-        if (buildHeader) {
-
-            buildHeader.style.opacity = "0";
-
-            buildHeader.style.transform =
-                "translateY(30px)";
-
-            buildHeader.style.transition =
-                "opacity 800ms ease, transform 800ms ease";
-        }
-
-
-        if (buildIndex) {
-
-            buildIndex.style.opacity = "0";
-
-            buildIndex.style.transform =
-                "translateX(-20px)";
-
-            buildIndex.style.transition =
-                "opacity 650ms ease, transform 650ms ease";
-        }
-
-
-        if (buildHeading) {
-
-            buildHeading.style.opacity = "0";
-
-            buildHeading.style.transform =
-                "translateY(40px)";
-
-            buildHeading.style.transition =
-                "opacity 850ms ease, transform 850ms ease";
-        }
-
-
-        buildCards.forEach(
-            (card, index) => {
-
-                const direction =
-                    index % 2 === 0
-                        ? -40
-                        : 40;
-
-
-                card.style.opacity = "0";
-
-                card.style.transform =
-                    `translateX(${direction}px) scale(.98)`;
-
-                card.style.transition =
-                    "opacity 750ms ease, transform 850ms ease";
-
-                card.style.transitionDelay =
-                    `${100 + index * 120}ms`;
-
-            }
-        );
-
-
-        if (buildFooter) {
-
-            buildFooter.style.opacity = "0";
-
-            buildFooter.style.transform =
-                "translateY(20px)";
-
-            buildFooter.style.transition =
-                "opacity 650ms ease, transform 650ms ease";
-        }
-
-
-        const revealBuild = () => {
-
-            if (buildIndex) {
-
-                buildIndex.style.opacity = "1";
-
-                buildIndex.style.transform =
-                    "translateX(0)";
-            }
-
-
-            if (buildHeader) {
-
-                buildHeader.style.opacity = "1";
-
-                buildHeader.style.transform =
-                    "translateY(0)";
-            }
-
-
-            if (buildHeading) {
-
-                buildHeading.style.opacity = "1";
-
-                buildHeading.style.transform =
-                    "translateY(0)";
-            }
-
-
-            buildCards.forEach(
-                (card) => {
-
-                    card.style.opacity = "1";
-
-                    card.style.transform =
-                        "translateX(0) scale(1)";
-
-                }
-            );
-
-
-            if (buildFooter) {
-
-                buildFooter.style.opacity = "1";
-
-                buildFooter.style.transform =
-                    "translateY(0)";
-            }
-
-        };
-
-
-        if (
-            "IntersectionObserver" in window
-        ) {
-
-            const buildObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    entry.isIntersecting
-                                ) {
-
-                                    revealBuild();
-
-                                    observer.unobserve(
-                                        buildSection
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.12
-                    }
-                );
-
-
-            buildObserver.observe(
-                buildSection
-            );
-
-        } else {
-
-            revealBuild();
-
-        }
-
-
-        if (desktopQuery.matches) {
-
-            buildCards.forEach(
-                (card) => {
-
-                    card.addEventListener(
-                        "mousemove",
-                        (event) => {
-
-                            const rect =
-                                card.getBoundingClientRect();
-
-
-                            const x =
-                                (
-                                    (event.clientX -
-                                        rect.left) /
-                                    rect.width -
-                                    0.5
-                                );
-
-
-                            const y =
-                                (
-                                    (event.clientY -
-                                        rect.top) /
-                                    rect.height -
-                                    0.5
-                                );
-
-
-                            card.style.transform =
-                                `translate3d(${x * 5}px, ${y * 5}px, 0)`;
-
-                        }
-                    );
-
-
-                    card.addEventListener(
-                        "mouseleave",
-                        () => {
-
-                            card.style.transform =
-                                "translate3d(0,0,0)";
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       PROJECTS ANIMATION
-    ===================================================== */
-
-    const projectsSection =
-        qs(".projects");
-
-
-    if (
-        projectsSection &&
-        !reducedMotion
-    ) {
-
-        const projectCards =
-            qsa(
-                ".project-card",
-                projectsSection
-            );
-
-
-        const featured =
-            qs(
-                ".project-featured",
-                projectsSection
-            );
-
-
-        const projectsHeader =
-            qs(
-                ".projects-header",
-                projectsSection
-            );
-
-
-        if (projectsHeader) {
-
-            projectsHeader.style.opacity = "0";
-
-            projectsHeader.style.transform =
-                "translateY(30px)";
-
-            projectsHeader.style.transition =
-                "opacity 800ms ease, transform 850ms ease";
-        }
-
-
-        if (featured) {
-
-            featured.style.opacity = "0";
-
-            featured.style.transform =
-                "translateY(40px) scale(.985)";
-
-            featured.style.transition =
-                "opacity 850ms ease, transform 900ms ease";
-        }
-
-
-        projectCards.forEach(
-            (card, index) => {
-
-                card.style.opacity = "0";
-
-                card.style.transform =
-                    "translateY(45px)";
-
-                card.style.transition =
-                    "opacity 750ms ease, transform 800ms ease";
-
-                card.style.transitionDelay =
-                    `${120 + index * 100}ms`;
-
-            }
-        );
-
-
-        const revealProjects = () => {
-
-            if (projectsHeader) {
-
-                projectsHeader.style.opacity = "1";
-
-                projectsHeader.style.transform =
-                    "translateY(0)";
-            }
-
-
-            if (featured) {
-
-                featured.style.opacity = "1";
-
-                featured.style.transform =
-                    "translateY(0) scale(1)";
-            }
-
-
-            projectCards.forEach(
-                (card) => {
-
-                    card.style.opacity = "1";
-
-                    card.style.transform =
-                        "translateY(0)";
-
-                }
-            );
-
-        };
-
-
-        if (
-            "IntersectionObserver" in window
-        ) {
-
-            const observer =
-                new IntersectionObserver(
-                    (entries, obs) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    entry.isIntersecting
-                                ) {
-
-                                    revealProjects();
-
-                                    obs.unobserve(
-                                        projectsSection
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.12
-                    }
-                );
-
-
-            observer.observe(
-                projectsSection
-            );
-
-        } else {
-
-            revealProjects();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       EXPERIENCE
-    ===================================================== */
-
-    const experienceItems =
         qsa(
-            ".experience-item"
-        );
-
-
-    if (experienceItems.length) {
-
-        if (!reducedMotion) {
-
-            experienceItems.forEach(
-                (item) => {
-
-                    item.style.opacity = "0";
-
-                    item.style.transform =
-                        "translateY(40px)";
-
-                    item.style.transition =
-                        "opacity 700ms ease, transform 700ms cubic-bezier(.22,1,.36,1)";
-
-                }
-            );
-
-
-            const experienceObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    !entry.isIntersecting
-                                ) {
-                                    return;
-                                }
-
-
-                                const item =
-                                    entry.target;
-
-
-                                item.style.opacity =
-                                    "1";
-
-
-                                item.style.transform =
-                                    "translateY(0)";
-
-
-                                observer.unobserve(
-                                    item
-                                );
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.12
-                    }
-                );
-
-
-            experienceItems.forEach(
-                (item) => {
-
-                    experienceObserver.observe(
-                        item
-                    );
-
-                }
-            );
-
-        } else {
-
-            experienceItems.forEach(
-                (item) => {
-
-                    item.style.opacity = "1";
-                    item.style.transform =
-                        "none";
-
-                }
-            );
-        }
-
-
-        experienceItems.forEach(
-            (item) => {
-
-                item.addEventListener(
-                    "mouseenter",
-                    () => {
-
-                        experienceItems.forEach(
-                            (other) => {
-
-                                if (
-                                    other !== item
-                                ) {
-
-                                    other.classList.remove(
-                                        "experience-active"
-                                    );
-
-                                }
-
-                            }
-                        );
-
-
-                        item.classList.add(
-                            "experience-active"
-                        );
-
-                    }
-                );
-
-
-                item.addEventListener(
-                    "mouseleave",
-                    () => {
-
-                        item.classList.remove(
-                            "experience-active"
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       CERTIFICATES
-    ===================================================== */
-
-    const certificatesSection =
-        qs("#certificates");
-
-
-    if (certificatesSection) {
-
-        const certificateCards =
-            qsa(
-                ".certificate-card",
-                certificatesSection
-            );
-
-
-        if (
-            "IntersectionObserver" in window
-        ) {
-
-            const certificateObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    entry.isIntersecting
-                                ) {
-
-                                    entry.target.classList.add(
-                                        "cert-visible"
-                                    );
-
-                                    observer.unobserve(
-                                        entry.target
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.12
-                    }
-                );
-
-
-            certificateCards.forEach(
-                (card) => {
-
-                    certificateObserver.observe(
-                        card
-                    );
-
-                }
-            );
-
-        } else {
-
-            certificateCards.forEach(
-                (card) => {
-
-                    card.classList.add(
-                        "cert-visible"
-                    );
-
-                }
-            );
-
-
-        }
-
-
-        const certificateImages =
-            qsa(
-                ".certificate-image img",
-                certificatesSection
-            );
-
-
-        certificateImages.forEach(
-            (image) => {
-
-                image.addEventListener(
-                    "error",
-                    () => {
-
-                        image.parentElement?.classList.add(
-                            "certificate-image-error"
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-        const certificateLinks =
-            qsa(
-                ".certificate-link",
-                certificatesSection
-            );
-
-
-        certificateLinks.forEach(
+            'a[href^="#"]'
+        ).forEach(
             (link) => {
 
                 link.addEventListener(
@@ -1846,7 +956,61 @@ document.addEventListener("DOMContentLoaded", () => {
                             href === "#"
                         ) {
 
-                            event.preventDefault();
+                            return;
+
+                        }
+
+
+                        let target = null;
+
+
+                        try {
+
+                            target =
+                                document.querySelector(
+                                    href
+                                );
+
+                        } catch (error) {
+
+                            target = null;
+
+                        }
+
+
+                        if (!target) {
+
+                            return;
+
+                        }
+
+
+                        event.preventDefault();
+
+
+                        closeMobileMenu();
+
+
+                        scrollToTarget(
+                            target
+                        );
+
+
+                        /*
+                         * Keep URL hash in sync without
+                         * forcing the browser to jump.
+                         */
+
+                        if (
+                            window.history &&
+                            window.history.replaceState
+                        ) {
+
+                            window.history.replaceState(
+                                null,
+                                "",
+                                href
+                            );
 
                         }
 
@@ -1859,130 +1023,396 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       SKILLS
-    ===================================================== */
+    function scrollToTarget(
+        target
+    ) {
 
-    const skillGroups =
-        qsa(
-            ".skill-group"
+        if (!target) {
+
+            return;
+
+        }
+
+
+        const headerHeight =
+            header
+                ? header.offsetHeight
+                : 0;
+
+
+        const extraGap =
+            16;
+
+
+        const top =
+            target.getBoundingClientRect().top +
+            window.scrollY -
+            headerHeight -
+            extraGap;
+
+
+        window.scrollTo(
+            {
+                top: Math.max(
+                    top,
+                    0
+                ),
+
+                behavior:
+                    reducedMotion
+                        ? "auto"
+                        : "smooth"
+            }
         );
 
+    }
 
-    if (skillGroups.length) {
 
-        if (
-            "IntersectionObserver" in window
-        ) {
+    /* =========================================================
+       ACTIVE NAVIGATION
+       ========================================================= */
 
-            const skillObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
+    function initActiveNavigation() {
 
-                        entries.forEach(
-                            (entry) => {
+        /*
+         * WORK intentionally owns both
+         * What I Build and Projects.
+         *
+         * Both #certificates and #certifications
+         * are supported so older markup doesn't break.
+         */
 
-                                if (
-                                    entry.isIntersecting
-                                ) {
+        const groups = [
 
-                                    entry.target.classList.add(
-                                        "skill-visible"
-                                    );
+            {
+                href: "#home",
 
-                                    observer.unobserve(
-                                        entry.target
-                                    );
+                sections: [
+                    "#home"
+                ]
 
-                                }
+            },
 
-                            }
+
+            {
+                href: "#about",
+
+                sections: [
+                    "#about"
+                ]
+
+            },
+
+
+            {
+                href: "#projects",
+
+                sections: [
+                    "#what-i-build",
+                    "#what-build",
+                    ".what-build",
+                    "#projects",
+                    ".projects"
+                ]
+
+            },
+
+
+            {
+                href: "#experience",
+
+                sections: [
+                    "#experience",
+                    ".experience"
+                ]
+
+            },
+
+
+            {
+                href: "#certificates",
+
+                sections: [
+                    "#certificates",
+                    "#certifications",
+                    ".certificates"
+                ]
+
+            },
+
+
+            {
+                href: "#skills",
+
+                sections: [
+                    "#skills",
+                    ".skills"
+                ]
+
+            },
+
+
+            {
+                href: "#blog",
+
+                sections: [
+                    "#blog",
+                    ".blog-section",
+                    ".blog"
+                ]
+
+            },
+
+
+            {
+                href: "#contact",
+
+                sections: [
+                    "#contact",
+                    ".contact"
+                ]
+
+            }
+
+        ];
+
+
+        activeNavTargets = [];
+
+
+        groups.forEach(
+            (group) => {
+
+                const desktopLink =
+                    qs(
+                        `.navbar-link[href="${group.href}"]`
+                    );
+
+
+                /*
+                 * If the exact href isn't present,
+                 * support a legacy #certifications link.
+                 */
+
+                let fallbackLink =
+                    desktopLink;
+
+
+                if (
+                    !fallbackLink &&
+                    group.href ===
+                    "#certificates"
+                ) {
+
+                    fallbackLink =
+                        qs(
+                            '.navbar-link[href="#certifications"]'
                         );
 
-                    },
-                    {
-                        threshold: 0.12
+                }
+
+
+                if (!fallbackLink) {
+
+                    return;
+
+                }
+
+
+                const sections = [];
+
+
+                group.sections.forEach(
+                    (selector) => {
+
+                        const element =
+                            qs(selector);
+
+
+                        if (
+                            element &&
+                            !sections.includes(
+                                element
+                            )
+                        ) {
+
+                            sections.push(
+                                element
+                            );
+
+                        }
+
                     }
                 );
 
 
-            skillGroups.forEach(
-                (group) => {
+                if (
+                    sections.length
+                ) {
 
-                    skillObserver.observe(
-                        group
+                    activeNavTargets.push(
+                        {
+                            link:
+                                fallbackLink,
+
+                            sections
+                        }
                     );
 
                 }
-            );
 
-        } else {
-
-            skillGroups.forEach(
-                (group) => {
-
-                    group.classList.add(
-                        "skill-visible"
-                    );
-
-                }
-            );
-        }
+            }
+        );
 
 
         /*
-         * Skill card hover
+         * Initial state.
          */
+
+        updateActiveNavigation();
+
+
+        /*
+         * Update after images/fonts/layout settle.
+         */
+
+        window.setTimeout(
+            updateActiveNavigation,
+            250
+        );
+
+    }
+
+
+    function clearActiveNavigation() {
+
+        navbarLinks.forEach(
+            (link) => {
+
+                link.classList.remove(
+                    "is-active"
+                );
+
+
+                link.classList.remove(
+                    "active"
+                );
+
+
+                link.removeAttribute(
+                    "aria-current"
+                );
+
+            }
+        );
+
+
+        qsa(
+            ".navbar-mobile-menu a"
+        ).forEach(
+            (link) => {
+
+                link.classList.remove(
+                    "is-active"
+                );
+
+
+                link.classList.remove(
+                    "active"
+                );
+
+
+                link.removeAttribute(
+                    "aria-current"
+                );
+
+            }
+        );
+
+    }
+
+
+    function setActiveNavigation(
+        activeLink
+    ) {
+
+        if (!activeLink) {
+
+            return;
+
+        }
+
+
+        clearActiveNavigation();
+
+
+        activeLink.classList.add(
+            "is-active"
+        );
+
+
+        activeLink.classList.add(
+            "active"
+        );
+
+
+        activeLink.setAttribute(
+            "aria-current",
+            "page"
+        );
+
+
+        const sectionName =
+            activeLink
+                .getAttribute(
+                    "href"
+                )
+                ?.replace(
+                    "#",
+                    ""
+                );
+
+
         if (
-            desktopQuery.matches &&
-            !reducedMotion
+            sectionName
         ) {
 
-            skillGroups.forEach(
-                (card) => {
+            qsa(
+                ".navbar-mobile-menu a"
+            ).forEach(
+                (mobileLink) => {
 
-                    card.addEventListener(
-                        "mousemove",
-                        (event) => {
-
-                            const rect =
-                                card.getBoundingClientRect();
-
-
-                            const x =
-                                (
-                                    (event.clientX -
-                                        rect.left) /
-                                    rect.width -
-                                    0.5
-                                );
+                    const href =
+                        mobileLink.getAttribute(
+                            "href"
+                        );
 
 
-                            const y =
-                                (
-                                    (event.clientY -
-                                        rect.top) /
-                                    rect.height -
-                                    0.5
-                                );
+                    const dataSection =
+                        mobileLink.dataset.section;
 
 
-                            card.style.transform =
-                                `translateY(-5px) rotateX(${y * -2}deg) rotateY(${x * 2}deg)`;
+                    if (
+                        href ===
+                        `#${sectionName}` ||
+                        dataSection ===
+                        sectionName
+                    ) {
 
-                        }
-                    );
+                        mobileLink.classList.add(
+                            "is-active"
+                        );
 
+                        mobileLink.classList.add(
+                            "active"
+                        );
 
-                    card.addEventListener(
-                        "mouseleave",
-                        () => {
+                        mobileLink.setAttribute(
+                            "aria-current",
+                            "page"
+                        );
 
-                            card.style.transform =
-                                "";
-
-                        }
-                    );
+                    }
 
                 }
             );
@@ -1992,309 +1422,804 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       SKILLS MARQUEE
-    ===================================================== */
+    function updateActiveNavigation() {
 
-    const skillsMarquee =
-        qs(
-            ".skills-marquee"
-        );
+        if (!activeNavTargets.length) {
+            return;
+        }
 
 
-    const skillsTrack =
-        qs(
-            ".skills-marquee-track"
-        );
+        const currentScroll =
+            window.scrollY || 0;
 
-
-    if (
-        skillsMarquee &&
-        skillsTrack
-    ) {
-
-        /*
-         * Don't create another animation if CSS
-         * is already handling the marquee.
-         */
-        if (
-            !skillsTrack.classList.contains(
-                "js-marquee-active"
-            )
-        ) {
-
-            skillsTrack.classList.add(
-                "js-marquee-active"
+        const viewportMarker =
+            Math.min(
+                window.innerHeight * 0.34,
+                320
             );
 
-            let position = 0;
-
-            const speed =
-                reducedMotion ? 0 : 0.45;
-
-
-            const moveSkillsMarquee = () => {
-
-                if (!reducedMotion) {
-
-                    position -= speed;
+        const marker =
+            currentScroll +
+            viewportMarker;
 
 
-                    /*
-                     * Halfway reset.
-                     * Your HTML already contains duplicate
-                     * technology content.
-                     */
-                    const halfWidth =
-                        skillsTrack.scrollWidth / 2;
+        let currentGroup = null;
+        let latestTop = -Infinity;
 
 
-                    if (
-                        halfWidth > 0 &&
-                        Math.abs(position) >= halfWidth
-                    ) {
+        activeNavTargets.forEach(
+            (group) => {
 
-                        position = 0;
+                group.sections.forEach(
+                    (section) => {
+
+                        if (!section || !section.isConnected) {
+                            return;
+                        }
+
+
+                        const top =
+                            section.getBoundingClientRect().top +
+                            currentScroll;
+
+
+                        if (
+                            top <= marker &&
+                            top > latestTop
+                        ) {
+
+                            latestTop = top;
+
+                            currentGroup = group;
+
+                        }
 
                     }
+                );
+
+            }
+        );
 
 
-                    skillsTrack.style.transform =
-                        `translate3d(${position}px, 0, 0)`;
+        /*
+         * HOME owns the very top of the page.
+         */
+        if (currentScroll < 80) {
+
+            const homeGroup =
+                activeNavTargets.find(
+                    (group) =>
+                        group.link &&
+                        group.link.getAttribute("href") ===
+                        "#home"
+                );
+
+            if (homeGroup) {
+                currentGroup = homeGroup;
+            }
+
+        }
+
+
+        /*
+         * If nothing has crossed the marker yet,
+         * keep HOME active instead of assigning a later section.
+         */
+        if (!currentGroup) {
+
+            const homeGroup =
+                activeNavTargets.find(
+                    (group) =>
+                        group.link &&
+                        group.link.getAttribute("href") ===
+                        "#home"
+                );
+
+            currentGroup = homeGroup || null;
+
+        }
+
+
+        if (
+            currentGroup &&
+            currentGroup.link
+        ) {
+
+            setActiveNavigation(
+                currentGroup.link
+            );
+
+        }
+
+    }
+
+    /* =========================================================
+       GLOBAL SECTION REVEAL
+       ========================================================= */
+
+    function initGlobalSectionReveal() {
+
+        const selectors = [
+
+            "#home",
+            ".hero",
+            ".hero-content",
+            ".hero-visual",
+
+            "#about",
+            ".about",
+            ".about-content",
+            ".about-image",
+            ".about-card",
+
+            "#what-i-build",
+            "#what-build",
+            ".what-build",
+            ".what-build-header",
+            ".build-card",
+            ".what-build-footer",
+
+            "#projects",
+            ".projects",
+            ".projects-header",
+            ".project-card",
+            ".project-future",
+            ".projects-footer",
+
+            "#experience",
+            ".experience",
+            ".experience-header",
+            ".experience-item",
+
+            "#certificates",
+            "#certifications",
+            ".certificates",
+            ".certificates-header",
+            ".certificate-card",
+
+            "#skills",
+            ".skills",
+            ".skills-header",
+            ".skill-group",
+            ".skills-category",
+
+            "#blog",
+            ".blog-section",
+            ".blog",
+            ".blog-header",
+            ".blog-card",
+
+            "#contact",
+            ".contact",
+            ".contact-header",
+            ".contact-form",
+            ".contact-info",
+
+            ".site-footer",
+            "footer",
+            ".footer-top",
+            ".footer-inner",
+            ".footer-social",
+            ".footer-links",
+            ".footer-bottom"
+
+        ];
+
+
+        const elements =
+            qsa(
+                selectors.join(",")
+            );
+
+
+        if (!elements.length) {
+
+            return;
+
+        }
+
+
+        /*
+         * Do not force opacity using inline styles
+         * because existing CSS may already define the
+         * animation. Instead use compatibility classes.
+         */
+
+        elements.forEach(
+            (element, index) => {
+
+                element.classList.add(
+                    "js-reveal"
+                );
+
+
+                element.style.setProperty(
+                    "--js-reveal-delay",
+                    `${Math.min(
+                        index % 6 * 70,
+                        350
+                    )}ms`
+                );
+
+            }
+        );
+
+
+        if (
+            reducedMotion ||
+            !("IntersectionObserver" in window)
+        ) {
+
+            elements.forEach(
+                (element) => {
+
+                    element.classList.add(
+                        "is-visible"
+                    );
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        const observer =
+            new IntersectionObserver(
+                (entries, observerInstance) => {
+
+                    entries.forEach(
+                        (entry) => {
+
+                            if (
+                                !entry.isIntersecting
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            entry.target.classList.add(
+                                "is-visible"
+                            );
+
+
+                            observerInstance.unobserve(
+                                entry.target
+                            );
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.08,
+
+                    rootMargin:
+                        "0px 0px -45px 0px"
+                }
+            );
+
+
+        elements.forEach(
+            (element) => {
+
+                observer.observe(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    function initHero() {
+
+        const hero =
+            qs(".hero");
+
+
+        if (!hero) {
+
+            return;
+
+        }
+
+
+        window.requestAnimationFrame(
+            () => {
+
+                hero.classList.add(
+                    "hero-loaded"
+                );
+
+            }
+        );
+
+
+        if (
+            reducedMotion
+        ) {
+
+            return;
+
+        }
+
+
+        const visual =
+            qs(
+                ".hero-visual",
+                hero
+            );
+
+
+        if (
+            !visual
+        ) {
+
+            return;
+
+        }
+
+
+        let ticking =
+            false;
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (
+                    ticking
+                ) {
+
+                    return;
 
                 }
 
 
+                ticking =
+                    true;
+
+
                 window.requestAnimationFrame(
-                    moveSkillsMarquee
+                    () => {
+
+                        const scroll =
+                            window.scrollY || 0;
+
+
+                        if (
+                            scroll <
+                            window.innerHeight * 1.15
+                        ) {
+
+                            visual.style.setProperty(
+                                "--hero-scroll-y",
+                                `${scroll * 0.05}px`
+                            );
+
+                        }
+
+
+                        ticking =
+                            false;
+
+                    }
                 );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        const portrait =
+            qs(
+                ".hero-portrait",
+                hero
+            );
+
+
+        if (
+            portrait &&
+            desktopQuery.matches
+        ) {
+
+            const image =
+                qs(
+                    ".hero-photo",
+                    portrait
+                );
+
+
+            portrait.addEventListener(
+                "mousemove",
+                (event) => {
+
+                    if (!image) {
+
+                        return;
+
+                    }
+
+
+                    const rect =
+                        portrait.getBoundingClientRect();
+
+
+                    const x =
+                        (
+                            event.clientX -
+                            rect.left
+                        ) /
+                        rect.width -
+                        0.5;
+
+
+                    const y =
+                        (
+                            event.clientY -
+                            rect.top
+                        ) /
+                        rect.height -
+                        0.5;
+
+
+                    image.style.transform =
+                        `translate3d(${x * 5}px, ${y * -4}px, 0) scale(1.018)`;
+
+                }
+            );
+
+
+            portrait.addEventListener(
+                "mouseleave",
+                () => {
+
+                    if (image) {
+
+                        image.style.transform =
+                            "";
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       ABOUT
+       ========================================================= */
+
+    function initAbout() {
+
+        const about =
+            qs(
+                "#about"
+            ) ||
+            qs(
+                ".about"
+            );
+
+
+        if (!about) {
+
+            return;
+
+        }
+
+
+        const image =
+            qs(
+                ".about-image",
+                about
+            );
+
+
+        const imageWrap =
+            qs(
+                ".about-image-wrap",
+                about
+            );
+
+
+        if (
+            image &&
+            imageWrap &&
+            !reducedMotion &&
+            desktopQuery.matches
+        ) {
+
+            imageWrap.addEventListener(
+                "mousemove",
+                (event) => {
+
+                    const rect =
+                        imageWrap.getBoundingClientRect();
+
+
+                    const x =
+                        (
+                            event.clientX -
+                            rect.left
+                        ) /
+                        rect.width -
+                        0.5;
+
+
+                    const y =
+                        (
+                            event.clientY -
+                            rect.top
+                        ) /
+                        rect.height -
+                        0.5;
+
+
+                    image.style.transform =
+                        `scale(1.035) translate3d(${x * 8}px, ${y * 8}px, 0)`;
+
+                }
+            );
+
+
+            imageWrap.addEventListener(
+                "mouseleave",
+                () => {
+
+                    image.style.transform =
+                        "";
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Optional number counters.
+         */
+
+        const counters =
+            qsa(
+                "[data-count]",
+                about
+            );
+
+
+        if (
+            counters.length &&
+            "IntersectionObserver" in window
+        ) {
+
+            let animated =
+                false;
+
+
+            const observer =
+                new IntersectionObserver(
+                    (entries) => {
+
+                        entries.forEach(
+                            (entry) => {
+
+                                if (
+                                    !entry.isIntersecting ||
+                                    animated
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                animated =
+                                    true;
+
+
+                                counters.forEach(
+                                    animateCounter
+                                );
+
+
+                                observer.disconnect();
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.25
+                    }
+                );
+
+
+            observer.observe(
+                about
+            );
+
+        }
+
+    }
+
+
+    function animateCounter(
+        element
+    ) {
+
+        const value =
+            element.dataset.count;
+
+
+        if (
+            value === undefined
+        ) {
+
+            return;
+
+        }
+
+
+        const match =
+            String(value).match(
+                /(\d+)/
+            );
+
+
+        if (!match) {
+
+            return;
+
+        }
+
+
+        const target =
+            Number(
+                match[1]
+            );
+
+
+        const suffix =
+            String(value).replace(
+                match[1],
+                ""
+            );
+
+
+        if (
+            reducedMotion
+        ) {
+
+            element.textContent =
+                String(value);
+
+            return;
+
+        }
+
+
+        const start =
+            performance.now();
+
+
+        const duration =
+            1000;
+
+
+        const tick =
+            (now) => {
+
+                const progress =
+                    Math.min(
+                        (
+                            now -
+                            start
+                        ) /
+                        duration,
+                        1
+                    );
+
+
+                const eased =
+                    1 -
+                    Math.pow(
+                        1 - progress,
+                        3
+                    );
+
+
+                element.textContent =
+                    `${Math.round(
+                        target * eased
+                    )}${suffix}`;
+
+
+                if (
+                    progress < 1
+                ) {
+
+                    window.requestAnimationFrame(
+                        tick
+                    );
+
+                }
 
             };
 
 
-            window.requestAnimationFrame(
-                moveSkillsMarquee
-            );
-
-        }
+        window.requestAnimationFrame(
+            tick
+        );
 
     }
 
 
-    /* =====================================================
-       BLOG — SECTION 08
-    ===================================================== */
+    /* =========================================================
+       WHAT I BUILD
+       ========================================================= */
 
-    const blogSection =
-        qs("#blog");
+    function initWhatBuild() {
 
-
-    if (blogSection) {
-
-        const blogFeatured =
+        const section =
             qs(
-                ".blog-featured",
-                blogSection
-            );
-
-
-        const blogCards =
-            qsa(
-                ".blog-card",
-                blogSection
-            );
-
-
-        const blogBottom =
+                "#what-i-build"
+            ) ||
             qs(
-                ".blog-bottom-line",
-                blogSection
+                "#what-build"
+            ) ||
+            qs(
+                ".what-build"
             );
 
 
-        /*
-         * IMPORTANT:
-         * Blog elements remain visible even if another
-         * old CSS/JS had hidden them.
-         */
-        [
-            blogFeatured,
-            ...blogCards
-        ]
-        .filter(Boolean)
-        .forEach(
-            (element) => {
+        if (!section) {
 
-                element.classList.add(
-                    "blog-visible"
-                );
-
-            }
-        );
-
-
-        /*
-         * Reveal animation — only if the
-         * new .blog-reveal class exists.
-         */
-        const revealItems =
-            qsa(
-                ".blog-reveal",
-                blogSection
-            );
-
-
-        if (
-            revealItems.length &&
-            "IntersectionObserver" in window
-        ) {
-
-            const blogRevealObserver =
-                new IntersectionObserver(
-                    (entries, observer) => {
-
-                        entries.forEach(
-                            (entry) => {
-
-                                if (
-                                    !entry.isIntersecting
-                                ) {
-                                    return;
-                                }
-
-
-                                entry.target.classList.add(
-                                    "is-visible"
-                                );
-
-
-                                observer.unobserve(
-                                    entry.target
-                                );
-
-                            }
-                        );
-
-                    },
-                    {
-                        threshold: 0.10
-                    }
-                );
-
-
-            revealItems.forEach(
-                (item) => {
-
-                    blogRevealObserver.observe(
-                        item
-                    );
-
-                }
-            );
+            return;
 
         }
 
 
-        /* =================================================
-           BLOG CARD HOVER
-        ================================================= */
-
-        if (
-            desktopQuery.matches &&
-            !reducedMotion
-        ) {
-
-            blogCards.forEach(
-                (card) => {
-
-                    const image =
-                        qs(
-                            ".blog-card-image img",
-                            card
-                        );
-
-
-                    card.addEventListener(
-                        "mousemove",
-                        (event) => {
-
-                            const rect =
-                                card.getBoundingClientRect();
-
-
-                            const x =
-                                (
-                                    event.clientX -
-                                    rect.left
-                                ) /
-                                rect.width -
-                                0.5;
-
-
-                            const y =
-                                (
-                                    event.clientY -
-                                    rect.top
-                                ) /
-                                rect.height -
-                                0.5;
-
-
-                            card.style.transform =
-                                `translateY(-6px) rotateX(${y * -1.5}deg) rotateY(${x * 1.5}deg)`;
-
-
-                            if (image) {
-
-                                image.style.transform =
-                                    `scale(1.045) translate3d(${x * 5}px, ${y * 4}px, 0)`;
-
-                            }
-
-                        }
-                    );
-
-
-                    card.addEventListener(
-                        "mouseleave",
-                        () => {
-
-                            card.style.transform =
-                                "";
-
-
-                            if (image) {
-
-                                image.style.transform =
-                                    "";
-
-                            }
-
-                        }
-                    );
-
-                }
+        const cards =
+            qsa(
+                ".build-card, .what-build-card",
+                section
             );
 
 
-            /*
-             * Featured card
-             */
-            if (blogFeatured) {
+        if (
+            !cards.length ||
+            reducedMotion ||
+            !desktopQuery.matches
+        ) {
 
-                const image =
-                    qs(
-                        ".blog-featured-image img",
-                        blogFeatured
-                    );
+            return;
+
+        }
 
 
-                blogFeatured.addEventListener(
+        cards.forEach(
+            (card) => {
+
+                card.addEventListener(
                     "mousemove",
                     (event) => {
 
                         const rect =
-                            blogFeatured.getBoundingClientRect();
+                            card.getBoundingClientRect();
 
 
                         const x =
@@ -2315,35 +2240,132 @@ document.addEventListener("DOMContentLoaded", () => {
                             0.5;
 
 
-                        blogFeatured.style.transform =
-                            "translateY(-4px)";
+                        card.style.setProperty(
+                            "--build-x",
+                            `${x * 4}px`
+                        );
 
 
-                        if (image) {
-
-                            image.style.transform =
-                                `scale(1.035) translate3d(${x * 6}px, ${y * 5}px, 0)`;
-
-                        }
+                        card.style.setProperty(
+                            "--build-y",
+                            `${y * 4}px`
+                        );
 
                     }
                 );
 
 
-                blogFeatured.addEventListener(
+                card.addEventListener(
                     "mouseleave",
                     () => {
 
-                        blogFeatured.style.transform =
+                        card.style.setProperty(
+                            "--build-x",
+                            "0px"
+                        );
+
+
+                        card.style.setProperty(
+                            "--build-y",
+                            "0px"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       PROJECTS
+       ========================================================= */
+
+    function initProjects() {
+
+        const section =
+            qs(
+                "#projects"
+            ) ||
+            qs(
+                ".projects"
+            );
+
+
+        if (!section) {
+
+            return;
+
+        }
+
+
+        const cards =
+            qsa(
+                ".project-card",
+                section
+            );
+
+
+        const featuredImage =
+            qs(
+                ".project-featured-image .project-image",
+                section
+            );
+
+
+        if (
+            !reducedMotion &&
+            featuredImage &&
+            desktopQuery.matches
+        ) {
+
+            const wrapper =
+                featuredImage.parentElement;
+
+
+            if (wrapper) {
+
+                wrapper.addEventListener(
+                    "mousemove",
+                    (event) => {
+
+                        const rect =
+                            wrapper.getBoundingClientRect();
+
+
+                        const x =
+                            (
+                                event.clientX -
+                                rect.left
+                            ) /
+                            rect.width -
+                            0.5;
+
+
+                        const y =
+                            (
+                                event.clientY -
+                                rect.top
+                            ) /
+                            rect.height -
+                            0.5;
+
+
+                        featuredImage.style.transform =
+                            `scale(1.04) translate3d(${x * 7}px, ${y * 5}px, 0)`;
+
+                    }
+                );
+
+
+                wrapper.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        featuredImage.style.transform =
                             "";
-
-
-                        if (image) {
-
-                            image.style.transform =
-                                "";
-
-                        }
 
                     }
                 );
@@ -2353,73 +2375,208 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =================================================
-           VIEW ALL POSTS
-        ================================================= */
+        if (
+            !reducedMotion &&
+            desktopQuery.matches
+        ) {
 
-        const viewAllButton =
-            qs(
-                ".blog-view-all",
-                blogSection
-            );
+            cards.forEach(
+                (card) => {
 
-
-        if (viewAllButton) {
-
-            viewAllButton.addEventListener(
-                "click",
-                (event) => {
-
-                    const posts =
+                    const image =
                         qs(
-                            "#blog-posts",
-                            blogSection
+                            ".project-image",
+                            card
                         );
 
 
-                    if (!posts) {
+                    if (!image) {
+
                         return;
+
                     }
 
 
-                    event.preventDefault();
+                    card.addEventListener(
+                        "mouseenter",
+                        () => {
+
+                            image.style.transform =
+                                "scale(1.05) translateY(-3px)";
+
+                        }
+                    );
 
 
-                    const headerHeight =
-                        header?.offsetHeight || 0;
+                    card.addEventListener(
+                        "mouseleave",
+                        () => {
 
+                            image.style.transform =
+                                "";
 
-                    const top =
-                        posts.getBoundingClientRect().top +
-                        window.scrollY -
-                        headerHeight -
-                        20;
-
-
-                    window.scrollTo({
-                        top: Math.max(top, 0),
-                        behavior: reducedMotion
-                            ? "auto"
-                            : "smooth"
-                    });
+                        }
+                    );
 
                 }
             );
 
         }
 
+    }
 
-        /* =================================================
-           BLOG IMAGE ERROR FALLBACK
-        ================================================= */
 
-        const blogImages =
-            qsa(
-                ".blog-section img"
+    /* =========================================================
+       EXPERIENCE
+       ========================================================= */
+
+    function initExperience() {
+
+        const section =
+            qs(
+                "#experience"
+            ) ||
+            qs(
+                ".experience"
             );
 
 
-        blogImages.forEach(
+        if (!section) {
+
+            return;
+
+        }
+
+
+        const items =
+            qsa(
+                ".experience-item",
+                section
+            );
+
+
+        items.forEach(
+            (item) => {
+
+                item.addEventListener(
+                    "click",
+                    () => {
+
+                        item.classList.toggle(
+                            "experience-active"
+                        );
+
+
+                        item.classList.toggle(
+                            "is-expanded"
+                        );
+
+                    }
+                );
+
+
+                item.addEventListener(
+                    "keydown",
+                    (event) => {
+
+                        if (
+                            event.key === "Enter" ||
+                            event.key === " "
+                        ) {
+
+                            event.preventDefault();
+
+
+                            item.classList.toggle(
+                                "experience-active"
+                            );
+
+
+                            item.classList.toggle(
+                                "is-expanded"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CERTIFICATES
+       ========================================================= */
+
+    function initCertificates() {
+
+        const section =
+            qs(
+                "#certificates"
+            ) ||
+            qs(
+                "#certifications"
+            ) ||
+            qs(
+                ".certificates"
+            );
+
+
+        if (!section) {
+
+            return;
+
+        }
+
+
+        const cards =
+            qsa(
+                ".certificate-card",
+                section
+            );
+
+
+        const images =
+            qsa(
+                ".certificate-image img",
+                section
+            );
+
+
+        cards.forEach(
+            (card) => {
+
+                card.addEventListener(
+                    "mouseenter",
+                    () => {
+
+                        card.classList.add(
+                            "cert-hover"
+                        );
+
+                    }
+                );
+
+
+                card.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        card.classList.remove(
+                            "cert-hover"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        images.forEach(
             (image) => {
 
                 image.addEventListener(
@@ -2427,7 +2584,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     () => {
 
                         image.classList.add(
-                            "image-error"
+                            "certificate-image-error"
                         );
 
                     }
@@ -2437,79 +2594,143 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /* =================================================
-           BLOG BOTTOM
-        ================================================= */
+        /*
+         * Do not force window.open on normal certificate
+         * links. Let the HTML href behave naturally.
+         * This avoids duplicate tabs.
+         */
 
-        if (blogBottom) {
+        qsa(
+            ".certificate-link",
+            section
+        ).forEach(
+            (link) => {
 
-            blogBottom.classList.add(
-                "blog-visible"
-            );
+                link.addEventListener(
+                    "click",
+                    () => {
 
-        }
+                        const card =
+                            link.closest(
+                                ".certificate-card"
+                            );
+
+
+                        if (card) {
+
+                            card.classList.add(
+                                "is-opened"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
     }
 
 
-    /* =====================================================
-       CONTACT — SIMPLE REVEAL
-    ===================================================== */
+    /* =========================================================
+       SKILLS
+       ========================================================= */
 
-    const contactSection =
-        qs("#contact");
+    function initSkills() {
 
-
-    if (
-        contactSection &&
-        !reducedMotion
-    ) {
-
-        const contactItems =
-            qsa(
-                ".contact-card, .contact-item, .contact-link",
-                contactSection
+        const section =
+            qs(
+                "#skills"
+            ) ||
+            qs(
+                ".skills"
             );
 
 
-        if (contactItems.length) {
+        if (!section) {
 
-            const contactObserver =
+            return;
+
+        }
+
+
+        const groups =
+            qsa(
+                ".skill-group",
+                section
+            );
+
+
+        if (
+            !reducedMotion &&
+            "IntersectionObserver" in window
+        ) {
+
+            const observer =
                 new IntersectionObserver(
-                    (entries, observer) => {
+                    (entries, observerInstance) => {
 
                         entries.forEach(
                             (entry) => {
 
                                 if (
-                                    entry.isIntersecting
+                                    !entry.isIntersecting
                                 ) {
 
-                                    entry.target.classList.add(
-                                        "contact-visible"
-                                    );
-
-                                    observer.unobserve(
-                                        entry.target
-                                    );
+                                    return;
 
                                 }
+
+
+                                entry.target.classList.add(
+                                    "skill-visible"
+                                );
+
+
+                                animateSkillBars(
+                                    entry.target
+                                );
+
+
+                                observerInstance.unobserve(
+                                    entry.target
+                                );
 
                             }
                         );
 
                     },
                     {
-                        threshold: 0.12
+                        threshold: 0.12,
+                        rootMargin:
+                            "0px 0px -60px 0px"
                     }
                 );
 
 
-            contactItems.forEach(
-                (item) => {
+            groups.forEach(
+                (group) => {
 
-                    contactObserver.observe(
-                        item
+                    observer.observe(
+                        group
+                    );
+
+                }
+            );
+
+        } else {
+
+            groups.forEach(
+                (group) => {
+
+                    group.classList.add(
+                        "skill-visible"
+                    );
+
+
+                    animateSkillBars(
+                        group
                     );
 
                 }
@@ -2517,986 +2738,714 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
+        initSkillsMarquee(
+            section
+        );
+
     }
 
 
-    /* =====================================================
-       RESIZE
-    ===================================================== */
+    function animateSkillBars(
+        scope
+    ) {
 
-    window.addEventListener(
-        "resize",
-        () => {
+        qsa(
+            "[data-progress]",
+            scope
+        ).forEach(
+            (bar) => {
 
-            if (
-                window.innerWidth > 800
-            ) {
-
-                closeMenu();
-
-            }
-
-            /*
-             * Recalculate nav immediately after
-             * responsive layout changes.
-             */
-            updateActiveNav();
-
-        },
-        {
-            passive: true
-        }
-    );
+                const value =
+                    bar.dataset.progress;
 
 
-    /* =====================================================
-       INITIAL STATE
-    ===================================================== */
+                if (
+                    value === undefined
+                ) {
 
-    handleNavbarScroll();
-    updateActiveNav();
-
-    document.body.classList.add(
-        "page-ready"
-    );
-
-});
-
-/* =========================================================
-   SINGLE BLOG PAGE
-   Reveal + Share + Copy Link
-========================================================= */
-
-(function () {
-    "use strict";
-
-    /* -------------------------------------------------------
-       CHECK SINGLE BLOG PAGE
-    ------------------------------------------------------- */
-
-    const singleBlogPage = document.querySelector(".single-blog-page");
-
-    if (!singleBlogPage) {
-        return;
-    }
-
-
-    /* -------------------------------------------------------
-       ARTICLE REVEAL
-    ------------------------------------------------------- */
-
-    const revealItems = [
-        ".single-blog-header",
-        ".single-blog-hero",
-        ".single-blog-sidebar",
-        ".single-blog-content",
-        ".single-blog-share",
-        ".single-blog-bottom"
-    ];
-
-
-    const addRevealStyles = () => {
-
-        if (document.getElementById("single-blog-js-styles")) {
-            return;
-        }
-
-        const style = document.createElement("style");
-
-        style.id = "single-blog-js-styles";
-
-        style.textContent = `
-            .single-blog-js-reveal {
-                opacity: 0;
-                transform: translateY(35px);
-                transition:
-                    opacity 0.8s ease,
-                    transform 0.8s cubic-bezier(0.2, 0.7, 0, 1);
-            }
-
-            .single-blog-js-visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .single-blog-content .single-blog-body p {
-                opacity: 0;
-                transform: translateY(20px);
-                transition:
-                    opacity 0.65s ease,
-                    transform 0.65s cubic-bezier(0.2, 0.7, 0, 1);
-            }
-
-            .single-blog-content .single-blog-body p.blog-paragraph-visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        `;
-
-        document.head.appendChild(style);
-    };
-
-
-    addRevealStyles();
-
-
-    /* -------------------------------------------------------
-       SECTION REVEAL
-    ------------------------------------------------------- */
-
-    const revealElements = [];
-
-    revealItems.forEach((selector) => {
-
-        document.querySelectorAll(selector).forEach((element) => {
-
-            element.classList.add("single-blog-js-reveal");
-
-            revealElements.push(element);
-
-        });
-
-    });
-
-
-    const revealObserver = new IntersectionObserver(
-        (entries, observer) => {
-
-            entries.forEach((entry) => {
-
-                if (!entry.isIntersecting) {
                     return;
+
                 }
 
-                entry.target.classList.add(
-                    "single-blog-js-visible"
-                );
 
-                observer.unobserve(entry.target);
-
-            });
-
-        },
-        {
-            threshold: 0.12,
-            rootMargin: "0px 0px -50px 0px"
-        }
-    );
+                const numeric =
+                    Math.max(
+                        0,
+                        Math.min(
+                            Number(value),
+                            100
+                        )
+                    );
 
 
-    revealElements.forEach((element) => {
-        revealObserver.observe(element);
-    });
-
-
-    /* -------------------------------------------------------
-       ARTICLE PARAGRAPH REVEAL
-    ------------------------------------------------------- */
-
-    const paragraphs = document.querySelectorAll(
-        ".single-blog-content .single-blog-body p"
-    );
-
-
-    const paragraphObserver = new IntersectionObserver(
-        (entries, observer) => {
-
-            entries.forEach((entry) => {
-
-                if (!entry.isIntersecting) {
-                    return;
-                }
-
-                entry.target.classList.add(
-                    "blog-paragraph-visible"
-                );
-
-                observer.unobserve(entry.target);
-
-            });
-
-        },
-        {
-            threshold: 0.08,
-            rootMargin: "0px 0px -35px 0px"
-        }
-    );
-
-
-    paragraphs.forEach((paragraph, index) => {
-
-        paragraph.style.transitionDelay =
-            `${Math.min(index * 0.04, 0.18)}s`;
-
-        paragraphObserver.observe(paragraph);
-
-    });
-
-
-    /* -------------------------------------------------------
-       HERO IMAGE PARALLAX
-    ------------------------------------------------------- */
-
-    const heroImage = document.querySelector(
-        ".single-blog-hero img"
-    );
-
-
-    if (heroImage) {
-
-        let ticking = false;
-
-
-        const updateHero = () => {
-
-            const rect =
-                heroImage.getBoundingClientRect();
-
-            const viewportHeight =
-                window.innerHeight;
-
-            const center =
-                viewportHeight / 2;
-
-            const imageCenter =
-                rect.top + rect.height / 2;
-
-            const distance =
-                imageCenter - center;
-
-            const movement =
-                Math.max(
-                    -18,
-                    Math.min(18, distance * -0.025)
+                bar.style.setProperty(
+                    "--progress",
+                    `${numeric}%`
                 );
 
 
-            heroImage.style.transform =
-                `scale(1.03) translateY(${movement}px)`;
-
-            ticking = false;
-        };
-
-
-        const onScroll = () => {
-
-            if (!ticking) {
-
-                window.requestAnimationFrame(
-                    updateHero
+                bar.style.setProperty(
+                    "--skill-progress",
+                    `${numeric}%`
                 );
 
-                ticking = true;
-            }
 
-        };
+                bar.classList.add(
+                    "is-filled"
+                );
 
-
-        window.addEventListener(
-            "scroll",
-            onScroll,
-            {
-                passive: true
             }
         );
+
+    }
+
+
+    function initSkillsMarquee(
+        section
+    ) {
+
+        const track =
+            qs(
+                ".skills-marquee-track",
+                section
+            );
+
+
+        const container =
+            qs(
+                ".skills-marquee",
+                section
+            );
+
+
+        if (
+            !track ||
+            !container ||
+            reducedMotion
+        ) {
+
+            return;
+
+        }
+
+
+        let position =
+            0;
+
+
+        let speed =
+            0.5;
+
+
+        let frameId =
+            null;
+
+
+        let running =
+            true;
+
+
+        const step =
+            () => {
+
+                if (!running) {
+
+                    return;
+
+                }
+
+
+                position -=
+                    speed;
+
+
+                const first =
+                    track.children[0];
+
+
+                if (first) {
+
+                    const width =
+                        first.getBoundingClientRect().width +
+                        40;
+
+
+                    if (
+                        Math.abs(position) >=
+                        width
+                    ) {
+
+                        track.appendChild(
+                            first
+                        );
+
+
+                        position +=
+                            width;
+
+                    }
+
+                }
+
+
+                track.style.transform =
+                    `translate3d(${position}px, 0, 0)`;
+
+
+                frameId =
+                    window.requestAnimationFrame(
+                        step
+                    );
+
+            };
+
+
+        container.addEventListener(
+            "mouseenter",
+            () => {
+
+                speed =
+                    0.15;
+
+            }
+        );
+
+
+        container.addEventListener(
+            "mouseleave",
+            () => {
+
+                speed =
+                    0.5;
+
+            }
+        );
+
+
+        document.addEventListener(
+            "visibilitychange",
+            () => {
+
+                running =
+                    !document.hidden;
+
+
+                if (
+                    running &&
+                    !frameId
+                ) {
+
+                    step();
+
+                }
+
+            }
+        );
+
+
+        step();
+
+    }
+
+
+    /* =========================================================
+       BLOG
+       ========================================================= */
+
+    function initBlog() {
+
+        const section =
+            qs(
+                "#blog"
+            ) ||
+            qs(
+                ".blog-section"
+            ) ||
+            qs(
+                ".blog"
+            );
+
+
+        if (!section) {
+
+            return;
+
+        }
+
+
+        const cards =
+            qsa(
+                ".blog-card",
+                section
+            );
+
+
+        cards.forEach(
+            (card) => {
+
+                card.addEventListener(
+                    "mouseenter",
+                    () => {
+
+                        card.classList.add(
+                            "is-hovered"
+                        );
+
+                    }
+                );
+
+
+                card.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        card.classList.remove(
+                            "is-hovered"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        qsa(
+            "[data-blog-action]",
+            section
+        ).forEach(
+            (button) => {
+
+                button.addEventListener(
+                    "click",
+                    (event) => {
+
+                        const action =
+                            button.dataset.blogAction;
+
+
+                        if (
+                            action !==
+                            "view-posts"
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const grid =
+                            qs(
+                                ".blog-grid",
+                                section
+                            );
+
+
+                        if (!grid) {
+
+                            return;
+
+                        }
+
+
+                        event.preventDefault();
+
+
+                        grid.scrollIntoView(
+                            {
+                                behavior:
+                                    reducedMotion
+                                        ? "auto"
+                                        : "smooth",
+
+                                block:
+                                    "start"
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CONTACT
+       ========================================================= */
+
+    function initContact() {
+
+        const section =
+            qs(
+                "#contact"
+            ) ||
+            qs(
+                ".contact"
+            );
+
+
+        if (!section) {
+
+            return;
+
+        }
+
+
+        const form =
+            qs(
+                ".contact-form",
+                section
+            );
+
+
+        if (!form) {
+
+            return;
+
+        }
+
+
+        qsa(
+            "input, textarea, select",
+            form
+        ).forEach(
+            (field) => {
+
+                field.addEventListener(
+                    "focus",
+                    () => {
+
+                        field.classList.add(
+                            "is-focused"
+                        );
+
+
+                        field.closest(
+                            ".form-group, .contact-field, .field"
+                        )?.classList.add(
+                            "is-focused"
+                        );
+
+                    }
+                );
+
+
+                field.addEventListener(
+                    "blur",
+                    () => {
+
+                        field.classList.remove(
+                            "is-focused"
+                        );
+
+
+                        field.closest(
+                            ".form-group, .contact-field, .field"
+                        )?.classList.remove(
+                            "is-focused"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        form.addEventListener(
+            "submit",
+            () => {
+
+                form.classList.add(
+                    "is-submitting"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    function initFooter() {
+
+        const footer =
+            qs(
+                ".site-footer"
+            ) ||
+            qs(
+                "footer"
+            );
+
+
+        if (!footer) {
+
+            return;
+
+        }
+
+
+        /*
+         * Back-to-top links/buttons.
+         * Supports several common class/data names
+         * without requiring a specific footer structure.
+         */
+
+        qsa(
+            [
+                '[data-scroll-top]',
+                ".footer-back-top",
+                ".back-to-top"
+            ].join(","),
+            footer
+        ).forEach(
+            (button) => {
+
+                button.addEventListener(
+                    "click",
+                    (event) => {
+
+                        event.preventDefault();
+
+
+                        window.scrollTo(
+                            {
+                                top: 0,
+
+                                behavior:
+                                    reducedMotion
+                                        ? "auto"
+                                        : "smooth"
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        /*
+         * Footer social links get keyboard/focus support
+         * through the existing CSS.
+         */
+
+        qsa(
+            "a",
+            footer
+        ).forEach(
+            (link) => {
+
+                link.addEventListener(
+                    "focus",
+                    () => {
+
+                        link.classList.add(
+                            "is-focused"
+                        );
+
+                    }
+                );
+
+
+                link.addEventListener(
+                    "blur",
+                    () => {
+
+                        link.classList.remove(
+                            "is-focused"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       IMAGE LOADING
+       ========================================================= */
+
+    function initImageLoading() {
+
+        qsa(
+            "img"
+        ).forEach(
+            (image) => {
+
+                const markLoaded =
+                    () => {
+
+                        image.classList.add(
+                            "image-loaded"
+                        );
+
+                    };
+
+
+                const markError =
+                    () => {
+
+                        image.classList.add(
+                            "image-error"
+                        );
+
+                    };
+
+
+                image.addEventListener(
+                    "load",
+                    markLoaded
+                );
+
+
+                image.addEventListener(
+                    "error",
+                    markError
+                );
+
+
+                if (
+                    image.complete
+                ) {
+
+                    if (
+                        image.naturalWidth > 0
+                    ) {
+
+                        markLoaded();
+
+                    } else {
+
+                        markError();
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       KEYBOARD SUPPORT
+       ========================================================= */
+
+    function initGlobalKeyboardSupport() {
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+
+                /*
+                 * Escape closes the menu.
+                 */
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeMobileMenu();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       RESIZE SUPPORT
+       ========================================================= */
+
+    function initResizeSupport() {
+
+        let timer =
+            null;
 
 
         window.addEventListener(
             "resize",
-            updateHero
-        );
-
-    }
-
-
-    /* -------------------------------------------------------
-       SHARE — LINKEDIN
-    ------------------------------------------------------- */
-
-    const linkedinButton =
-        document.querySelector(
-            '[data-share="linkedin"]'
-        );
-
-
-    if (linkedinButton) {
-
-        linkedinButton.addEventListener(
-            "click",
-            (event) => {
-
-                event.preventDefault();
-
-                const currentUrl =
-                    encodeURIComponent(
-                        window.location.href
-                    );
-
-                const shareUrl =
-                    `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
-
-                window.open(
-                    shareUrl,
-                    "_blank",
-                    "noopener,noreferrer,width=700,height=600"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* -------------------------------------------------------
-       SHARE — X
-    ------------------------------------------------------- */
-
-    const xButton =
-        document.querySelector(
-            '[data-share="x"]'
-        );
-
-
-    if (xButton) {
-
-        xButton.addEventListener(
-            "click",
-            (event) => {
-
-                event.preventDefault();
-
-
-                const currentUrl =
-                    encodeURIComponent(
-                        window.location.href
-                    );
-
-
-                const title =
-                    encodeURIComponent(
-                        document.title
-                    );
-
-
-                const shareUrl =
-                    `https://twitter.com/intent/tweet?url=${currentUrl}&text=${title}`;
-
-
-                window.open(
-                    shareUrl,
-                    "_blank",
-                    "noopener,noreferrer,width=700,height=600"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* -------------------------------------------------------
-       COPY ARTICLE LINK
-    ------------------------------------------------------- */
-
-    const copyButton =
-        document.querySelector(
-            ".copy-blog-link"
-        );
-
-
-    if (copyButton) {
-
-        copyButton.addEventListener(
-            "click",
-            async (event) => {
-
-                event.preventDefault();
-
-
-                const url =
-                    window.location.href;
-
-
-                try {
-
-                    await navigator.clipboard.writeText(
-                        url
-                    );
-
-
-                    const originalText =
-                        copyButton.textContent;
-
-
-                    copyButton.textContent =
-                        "✓";
-
-
-                    copyButton.classList.add(
-                        "copied"
-                    );
-
-
-                    setTimeout(() => {
-
-                        copyButton.textContent =
-                            originalText;
-
-                        copyButton.classList.remove(
-                            "copied"
-                        );
-
-                    }, 1800);
-
-
-                } catch (error) {
-
-                    /* Fallback */
-
-                    const tempInput =
-                        document.createElement("input");
-
-
-                    tempInput.value = url;
-
-                    document.body.appendChild(
-                        tempInput
-                    );
-
-                    tempInput.select();
-
-                    document.execCommand(
-                        "copy"
-                    );
-
-                    tempInput.remove();
-
-
-                    copyButton.textContent =
-                        "✓";
-
-
-                    setTimeout(() => {
-
-                        copyButton.textContent =
-                            "↗";
-
-                    }, 1800);
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* -------------------------------------------------------
-       BACK TO TOP ON PAGE LOAD
-       Prevent browser restoring old scroll position
-    ------------------------------------------------------- */
-
-    if ("scrollRestoration" in history) {
-
-        history.scrollRestoration = "manual";
-
-    }
-
-
-    window.addEventListener(
-        "pageshow",
-        () => {
-
-            if (
-                window.location.hash === ""
-            ) {
-
-                window.scrollTo(
-                    0,
-                    0
-                );
-
-            }
-
-        }
-    );
-
-})();
-
-/* =========================================================
-   SECTION 09 — CONTACT
-   Scroll Reveal + Hover Interaction
-========================================================= */
-
-(function () {
-    "use strict";
-
-    const contactSection =
-        document.querySelector("#contact");
-
-    if (!contactSection) {
-        return;
-    }
-
-
-    /* -------------------------------------------------------
-       ELEMENTS
-    ------------------------------------------------------- */
-
-    const contactItems = [
-        ".contact-top",
-        ".contact-divider",
-        ".contact-heading-wrap",
-        ".contact-action-wrap",
-        ".contact-strip",
-        ".contact-bottom"
-    ];
-
-
-    /* -------------------------------------------------------
-       DYNAMIC REVEAL STYLES
-    ------------------------------------------------------- */
-
-    if (!document.getElementById("contact-js-styles")) {
-
-        const style = document.createElement("style");
-
-        style.id = "contact-js-styles";
-
-        style.textContent = `
-            .contact-js-reveal {
-                opacity: 0;
-                transform: translateY(35px);
-                transition:
-                    opacity 0.8s ease,
-                    transform 0.8s cubic-bezier(0.2, 0.7, 0, 1);
-            }
-
-            .contact-js-visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .contact-heading-js {
-                opacity: 0;
-                transform: translateX(-45px);
-                transition:
-                    opacity 0.9s ease,
-                    transform 0.9s cubic-bezier(0.2, 0.7, 0, 1);
-            }
-
-            .contact-heading-js-visible {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            .contact-action-js {
-                opacity: 0;
-                transform: translateX(45px);
-                transition:
-                    opacity 0.9s ease,
-                    transform 0.9s cubic-bezier(0.2, 0.7, 0, 1);
-            }
-
-            .contact-action-js-visible {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            .contact-strip-js {
-                opacity: 0;
-                transform: translateY(25px);
-                transition:
-                    opacity 0.7s ease,
-                    transform 0.7s ease;
-            }
-
-            .contact-strip-js-visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        `;
-
-        document.head.appendChild(style);
-    }
-
-
-    /* -------------------------------------------------------
-       BASIC REVEAL
-    ------------------------------------------------------- */
-
-    const revealObserver =
-        new IntersectionObserver(
-            (entries, observer) => {
-
-                entries.forEach((entry) => {
-
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
-
-                    entry.target.classList.add(
-                        "contact-js-visible"
-                    );
-
-                    observer.unobserve(entry.target);
-
-                });
-
-            },
-            {
-                threshold: 0.12,
-                rootMargin: "0px 0px -50px 0px"
-            }
-        );
-
-
-    contactItems.forEach((selector, index) => {
-
-        document
-            .querySelectorAll(
-                `#contact ${selector}`
-            )
-            .forEach((element) => {
-
-                element.classList.add(
-                    "contact-js-reveal"
-                );
-
-                element.style.transitionDelay =
-                    `${index * 0.08}s`;
-
-                revealObserver.observe(element);
-
-            });
-
-    });
-
-
-    /* -------------------------------------------------------
-       HEADING — LEFT REVEAL
-    ------------------------------------------------------- */
-
-    const headingWrap =
-        contactSection.querySelector(
-            ".contact-heading-wrap"
-        );
-
-
-    if (headingWrap) {
-
-        headingWrap.classList.add(
-            "contact-heading-js"
-        );
-
-
-        const headingObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach((entry) => {
-
-                        if (!entry.isIntersecting) {
-                            return;
-                        }
-
-                        entry.target.classList.add(
-                            "contact-heading-js-visible"
-                        );
-
-                        observer.unobserve(entry.target);
-
-                    });
-
-                },
-                {
-                    threshold: 0.18
-                }
-            );
-
-
-        headingObserver.observe(headingWrap);
-
-    }
-
-
-    /* -------------------------------------------------------
-       ACTION — RIGHT REVEAL
-    ------------------------------------------------------- */
-
-    const actionWrap =
-        contactSection.querySelector(
-            ".contact-action-wrap"
-        );
-
-
-    if (actionWrap) {
-
-        actionWrap.classList.add(
-            "contact-action-js"
-        );
-
-
-        const actionObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach((entry) => {
-
-                        if (!entry.isIntersecting) {
-                            return;
-                        }
-
-                        entry.target.classList.add(
-                            "contact-action-js-visible"
-                        );
-
-                        observer.unobserve(entry.target);
-
-                    });
-
-                },
-                {
-                    threshold: 0.18
-                }
-            );
-
-
-        actionObserver.observe(actionWrap);
-
-    }
-
-
-    /* -------------------------------------------------------
-       STRIP STAGGER
-    ------------------------------------------------------- */
-
-    const stripItems =
-        contactSection.querySelectorAll(
-            ".contact-strip div"
-        );
-
-
-    if (stripItems.length) {
-
-        const stripObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach((entry) => {
-
-                        if (!entry.isIntersecting) {
-                            return;
-                        }
-
-                        entry.target.classList.add(
-                            "contact-strip-js-visible"
-                        );
-
-                        observer.unobserve(entry.target);
-
-                    });
-
-                },
-                {
-                    threshold: 0.2
-                }
-            );
-
-
-        stripItems.forEach((item, index) => {
-
-            item.classList.add(
-                "contact-strip-js"
-            );
-
-            item.style.transitionDelay =
-                `${index * 0.08}s`;
-
-            stripObserver.observe(item);
-
-        });
-
-    }
-
-
-    /* -------------------------------------------------------
-       EMAIL CARD POINTER EFFECT
-    ------------------------------------------------------- */
-
-    const emailCard =
-        contactSection.querySelector(
-            ".contact-email"
-        );
-
-
-    if (emailCard) {
-
-        emailCard.addEventListener(
-            "mousemove",
-            (event) => {
-
-                const rect =
-                    emailCard.getBoundingClientRect();
-
-                const x =
-                    event.clientX - rect.left;
-
-                const y =
-                    event.clientY - rect.top;
-
-                const rotateX =
-                    ((y / rect.height) - 0.5) * -2;
-
-                const rotateY =
-                    ((x / rect.width) - 0.5) * 2;
-
-
-                emailCard.style.transform =
-                    `translateY(-5px)
-                     perspective(900px)
-                     rotateX(${rotateX}deg)
-                     rotateY(${rotateY}deg)`;
-            }
-        );
-
-
-        emailCard.addEventListener(
-            "mouseleave",
             () => {
 
-                emailCard.style.transform =
-                    "translateY(0)";
-
-            }
-        );
-
-    }
+                window.clearTimeout(
+                    timer
+                );
 
 
-    /* -------------------------------------------------------
-       COPY EMAIL
-       Double click email address to copy
-    ------------------------------------------------------- */
+                timer =
+                    window.setTimeout(
+                        () => {
 
-    const emailAddress =
-        contactSection.querySelector(
-            ".contact-email-address"
-        );
+                            updateActiveNavigation();
 
 
-    if (emailAddress) {
+                            if (
+                                window.innerWidth >
+                                MOBILE_BREAKPOINT
+                            ) {
 
-        emailAddress.style.cursor = "copy";
+                                closeMobileMenu();
 
+                            }
 
-        emailAddress.addEventListener(
-            "dblclick",
-            async () => {
-
-                const email =
-                    emailAddress.textContent.trim();
-
-
-                if (
-                    !email ||
-                    email.includes("@example.com")
-                ) {
-                    return;
-                }
-
-
-                try {
-
-                    await navigator.clipboard.writeText(
-                        email
+                        },
+                        150
                     );
 
-
-                    const original =
-                        emailAddress.textContent;
-
-
-                    emailAddress.textContent =
-                        "EMAIL COPIED ✓";
-
-
-                    emailAddress.style.color =
-                        "var(--contact-orange)";
-
-
-                    setTimeout(() => {
-
-                        emailAddress.textContent =
-                            original;
-
-                        emailAddress.style.color =
-                            "";
-
-                    }, 1500);
-
-                } catch (error) {
-
-                    console.warn(
-                        "Unable to copy email.",
-                        error
-                    );
-
-                }
-
             }
         );
 
     }
 
 
-    /* -------------------------------------------------------
-       CONTACT STATUS DOT
-       Very subtle pulse
-    ------------------------------------------------------- */
+    /* =========================================================
+       DEBUG-SAFE GLOBAL API
+       =========================================================
+       These are intentionally attached to window so that
+       existing templates or older scripts that reference
+       these names continue to work without throwing
+       ReferenceError.
+       ========================================================= */
 
-    const statusDot =
-        contactSection.querySelector(
-            ".contact-status-dot"
-        );
-
-
-    if (statusDot) {
-
-        let growing = true;
-        let scale = 1;
+    window.VikasPortfolio =
+        window.VikasPortfolio ||
+        {};
 
 
-        const pulseStatusDot = () => {
-
-            scale += growing ? 0.003 : -0.003;
-
-
-            if (scale >= 1.15) {
-                growing = false;
-            }
+    window.VikasPortfolio.closeMenu =
+        closeMobileMenu;
 
 
-            if (scale <= 1) {
-                growing = true;
-            }
+    window.VikasPortfolio.openMenu =
+        openMobileMenu;
 
 
-            statusDot.style.transform =
-                `scale(${scale})`;
+    window.VikasPortfolio.updateActiveNavigation =
+        updateActiveNavigation;
 
 
-            requestAnimationFrame(
-                pulseStatusDot
-            );
-
-        };
+    window.VikasPortfolio.scrollToTarget =
+        scrollToTarget;
 
 
-        requestAnimationFrame(
-            pulseStatusDot
-        );
-
-    }
+    /* =========================================================
+       END CORE
+       ========================================================= */
 
 })();
