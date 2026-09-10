@@ -1,128 +1,305 @@
 {% load static %}
 
 <!-- =========================================================
-     FOOTER — FINAL
-========================================================= -->
+     FOOTER — PREMIUM SIGNATURE FRAME
+     ========================================================= -->
 
 <footer class="site-footer">
+
+    <!-- =====================================================
+         BACKGROUND
+         ===================================================== -->
+
+    <div class="footer-background" aria-hidden="true">
+
+        <div class="footer-grid"></div>
+
+        <div class="footer-glow"></div>
+
+        <div class="footer-orbit footer-orbit-one"></div>
+
+        <div class="footer-orbit footer-orbit-two"></div>
+
+        <div class="footer-watermark">
+            VK
+        </div>
+
+        <div class="footer-orange-line"></div>
+
+    </div>
+
 
     <div class="footer-container">
 
 
-        <!-- =====================================================
-             IDENTITY + SOCIAL
-        ====================================================== -->
+        <!-- =================================================
+             BRAND HEADER
+             ================================================= -->
 
-        <div class="footer-identity-row">
+        <div class="footer-brand-row">
+
+            <!-- Brand -->
+
+            <a
+                href="{% url 'home' %}#home"
+                class="footer-brand"
+                aria-label="Vikas Kumar"
+            >
+
+                <div class="footer-logo">
+
+                    <img
+                        src="{% static 'images/profile/vikas-logo.png' %}"
+                        alt="Vikas Kumar Logo"
+                    >
+
+                </div>
 
 
-            <!-- BRAND -->
+                <div class="footer-brand-copy">
 
-            <div class="footer-brand-block">
+                    <span>
+                        SOFTWARE DEVELOPER
+                    </span>
 
-                <span class="footer-kicker">
-                    SOFTWARE DEVELOPER
-                    <span>•</span>
-                    DELHI, INDIA
+                    <strong>
+                        VIKAS KUMAR
+                    </strong>
+
+                    <small>
+                        BACKEND · FULL STACK · AI
+                    </small>
+
+                </div>
+
+            </a>
+
+
+            <!-- Availability -->
+
+            <div class="footer-availability">
+
+                <span class="footer-live-dot"></span>
+
+                <div>
+
+                    <small>
+                        CURRENT STATUS
+                    </small>
+
+                    <strong>
+                        AVAILABLE FOR NEW WORK
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAIN CTA
+             ================================================= -->
+
+        <div class="footer-hero">
+
+
+            <div class="footer-hero-kicker">
+                HAVE AN IDEA?
+            </div>
+
+
+            <div class="footer-hero-title">
+
+                <span>
+                    LET'S
                 </span>
 
+                <span class="footer-outline-text">
+                    BUILD
+                </span>
 
-                <a
-                    href="{% url 'home' %}#home"
-                    class="footer-big-logo"
-                    aria-label="Vikas Kumar"
-                >
-                    VK<span>.</span>
-                </a>
-
-
-                <p class="footer-brand-description">
-                    Building digital products that create
-                    real impact.
-                </p>
+                <span class="footer-orange-text">
+                    SOMETHING.
+                </span>
 
             </div>
 
 
+            <div class="footer-hero-row">
+
+                <p>
+                    From the first idea to the final product,
+                    let's turn something interesting into
+                    something real.
+                </p>
+
+
+                <a
+                    href="mailto:vikas7501kumar@example.com"
+                    class="footer-cta"
+                >
+
+                    <span>
+                        START A CONVERSATION
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOWER INFORMATION
+             ================================================= -->
+
+        <div class="footer-information">
+
+
             <!-- =================================================
                  SOCIAL
-            ================================================== -->
+                 ================================================= -->
 
-            <div class="footer-social-block">
+            <div class="footer-block">
 
-                <span class="footer-kicker">
-                    CONNECT WITH ME
-                </span>
-
-
-                <div class="footer-social-icons">
+                <div class="footer-block-label">
+                    CONNECT
+                </div>
 
 
-                    <!-- GITHUB -->
+                <div class="footer-social-list">
+
+
+                    <!-- GitHub -->
 
                     <a
                         href="https://github.com/Vikas01-web"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="footer-social-item"
+                        class="footer-social-link"
                         aria-label="GitHub"
                     >
 
-                        <span class="footer-social-circle">
+                        <span class="footer-social-icon">
 
                             <svg
                                 viewBox="0 0 24 24"
                                 aria-hidden="true"
                             >
                                 <path
-                                    d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.1.79-.25.79-.56v-2c-3.23.7-3.91-1.38-3.91-1.38-.53-1.35-1.29-1.71-1.29-1.71-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.58-.29-5.29-1.29-5.29-5.74 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.17 1.19a11 11 0 0 1 5.76 0c2.2-1.5 3.17-1.19 3.17-1.19.63 1.6.23 2.78.11 3.07.74.81 1.19 1.85 1.19 3.12 0 4.46-2.72 5.45-5.31 5.74.41.36.78 1.07.78 2.16v3.21c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"
+                                    d="M12 2
+                                    C6.48 2 2 6.48 2 12
+                                    C2 16.42 4.87 20.16 8.84 21.5
+                                    C9.34 21.59 9.52 21.28 9.52 21.02
+                                    C9.52 20.79 9.51 20.17 9.5 19.35
+                                    C6.73 19.95 6.14 18.01 6.14 18.01
+                                    C5.68 16.86 5.03 16.55 5.03 16.55
+                                    C4.12 15.93 5.1 15.94 5.1 15.94
+                                    C6.11 16.01 6.64 16.98 6.64 16.98
+                                    C7.53 18.5 8.97 18.06 9.54 17.81
+                                    C9.63 17.17 9.89 16.74 10.18 16.49
+                                    C7.97 16.24 5.64 15.38 5.64 11.47
+                                    C5.64 10.36 6.03 9.45 6.67 8.74
+                                    C6.56 8.47 6.2 7.42 6.76 6.03
+                                    C6.76 6.03 7.59 5.77 9.5 7.07
+                                    C10.3 6.85 11.15 6.74 12 6.74
+                                    C12.85 6.74 13.7 6.85 14.5 7.07
+                                    C16.41 5.77 17.24 6.03 17.24 6.03
+                                    C17.8 7.42 17.44 8.47 17.33 8.74
+                                    C17.97 9.45 18.36 10.36 18.36 11.47
+                                    C18.36 15.39 16.03 16.24 13.81 16.49
+                                    C14.17 16.8 14.5 17.41 14.5 18.35
+                                    C14.5 19.7 14.49 20.79 14.49 21.02
+                                    C14.49 21.28 14.67 21.59 15.17 21.5
+                                    C19.13 20.16 22 16.42 22 12
+                                    C22 6.48 17.52 2 12 2Z"
                                 />
                             </svg>
 
                         </span>
 
-                        <small>GITHUB</small>
+                        <span>
+                            GITHUB
+                        </span>
+
+                        <small>
+                            ↗
+                        </small>
 
                     </a>
 
 
-                    <!-- LINKEDIN -->
+                    <!-- LinkedIn -->
 
                     <a
                         href="https://www.linkedin.com/in/vikas-kumar-b7788a380/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="footer-social-item"
+                        class="footer-social-link"
                         aria-label="LinkedIn"
                     >
 
-                        <span class="footer-social-circle">
+                        <span class="footer-social-icon">
 
                             <svg
                                 viewBox="0 0 24 24"
                                 aria-hidden="true"
                             >
                                 <path
-                                    d="M5.2 3.8A2.2 2.2 0 1 1 .8 3.8a2.2 2.2 0 0 1 4.4 0ZM1.1 8h4.2v12H1.1V8Zm6.8 0h4v1.64h.06c.56-1.06 1.92-2.18 3.96-2.18 4.24 0 5.02 2.79 5.02 6.41V20h-4.17v-5.44c0-1.3-.02-2.97-1.81-2.97-1.82 0-2.1 1.42-2.1 2.88V20H7.9V8Z"
+                                    d="M6.5 8.5H3.2V20h3.3V8.5Z"
+                                />
+
+                                <path
+                                    d="M4.85 3
+                                    C3.75 3 3 3.76 3 4.82
+                                    C3 5.88 3.75 6.64 4.85 6.64
+                                    C5.92 6.64 6.67 5.88 6.67 4.82
+                                    C6.67 3.76 5.92 3 4.85 3Z"
+                                />
+
+                                <path
+                                    d="M20.8 13.42
+                                    C20.8 9.95 18.95 8.2 16.48 8.2
+                                    C14.48 8.2 13.59 9.3 13.1 10.08
+                                    V8.5H9.8V20h3.3
+                                    V14.3
+                                    C13.1 12.8 13.38 11.34 15.23 11.34
+                                    C17.05 11.34 17.05 13.07 17.05 14.4
+                                    V20H20.8V13.42Z"
                                 />
                             </svg>
 
                         </span>
 
-                        <small>LINKEDIN</small>
+                        <span>
+                            LINKEDIN
+                        </span>
+
+                        <small>
+                            ↗
+                        </small>
 
                     </a>
 
 
-                    <!-- INSTAGRAM -->
+                    <!-- Instagram -->
 
                     <a
-                        href="www.instagram.com/the_vikass.03/"
-                        class="footer-social-item"
+                        href="https://www.instagram.com/the_vikass.03/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="footer-social-link"
                         aria-label="Instagram"
                     >
 
-                        <span class="footer-social-circle">
+                        <span class="footer-social-icon">
 
                             <svg
                                 viewBox="0 0 24 24"
@@ -144,30 +321,36 @@
                                 />
 
                                 <circle
-                                    cx="17.5"
-                                    cy="6.5"
+                                    cx="17.3"
+                                    cy="6.7"
                                     r="1"
-                                    class="footer-instagram-dot"
+                                    class="instagram-dot"
                                 />
 
                             </svg>
 
                         </span>
 
-                        <small>INSTAGRAM</small>
+                        <span>
+                            INSTAGRAM
+                        </span>
+
+                        <small>
+                            ↗
+                        </small>
 
                     </a>
 
 
-                    <!-- EMAIL -->
+                    <!-- Email -->
 
                     <a
                         href="mailto:vikas7501kumar@example.com"
-                        class="footer-social-item"
+                        class="footer-social-link"
                         aria-label="Email"
                     >
 
-                        <span class="footer-social-circle">
+                        <span class="footer-social-icon">
 
                             <svg
                                 viewBox="0 0 24 24"
@@ -183,139 +366,155 @@
                                 />
 
                                 <path
-                                    d="m4 7 8 6 8-6"
+                                    d="M4 7.5
+                                    L12 13.5
+                                    L20 7.5"
                                 />
 
                             </svg>
 
                         </span>
 
-                        <small>EMAIL</small>
+                        <span>
+                            EMAIL
+                        </span>
+
+                        <small>
+                            ↗
+                        </small>
 
                     </a>
 
                 </div>
 
+            </div>
 
-                <div class="footer-opportunity">
 
-                    <span class="footer-opportunity-dot"></span>
+            <!-- =================================================
+                 EXPLORE
+                 ================================================= -->
 
-                    <span>
-                        AVAILABLE FOR OPPORTUNITIES
-                    </span>
+            <div class="footer-block">
 
+                <div class="footer-block-label">
+                    EXPLORE
                 </div>
 
+
+                <nav class="footer-links">
+
+                    <a href="{% url 'home' %}#home">
+                        HOME
+                    </a>
+
+                    <a href="{% url 'home' %}#about">
+                        ABOUT
+                    </a>
+
+                    <a href="{% url 'home' %}#projects">
+                        WORK
+                    </a>
+
+                    <a href="{% url 'home' %}#experience">
+                        EXPERIENCE
+                    </a>
+
+                    <a href="{% url 'home' %}#certificates">
+                        CERTIFICATES
+                    </a>
+
+                    <a href="{% url 'home' %}#skills">
+                        SKILLS
+                    </a>
+
+                    <a href="{% url 'home' %}#blog">
+                        BLOG
+                    </a>
+
+                    <a href="{% url 'home' %}#contact">
+                        CONTACT
+                    </a>
+
+                </nav>
+
             </div>
 
-        </div>
+
+            <!-- =================================================
+                 LOCATION / CONTACT
+                 ================================================= -->
+
+            <div class="footer-block footer-contact-block">
+
+                <div class="footer-block-label">
+                    BASED IN
+                </div>
 
 
-        <!-- =====================================================
-             BIG HERO
-        ====================================================== -->
-
-        <div class="footer-hero">
-
-
-            <span class="footer-hero-kicker">
-                HAVE AN IDEA?
-            </span>
-
-
-            <h2>
-                LET'S BUILD
-                <span>WHAT'S NEXT.</span>
-            </h2>
-
-
-            <a
-                href="mailto:vikas7501kumar@example.com"
-                class="footer-talk-button"
-            >
-
-                <span>
-                    START A CONVERSATION
-                </span>
-
-                <strong>
-                    ↗
+                <strong class="footer-location">
+                    NEW DELHI
                 </strong>
 
-            </a>
-
-        </div>
-
-
-        <!-- =====================================================
-             NAVIGATION
-        ====================================================== -->
-
-        <div class="footer-navigation">
+                <span class="footer-country">
+                    INDIA
+                </span>
 
 
-            <div class="footer-navigation-heading">
-                NAVIGATION
+                <div class="footer-separator"></div>
 
-                <span></span>
+
+                <div class="footer-block-label">
+                    FOCUS
+                </div>
+
+                <p>
+                    BACKEND<br>
+                    FULL STACK<br>
+                    AI INTEGRATION
+                </p>
+
+
+                <div class="footer-separator"></div>
+
+
+                <a
+                    href="https://wa.me/919540143879"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="footer-whatsapp-link"
+                >
+                    WHATSAPP
+                    <span>
+                        ↗
+                    </span>
+                </a>
+
             </div>
 
-
-            <nav class="footer-nav-grid">
-
-                <a href="{% url 'home' %}#home">
-                    HOME
-                </a>
-
-                <a href="{% url 'home' %}#about">
-                    ABOUT
-                </a>
-
-                <a href="{% url 'home' %}#projects">
-                    WORK
-                </a>
-
-                <a href="{% url 'home' %}#experience">
-                    EXPERIENCE
-                </a>
-
-                <a href="{% url 'home' %}#certificates">
-                    CERTIFICATES
-                </a>
-
-                <a href="{% url 'home' %}#skills">
-                    SKILLS
-                </a>
-
-                <a href="{% url 'home' %}#blog">
-                    BLOG
-                </a>
-
-                <a href="{% url 'home' %}#contact">
-                    CONTACT
-                </a>
-
-            </nav>
-
         </div>
 
 
-        <!-- =====================================================
-             BOTTOM
-        ====================================================== -->
+        <!-- =================================================
+             COPYRIGHT BAR
+             ================================================= -->
 
         <div class="footer-bottom">
-
 
             <div class="footer-copyright">
                 © {% now "Y" %} VIKAS KUMAR
             </div>
 
 
-            <div class="footer-built">
-                DESIGNED &amp; BUILT WITH CODE
-                <span>♥</span>
+            <div class="footer-bottom-center">
+
+                <span></span>
+
+                <small>
+                    DESIGNED · DEVELOPED · DEPLOYED
+                </small>
+
+                <span></span>
+
             </div>
 
 
@@ -323,40 +522,90 @@
                 href="{% url 'home' %}#home"
                 class="footer-back-top"
             >
+
                 BACK TO TOP
 
-                <span>
+                <strong>
                     ↑
-                </span>
+                </strong>
 
             </a>
 
         </div>
 
-
     </div>
 
 
     <!-- =====================================================
-         BACKGROUND ELEMENTS
-    ====================================================== -->
+         WHATSAPP FLOAT
+         Visible throughout the complete website
+         ===================================================== -->
 
-    <div
-        class="footer-bg-glow footer-bg-glow-one"
-        aria-hidden="true"
-    ></div>
-
-    <div
-        class="footer-bg-glow footer-bg-glow-two"
-        aria-hidden="true"
-    ></div>
-
-
-    <div
-        class="footer-bg-mark"
-        aria-hidden="true"
+    <a
+        href="https://wa.me/919540143879"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="whatsapp-float"
+        aria-label="Chat with Vikas Kumar on WhatsApp"
     >
-        VK.
-    </div>
+
+        <span class="whatsapp-pulse"></span>
+
+        <span class="whatsapp-button-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+
+                <path
+                    d="M20.52 3.48
+                    A11.94 11.94 0 0 0 12.02 0
+                    C5.4 0 .02 5.38 .02 12
+                    C.02 14.11 .57 16.17 1.61 17.93
+                    L0 24
+                    L6.22 22.39
+                    A11.96 11.96 0 0 0 12.02 24
+                    H12.01
+                    C18.63 24 24 18.62 24 12
+                    C24 8.79 22.75 5.77 20.52 3.48Z"
+                />
+
+                <path
+                    class="whatsapp-inner"
+                    d="M17.2 13.9
+                    C16.92 13.76 15.53 13.08 15.28 12.98
+                    C15.02 12.87 14.84 12.82 14.66 13.1
+                    C14.48 13.37 13.98 13.99 13.83 14.17
+                    C13.67 14.35 13.5 14.38 13.22 14.24
+                    C12.94 14.1 12.05 13.81 11 12.87
+                    C10.18 12.14 9.63 11.24 9.48 10.96
+                    C9.34 10.68 9.47 10.54 9.61 10.4
+                    C9.74 10.27 9.9 10.08 10.04 9.92
+                    C10.18 9.75 10.23 9.63 10.32 9.45
+                    C10.41 9.28 10.36 9.12 10.3 8.98
+                    C10.23 8.84 9.68 7.48 9.45 6.92
+                    C9.23 6.38 9 6.45 8.84 6.44
+                    C8.67 6.43 8.48 6.43 8.29 6.43
+                    C8.1 6.43 7.79 6.5 7.53 6.78
+                    C7.27 7.06 6.55 7.74 6.55 9.1
+                    C6.55 10.46 7.56 11.77 7.7 11.95
+                    C7.83 12.14 9.69 14.99 12.54 16.22
+                    C13.22 16.52 13.75 16.71 14.16 16.85
+                    C14.85 17.07 15.48 17.04 15.98 16.97
+                    C16.53 16.88 17.67 16.29 17.9 15.64
+                    C18.13 15 18.13 14.44 18.06 14.32
+                    C18 14.19 17.8 14.11 17.2 13.9Z"
+                />
+
+            </svg>
+
+        </span>
+
+        <span class="whatsapp-label">
+            WHATSAPP
+        </span>
+
+    </a>
 
 </footer>

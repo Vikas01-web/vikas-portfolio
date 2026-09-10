@@ -1,700 +1,265 @@
 {% extends "base.html" %}
+{% block content %}
 {% load static %}
 
-{% block content %}
+<!-- =========================================================
+     START — HERO SECTION
+========================================================= -->
 
-<!-- =========================================
-     HERO — VIKAS KUMAR
-========================================= -->
+<section id="home" class="hero-section" aria-labelledby="hero-title">
 
-<section
-    class="hero"
-    id="home"
-    aria-labelledby="hero-title"
->
+    <!-- Background Layer -->
+    <div class="hero-background" aria-hidden="true">
 
-    <div class="hero-bg"></div>
+        <div class="hero-background-grid"></div>
 
-    <div class="hero-container">
-
-        <!-- =====================================
-             HERO NAV / META
-        ====================================== -->
-
-        <div class="hero-meta">
-
-            <div class="hero-meta-left">
-
-                <span class="hero-meta-number">
-                    01
-                </span>
-
-                <span class="hero-meta-divider"></span>
-
-                <span class="hero-meta-label">
-                    SOFTWARE DEVELOPER
-                </span>
-
-            </div>
-
-            <div class="hero-meta-right">
-                NEW DELHI / INDIA
-            </div>
-
+        <div class="hero-background-vk">
+            VK
         </div>
 
+        <div class="hero-background-glow"></div>
 
-        <!-- =====================================
-             HERO MAIN
-        ====================================== -->
+        <div class="hero-background-line hero-line-one"></div>
+        <div class="hero-background-line hero-line-two"></div>
 
-        <div class="hero-main">
-
-
-            <!-- =================================
-                 LEFT CONTENT
-            ================================== -->
-
-            <div class="hero-content">
-
-                <span class="hero-eyebrow">
-                    BUILDING IDEAS INTO REAL PRODUCTS
-                </span>
-
-
-                <h1
-                    class="hero-title"
-                    id="hero-title"
-                >
-                    <span>VIKAS</span>
-                    <strong>KUMAR</strong>
-                </h1>
-
-
-                <div class="hero-role">
-                    SOFTWARE DEVELOPER
-                    <span>•</span>
-                    BACKEND
-                    <span>•</span>
-                    FULL STACK
-                    <span>•</span>
-                    AI
-                </div>
-
-
-                <p class="hero-description">
-                    I build web applications, backend systems
-                    and practical digital products — with a
-                    focus on useful solutions and continuous
-                    learning.
-                </p>
-
-
-                <!-- BUTTONS -->
-
-                <div class="hero-actions">
-
-                    <a
-                        href="#projects"
-                        class="hero-button hero-button--primary"
-                    >
-                        VIEW MY WORK
-                        <span>↗</span>
-                    </a>
-
-                    <a
-                        href="#contact"
-                        class="hero-button hero-button--outline"
-                    >
-                        LET'S TALK
-                        <span>↗</span>
-                    </a>
-
-                </div>
-
-
-                <!-- STATS -->
-
-                <div class="hero-stats">
-
-                    <div class="hero-stat">
-
-                        <strong>
-                            04
-                        </strong>
-
-                        <span>
-                            PROJECTS
-                        </span>
-
-                    </div>
-
-
-                    <div class="hero-stat">
-
-                        <strong>
-                            02+
-                        </strong>
-
-                        <span>
-                            YEARS LEARNING
-                        </span>
-
-                    </div>
-
-
-                    <div class="hero-stat">
-
-                        <strong>
-                            ∞
-                        </strong>
-
-                        <span>
-                            ALWAYS LEARNING
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================
-                 PORTRAIT
-            ================================== -->
-
-            <div class="hero-portrait">
-
-                <div class="hero-portrait-background"></div>
-
-                <div class="hero-portrait-circle"></div>
-
-
-                <!-- REAL PHOTO -->
-
-                <img
-                    src="{% static 'images/profile/vikas-hero.png' %}"
-                    alt="Vikas Kumar"
-                    class="hero-photo"
-                >
-
-
-                <!-- PHOTO FRAME -->
-
-                <div class="hero-photo-frame"></div>
-
-
-                <!-- FLOATING LABEL -->
-
-                <div class="hero-photo-card">
-
-                    <span>
-                        TURNING IDEAS
-                    </span>
-
-                    <strong>
-                        INTO REAL
-                        <br>
-                        PRODUCTS.
-                    </strong>
-
-                    <i></i>
-
-                </div>
-
-
-                <!-- VERTICAL MESSAGE -->
-
-                <div class="hero-vertical-text">
-
-                    <span>CODE</span>
-                    <span>BUILD</span>
-                    <span>LEARN</span>
-                    <span>IMPROVE</span>
-                    <span>REPEAT</span>
-
-                </div>
-
-
-                <!-- SMALL PHOTO LABEL -->
-
-                <div class="hero-photo-label">
-
-                    <span>
-                        01 / PORTRAIT
-                    </span>
-
-                    <strong>
-                        VIKAS KUMAR
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================
-                 RIGHT SIDE
-            ================================== -->
-
-            <aside class="hero-side">
-
-                <div class="hero-side-heading">
-
-                    <span>
-                        MY APPROACH
-                    </span>
-
-                    <h2>
-                        BUILDING
-                        <br>
-                        <strong>USEFUL</strong>
-                        <br>
-                        SOFTWARE.
-                    </h2>
-
-                </div>
-
-
-                <div class="hero-side-line"></div>
-
-
-                <div class="hero-side-status">
-
-                    <span class="hero-status-dot"></span>
-
-                    <div>
-
-                        <strong>
-                            OPEN TO OPPORTUNITIES
-                        </strong>
-
-                        <span>
-                            Projects • Collaboration
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </aside>
-
-        </div>
-
-
-        <!-- =====================================
-             TECH MARQUEE
-        ====================================== -->
-
-        <div class="hero-marquee">
-
-            <div class="hero-marquee-track">
-
-                <span>PYTHON</span>
-                <i>✦</i>
-
-                <span>DJANGO</span>
-                <i>✦</i>
-
-                <span>JAVASCRIPT</span>
-                <i>✦</i>
-
-                <span>PHP</span>
-                <i>✦</i>
-
-                <span>MYSQL</span>
-                <i>✦</i>
-
-                <span>REST APIs</span>
-                <i>✦</i>
-
-                <span>AI</span>
-                <i>✦</i>
-
-                <span>GIT</span>
-                <i>✦</i>
-
-                <span>PYTHON</span>
-                <i>✦</i>
-
-                <span>DJANGO</span>
-                <i>✦</i>
-
-                <span>JAVASCRIPT</span>
-                <i>✦</i>
-
-                <span>PHP</span>
-                <i>✦</i>
-
-                <span>MYSQL</span>
-                <i>✦</i>
-
-                <span>REST APIs</span>
-                <i>✦</i>
-
-                <span>AI</span>
-                <i>✦</i>
-
-                <span>GIT</span>
-                <i>✦</i>
-
-                <span>PYTHON</span>
-                <i>✦</i>
-
-                <span>DJANGO</span>
-                <i>✦</i>
-
-                <span>JAVASCRIPT</span>
-                <i>✦</i>
-
-                <span>PHP</span>
-                <i>✦</i>
-
-                <span>MYSQL</span>
-                <i>✦</i>
-
-                <span>REST APIs</span>
-                <i>✦</i>
-
-                <span>AI</span>
-                <i>✦</i>
-
-                <span>GIT</span>
-                <i>✦</i>
-
-                <span>PYTHON</span>
-                <i>✦</i>
-
-                <span>DJANGO</span>
-                <i>✦</i>
-
-                <span>JAVASCRIPT</span>
-                <i>✦</i>
-
-                <span>PHP</span>
-                <i>✦</i>
-
-                <span>MYSQL</span>
-                <i>✦</i>
-
-                <span>REST APIs</span>
-                <i>✦</i>
-
-                <span>AI</span>
-                <i>✦</i>
-
-                <span>GIT</span>
-                <i>✦</i>
-
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================================
-             SCROLL
-        ====================================== -->
-
-        <a
-            href="#about"
-            class="hero-scroll"
-        >
-            <span>
-                SCROLL TO EXPLORE
-            </span>
-
-            <strong>
-                ↓
-            </strong>
-
-        </a>
+        <span class="hero-background-dot hero-dot-one"></span>
+        <span class="hero-background-dot hero-dot-two"></span>
+        <span class="hero-background-dot hero-dot-three"></span>
 
     </div>
 
-</section>
 
-<!--=========================================
-   ABOUT ME — VIKAS KUMAR
-========================================= -->
+    <!-- Top Information -->
+    <div class="hero-top">
 
-<section
-    class="about"
-    id="about"
-    aria-labelledby="about-title"
->
+        <div class="hero-top-left">
 
-    <div class="about-container">
+            <span class="hero-top-number">
+                01
+            </span>
 
-        <!-- SECTION META -->
-        <div class="about-top">
+            <span class="hero-top-line"></span>
 
-            <div class="about-index">
-                <span>02</span>
-                <span>ABOUT ME</span>
-            </div>
-
-            <span class="about-location">
-                BASED IN NEW DELHI / INDIA
+            <span class="hero-top-label">
+                SOFTWARE DEVELOPER
             </span>
 
         </div>
 
 
-        <!-- MAIN -->
-        <div class="about-main">
+        <div class="hero-top-right">
 
-            <!-- IMAGE -->
-            <div class="about-visual">
+            <span>PYTHON</span>
+            <span>/</span>
+            <span>DJANGO</span>
+            <span>/</span>
+            <span>FULL STACK</span>
 
-                <div class="about-image-wrap">
+        </div>
 
-                    <div class="about-image-bg"></div>
-
-                    <img
-                        src="{% static 'images/profile/vikas-about.png' %}"
-                        alt="Vikas Kumar working on a laptop"
-                        class="about-image"
-                    >
-
-                    <div class="about-image-frame"></div>
-
-                </div>
+    </div>
 
 
-                <!-- IMAGE QUOTE -->
-                <div class="about-image-note">
-
-                    <span>
-                        MORE THAN
-                    </span>
-
-                    <strong>
-                        JUST CODE.
-                    </strong>
-
-                    <i></i>
-
-                </div>
+    <!-- Main Hero -->
+    <div class="hero-main">
 
 
-                <!-- SMALL LABEL -->
-                <div class="about-image-label">
-                    VIKAS / DEVELOPER
-                </div>
+        <!-- Left Content -->
+        <div class="hero-content">
+
+            <div class="hero-kicker">
+
+                <span class="hero-kicker-dot"></span>
+
+                <span>
+                    BACKEND & FULL STACK DEVELOPMENT
+                </span>
 
             </div>
 
 
-            <!-- CONTENT -->
-            <div class="about-content">
+            <h1 id="hero-title" class="hero-title">
 
-                <span class="about-eyebrow">
-                    A LITTLE ABOUT ME
+                <span class="hero-title-solid">
+                    VIKAS
                 </span>
 
+                <span class="hero-title-outline">
+                    KUMAR<span class="hero-title-dot">.</span>
+                </span>
 
-                <h2 id="about-title">
-                    MORE
-                    <br>
-                    THAN JUST
-                    <br>
-                    <strong>CODE.</strong>
-                </h2>
+            </h1>
 
 
-                <p class="about-lead">
-                    I'm Vikas Kumar, a software developer
-                    interested in backend development,
-                    full-stack web applications and
-                    AI-powered software.
-                </p>
+            <p class="hero-description">
+
+                Software developer focused on building
+                practical, scalable and maintainable web
+                applications with Python, Django and
+                modern web technologies.
+
+            </p>
 
 
-                <div class="about-divider"></div>
+            <!-- Skills -->
+            <div class="hero-skills">
+
+                <span>PYTHON</span>
+                <span>DJANGO</span>
+                <span>PHP</span>
+                <span>JAVASCRIPT</span>
+
+            </div>
 
 
-                <p class="about-text">
-                    I enjoy turning ideas into useful products
-                    and understanding what happens behind the
-                    interface — how data moves, how systems
-                    communicate and how applications work.
-                </p>
-
-
-                <p class="about-text">
-                    My current direction is deeper backend
-                    development with Python, Django, APIs,
-                    databases and practical AI integration.
-                </p>
-
+            <!-- Actions -->
+            <div class="hero-actions">
 
                 <a
                     href="#projects"
-                    class="about-button"
+                    class="hero-primary-button"
                 >
-                    SEE WHAT I BUILD
+                    <span>
+                        VIEW MY WORK
+                    </span>
 
-                    <span>↗</span>
+                    <strong>
+                        ↗
+                    </strong>
+                </a>
+
+
+                <a
+                    href="#about"
+                    class="hero-secondary-button"
+                >
+
+                    <span class="hero-secondary-icon">
+                        ↓
+                    </span>
+
+                    <span>
+                        EXPLORE
+                    </span>
+
                 </a>
 
             </div>
 
-
-            <!-- VALUES -->
-            <aside class="about-values">
-
-                <div class="about-values-heading">
-
-                    <span>
-                        HOW I WORK
-                    </span>
-
-                    <strong>
-                        PRINCIPLES
-                    </strong>
-
-                </div>
-
-
-                <div class="about-value">
-
-                    <div class="about-value-icon">
-                        01
-                    </div>
-
-                    <div>
-                        <strong>
-                            PROBLEM SOLVER
-                        </strong>
-
-                        <span>
-                            Understand the problem before
-                            writing the solution.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="about-value">
-
-                    <div class="about-value-icon">
-                        02
-                    </div>
-
-                    <div>
-                        <strong>
-                            QUICK LEARNER
-                        </strong>
-
-                        <span>
-                            Learn through practical work
-                            and experimentation.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="about-value">
-
-                    <div class="about-value-icon">
-                        03
-                    </div>
-
-                    <div>
-                        <strong>
-                            BUILDER
-                        </strong>
-
-                        <span>
-                            Turn concepts into working
-                            software whenever possible.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="about-value">
-
-                    <div class="about-value-icon">
-                        04
-                    </div>
-
-                    <div>
-                        <strong>
-                            ALWAYS IMPROVING
-                        </strong>
-
-                        <span>
-                            Keep learning, testing and
-                            improving the way I build.
-                        </span>
-                    </div>
-
-                </div>
-
-
-                <div class="about-quote">
-
-                    <span>“</span>
-
-                    <p>
-                        Build useful things.
-                        <br>
-                        Keep getting better.
-                    </p>
-
-                </div>
-
-            </aside>
-
         </div>
 
 
-        <!-- BOTTOM STRIP -->
-        <div class="about-bottom">
+        <!-- Center / Visual -->
+        <div class="hero-visual">
 
-            <div class="about-bottom-item">
-
-                <span>FOCUS</span>
-
-                <strong>
-                    BACKEND
-                </strong>
-
+            <!-- Large Background Number -->
+            <div
+                class="hero-visual-number"
+                aria-hidden="true"
+            >
+                01
             </div>
 
-            <div class="about-bottom-item">
 
-                <span>BUILDING</span>
+            <!-- Image Stage -->
+            <div
+                class="hero-image-stage"
+                data-hero-visual
+            >
 
-                <strong>
-                    WEB APPLICATIONS
-                </strong>
+                <!-- Back Frame -->
+                <div class="hero-image-frame hero-frame-back"></div>
 
-            </div>
 
-            <div class="about-bottom-item">
+                <!-- Orange Shape -->
+                <div class="hero-image-accent"></div>
 
-                <span>EXPLORING</span>
 
-                <strong>
-                    AI + AUTOMATION
-                </strong>
+                <!-- Main Image -->
+                <div class="hero-image-container">
 
-            </div>
+                    <img
+                        src="{% static 'images/profile/vikas-hero.png' %}"
+                        alt="Vikas Kumar - Software Developer"
+                        class="hero-image"
+                    >
 
-            <div class="about-bottom-item">
+                    <div
+                        class="hero-image-overlay"
+                        aria-hidden="true"
+                    ></div>
 
-                <span>MINDSET</span>
+                    <div
+                        class="hero-image-scan"
+                        aria-hidden="true"
+                    ></div>
 
-                <strong>
-                    LEARN → BUILD → IMPROVE
-                </strong>
+                </div>
+
+
+                <!-- Front Frame -->
+                <div class="hero-image-frame hero-frame-front">
+
+                    <span class="hero-frame-corner corner-top-left"></span>
+                    <span class="hero-frame-corner corner-top-right"></span>
+                    <span class="hero-frame-corner corner-bottom-left"></span>
+                    <span class="hero-frame-corner corner-bottom-right"></span>
+
+                </div>
+
+
+                <!-- Image Metadata -->
+                <div class="hero-image-meta hero-meta-top">
+
+                    <span>VK / 001</span>
+                    <span>PROFILE</span>
+
+                </div>
+
+
+                <div class="hero-image-meta hero-meta-bottom">
+
+                    <span>PYTHON</span>
+                    <span>DJANGO</span>
+                    <span>API</span>
+
+                </div>
+
+
+                <!-- Orange Signal -->
+                <div
+                    class="hero-signal"
+                    aria-hidden="true"
+                >
+
+                    <span class="hero-signal-line"></span>
+
+                    <span class="hero-signal-dot"></span>
+
+                </div>
+
+
+                <!-- Floating Label -->
+                <div class="hero-floating-label hero-label-top">
+
+                    <span>01</span>
+                    <strong>CORE</strong>
+
+                </div>
+
+
+                <div class="hero-floating-label hero-label-side">
+
+                    <strong>BACKEND</strong>
+
+                </div>
+
+
+                <div class="hero-floating-label hero-label-bottom">
+
+                    <strong>BUILD / LEARN / SHIP</strong>
+
+                </div>
 
             </div>
 
@@ -702,1372 +267,3619 @@
 
     </div>
 
-</section>
 
-<!-- =========================
-     WHAT I BUILD
-========================= -->
-<section class="what-build" id="what-i-build" aria-labelledby="what-build-title">
-    <div class="what-build-container">
+    <!-- Bottom Information -->
+    <div class="hero-bottom">
 
-        <!-- Section Header -->
-        <div class="what-build-header">
-            <div class="what-build-index">
-                <span class="what-build-dot"></span>
-                <span>03</span>
-                <span>WHAT I BUILD</span>
-            </div>
+        <div class="hero-bottom-location">
 
-            <div class="what-build-heading-wrap">
-                <p class="what-build-kicker">
-                    FROM IDEA TO WORKING PRODUCT
-                </p>
+            <span class="hero-status-dot"></span>
 
-                <h2 id="what-build-title" class="what-build-title">
-                    I DON'T JUST
-                    <span>WRITE CODE.</span>
-                </h2>
-
-                <p class="what-build-intro">
-                    I build practical web applications, backend systems and
-                    digital products focused on solving real problems.
-                </p>
-            </div>
-        </div>
-
-        <!-- Build Cards -->
-        <div class="what-build-grid">
-
-            <!-- Card 01 -->
-            <article class="build-card build-card--web">
-                <div class="build-card-top">
-                    <span class="build-card-number">01</span>
-                    <span class="build-card-arrow">↗</span>
-                </div>
-
-                <div class="build-card-icon" aria-hidden="true">
-                    <span>&lt;/&gt;</span>
-                </div>
-
-                <div class="build-card-content">
-                    <p class="build-card-label">WEB DEVELOPMENT</p>
-
-                    <h3 class="build-card-title">
-                        WEB
-                        <span>APPLICATIONS</span>
-                    </h3>
-
-                    <p class="build-card-text">
-                        Responsive and practical web applications built
-                        around real user needs and clean functionality.
-                    </p>
-
-                    <div class="build-card-tags">
-                        <span>PHP</span>
-                        <span>JavaScript</span>
-                        <span>HTML</span>
-                        <span>CSS</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 02 -->
-            <article class="build-card build-card--backend">
-                <div class="build-card-top">
-                    <span class="build-card-number">02</span>
-                    <span class="build-card-arrow">↗</span>
-                </div>
-
-                <div class="build-card-icon" aria-hidden="true">
-                    <span>DB</span>
-                </div>
-
-                <div class="build-card-content">
-                    <p class="build-card-label">SERVER & DATA</p>
-
-                    <h3 class="build-card-title">
-                        BACKEND
-                        <span>SYSTEMS</span>
-                    </h3>
-
-                    <p class="build-card-text">
-                        Server-side logic, databases, authentication and
-                        CRUD-based systems designed for reliable workflows.
-                    </p>
-
-                    <div class="build-card-tags">
-                        <span>Python</span>
-                        <span>PHP</span>
-                        <span>MySQL</span>
-                        <span>APIs</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 03 -->
-            <article class="build-card build-card--ai">
-                <div class="build-card-top">
-                    <span class="build-card-number">03</span>
-                    <span class="build-card-arrow">↗</span>
-                </div>
-
-                <div class="build-card-icon" aria-hidden="true">
-                    <span>AI</span>
-                </div>
-
-                <div class="build-card-content">
-                    <p class="build-card-label">INTELLIGENT PRODUCTS</p>
-
-                    <h3 class="build-card-title">
-                        AI &
-                        <span>AUTOMATION</span>
-                    </h3>
-
-                    <p class="build-card-text">
-                        Exploring practical AI integrations, automation
-                        workflows and intelligent features for real products.
-                    </p>
-
-                    <div class="build-card-tags">
-                        <span>Python</span>
-                        <span>AI</span>
-                        <span>Automation</span>
-                        <span>Integration</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Card 04 -->
-            <article class="build-card build-card--product">
-                <div class="build-card-top">
-                    <span class="build-card-number">04</span>
-                    <span class="build-card-arrow">↗</span>
-                </div>
-
-                <div class="build-card-icon" aria-hidden="true">
-                    <span>+</span>
-                </div>
-
-                <div class="build-card-content">
-                    <p class="build-card-label">END-TO-END THINKING</p>
-
-                    <h3 class="build-card-title">
-                        DIGITAL
-                        <span>PRODUCTS</span>
-                    </h3>
-
-                    <p class="build-card-text">
-                        Combining frontend, backend, databases and problem
-                        solving to turn ideas into usable digital products.
-                    </p>
-
-                    <div class="build-card-tags">
-                        <span>Full Stack</span>
-                        <span>Git</span>
-                        <span>UX</span>
-                        <span>Problem Solving</span>
-                    </div>
-                </div>
-            </article>
+            <span>
+                NEW DELHI / INDIA
+            </span>
 
         </div>
 
-        <!-- Bottom Statement -->
-        <div class="what-build-footer">
-            <div class="what-build-footer-line"></div>
 
-            <p>
-                <span>BUILD</span>
-                <span>LEARN</span>
-                <span>IMPROVE</span>
-                <span>REPEAT</span>
-            </p>
+        <div class="hero-bottom-center">
 
-            <a href="#projects" class="what-build-link">
-                SEE THE WORK
-                <span>↗</span>
-            </a>
+            <span>
+                SCROLL TO EXPLORE
+            </span>
+
+            <span class="hero-scroll-arrow">
+                ↓
+            </span>
+
+        </div>
+
+
+        <div class="hero-bottom-right">
+
+            <span>
+                SOFTWARE / WEB / AI
+            </span>
+
         </div>
 
     </div>
+
 </section>
 
- <!--=========================================================
-   PROJECTS / SELECTED WORK
+<!-- =========================================================
+     END — HERO SECTION
 ========================================================= -->
 
-<section class="projects" id="projects" aria-labelledby="projects-title">
-    <div class="projects-container">
+<!-- =========================================================
+     START — TECHNOLOGY RIBBON
+========================================================= -->
 
-        <!-- =========================
-             SECTION HEADER
-        ========================== -->
+<section class="tech-ribbon" aria-label="Technology stack">
 
-        <header class="projects-header">
+    <div class="tech-ribbon-bg-word" aria-hidden="true">
+        STACK
+    </div>
 
-            <div class="projects-index">
-                <span class="projects-dot"></span>
-                <span>04</span>
-                <span>SELECTED WORK</span>
+    <div class="tech-ribbon-top">
+
+        <span class="tech-ribbon-index">
+            01
+        </span>
+
+        <span class="tech-ribbon-line"></span>
+
+        <span class="tech-ribbon-label">
+            TECHNOLOGIES I WORK WITH
+        </span>
+
+    </div>
+
+
+    <div class="tech-ribbon-stage">
+
+        <div class="tech-ribbon-light"></div>
+
+        <div class="tech-ribbon-track">
+
+            <!-- PHP -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg"
+                    alt="PHP"
+                >
             </div>
 
-            <div class="projects-heading">
-                <p class="projects-kicker">
-                    BUILT • FIXED • EXPLORING
-                </p>
+            <!-- PYTHON -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                    alt="Python"
+                >
+            </div>
 
-                <h2 id="projects-title" class="projects-title">
-                    THINGS
-                    <span>I'VE BUILT.</span>
-                </h2>
+            <!-- VS CODE -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                    alt="Visual Studio Code"
+                >
+            </div>
 
-                <p class="projects-intro">
-                    A selection of products, applications and website
-                    work I've built, developed, improved or currently
-                    have in progress.
-                </p>
+            <!-- DJANGO -->
+            <div class="tech-ribbon-logo tech-ribbon-dark-icon">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
+                    alt="Django"
+                >
+            </div>
+
+            <!-- FASTAPI -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg"
+                    alt="FastAPI"
+                >
+            </div>
+
+            <!-- HTML -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+                    alt="HTML5"
+                >
+            </div>
+
+            <!-- JAVASCRIPT -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+                    alt="JavaScript"
+                >
+            </div>
+
+            <!-- CSS -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
+                    alt="CSS3"
+                >
+            </div>
+
+            <!-- C -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg"
+                    alt="C"
+                >
+            </div>
+
+            <!-- MYSQL -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
+                    alt="MySQL"
+                >
+            </div>
+
+            <!-- MONGODB -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
+                    alt="MongoDB"
+                >
+            </div>
+
+            <!-- GITHUB -->
+            <div class="tech-ribbon-logo tech-ribbon-dark-icon">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
+                    alt="GitHub"
+                >
+            </div>
+
+            <!-- GIT -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
+                    alt="Git"
+                >
+            </div>
+
+            <!-- DUPLICATE SET FOR LOOP -->
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo tech-ribbon-dark-icon">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo tech-ribbon-dark-icon">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
+                    alt=""
+                >
+            </div>
+
+            <div class="tech-ribbon-logo">
+                <img
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
+                    alt=""
+                >
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="tech-ribbon-bottom">
+
+        <span>WEB</span>
+        <span class="tech-bottom-dot"></span>
+
+        <span>BACKEND</span>
+        <span class="tech-bottom-dot"></span>
+
+        <span>DATABASE</span>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     END — TECHNOLOGY RIBBON
+========================================================= -->
+
+<!-- =========================================================
+     START — PREMIUM ABOUT SECTION
+========================================================= -->
+
+<section
+    id="about"
+    class="about-section"
+    aria-labelledby="about-title"
+>
+
+    <!-- BACKGROUND -->
+    <div class="about-bg" aria-hidden="true">
+        <div class="about-bg-grid"></div>
+        <div class="about-bg-glow"></div>
+        <div class="about-bg-ring"></div>
+    </div>
+
+
+    <div class="about-container">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="about-topbar">
+
+            <div class="about-topbar-left">
+
+                <span class="about-index">
+                    02
+                </span>
+
+                <span class="about-topbar-rule"></span>
+
+                <span class="about-topbar-label">
+                    ABOUT THE DEVELOPER
+                </span>
+
+            </div>
+
+
+            <div class="about-topbar-right">
+                WHO I AM / HOW I BUILD
             </div>
 
         </header>
 
 
-        <!-- =========================
-             FEATURED PROJECT — OCARIUS
-        ========================== -->
+        <!-- =================================================
+             MAIN LAYOUT
+        ================================================== -->
 
-        <article class="project-featured project-ocarius">
+        <div class="about-layout">
 
-            <div class="project-featured-content">
 
-                <div class="project-meta">
-                    <span>01</span>
-                    <span>IN DEVELOPMENT</span>
+            <!-- =================================================
+                 LEFT — STORY
+            ================================================== -->
+
+            <div class="about-copy">
+
+                <div
+                    class="about-kicker"
+                    data-about-reveal
+                >
+                    <span></span>
+                    THE PERSON BEHIND THE CODE
                 </div>
 
-                <p class="project-category">
-                    AI • BACKEND • DIGITAL PRODUCT
+
+                <h2
+                    id="about-title"
+                    class="about-title"
+                    data-about-reveal
+                >
+
+                    I BUILD
+                    <span>THINGS</span>
+                    <span class="about-title-accent">
+                        THAT MATTER.
+                    </span>
+
+                </h2>
+
+
+                <p
+                    class="about-description"
+                    data-about-reveal
+                >
+                    I’m a software developer focused on backend
+                    and full-stack development, building practical
+                    digital products with clean structure, useful
+                    experiences and real-world purpose.
                 </p>
 
-                <h3 class="project-title">
-                    OCARIUS
-                    <span>AI</span>
-                </h3>
 
-                <p class="project-description">
-                    An AI-focused digital product I'm currently building,
-                    with a focus on Python, backend systems, APIs,
-                    databases and practical AI integration.
-                </p>
+                <!-- STATEMENT -->
 
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>Django</span>
-                    <span>AI</span>
-                    <span>APIs</span>
-                    <span>Database</span>
+                <div
+                    class="about-statement"
+                    data-about-reveal
+                >
+
+                    <div class="about-statement-mark">
+                        +
+                    </div>
+
+                    <div class="about-statement-content">
+
+                        <span>
+                            MY APPROACH
+                        </span>
+
+                        <p>
+                            Understand the problem.
+                            Design the system.
+                            Build the solution.
+                            Keep improving it.
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div class="project-actions">
-                    <a href="#contact" class="project-button">
-                        DISCUSS PROJECT
-                        <span>↗</span>
-                    </a>
+
+                <!-- SKILLS -->
+
+                <div
+                    class="about-skills"
+                    data-about-reveal
+                >
+
+                    <span>PYTHON</span>
+                    <span>DJANGO</span>
+                    <span>PHP</span>
+                    <span>JAVASCRIPT</span>
+                    <span>MYSQL</span>
+                    <span>MONGODB</span>
+                    <span>GIT</span>
+                    <span>AI</span>
+
                 </div>
+
+
+                <a
+                    href="#experience"
+                    class="about-link"
+                    data-about-reveal
+                >
+                    <span>MY JOURNEY</span>
+                    <strong>↗</strong>
+                </a>
 
             </div>
 
-            <div class="project-featured-image">
 
-                <div class="project-image-label">
-                    <span>01 / PROJECT</span>
-                    <strong>OCARIUS AI</strong>
+            <!-- =================================================
+                 RIGHT — IMAGE COMPOSITION
+            ================================================== -->
+
+            <div
+                class="about-visual"
+                data-about-visual
+            >
+
+
+                <!-- LARGE BACK SHAPE -->
+
+                <div
+                    class="about-visual-back"
+                    aria-hidden="true"
+                ></div>
+
+
+                <!-- MAIN PORTRAIT -->
+
+                <figure
+                    class="about-main-frame"
+                    data-about-frame
+                >
+
+                    <div class="about-frame-header">
+
+                        <span>
+                            VK / 002
+                        </span>
+
+                        <span>
+                            PROFILE
+                        </span>
+
+                    </div>
+
+
+                    <div class="about-main-image">
+
+                        <img
+                            src="{% static 'images/profile/vikas-about.png' %}"
+                            alt="Vikas Kumar"
+                        >
+
+                        <span class="about-image-shine"></span>
+
+                    </div>
+
+
+                    <figcaption class="about-frame-footer">
+
+                        <span>
+                            VIKAS KUMAR
+                        </span>
+
+                        <span>
+                            SOFTWARE DEVELOPER
+                        </span>
+
+                    </figcaption>
+
+                </figure>
+
+
+                <!-- =================================================
+                     SMALL FRAME 01
+                ================================================== -->
+
+                <figure
+                    class="about-mini-frame about-mini-one"
+                    data-about-frame
+                >
+
+                    <div class="about-mini-header">
+
+                        <span>
+                            01
+                        </span>
+
+                        <span>
+                            CODE
+                        </span>
+
+                    </div>
+
+                    <div class="about-mini-image">
+
+                        <img
+                            src="{% static 'images/about/code-1.png' %}"
+                            alt="Code workspace"
+                        >
+
+                    </div>
+
+                </figure>
+
+
+                <!-- =================================================
+                     SMALL FRAME 02
+                ================================================== -->
+
+                <figure
+                    class="about-mini-frame about-mini-two"
+                    data-about-frame
+                >
+
+                    <div class="about-mini-header">
+
+                        <span>
+                            02
+                        </span>
+
+                        <span>
+                            BUILD
+                        </span>
+
+                    </div>
+
+                    <div class="about-mini-image">
+
+                        <img
+                            src="{% static 'images/about/code-2.png' %}"
+                            alt="Development code"
+                        >
+
+                    </div>
+
+                </figure>
+
+
+                <!-- ORANGE DATA MARK -->
+
+                <div
+                    class="about-data-marker"
+                    aria-hidden="true"
+                >
+
+                    <span class="about-marker-dot"></span>
+
+                    <span class="about-marker-line"></span>
+
+                    <span class="about-marker-text">
+                        DIGITAL BUILDER
+                    </span>
+
                 </div>
 
-                <img
-                    src="{% static 'images/projects/ocarius.png' %}"
-                    alt="Ocarius AI project interface"
-                    loading="lazy"
-                    class="project-image"
-                />
+
+                <!-- BIG NUMBER -->
+
+                <span
+                    class="about-visual-number"
+                    aria-hidden="true"
+                >
+                    02
+                </span>
 
             </div>
-
-        </article>
-
-
-        <!-- =========================
-             PROJECT GRID
-        ========================== -->
-
-        <div class="projects-grid">
-
-            <!-- -------------------------
-                 CHATTABYTE
-            -------------------------- -->
-
-            <article class="project-card project-chattabyte">
-
-                <div class="project-card-image">
-
-                    <div class="project-card-number">
-                        02
-                    </div>
-
-                    <img
-                        src="{% static 'images/projects/chattabyte.png' %}"
-                        alt="Chattabyte web application interface"
-                        loading="lazy"
-                        class="project-image"
-                    />
-
-                </div>
-
-                <div class="project-card-content">
-
-                    <div class="project-card-top">
-                        <p>WEB APPLICATION</p>
-                        <span>IN DEVELOPMENT</span>
-                    </div>
-
-                    <h3 class="project-card-title">
-                        CHATTABYTE
-                    </h3>
-
-                    <p class="project-card-description">
-                        A web application project focused on online
-                        interaction and application functionality,
-                        currently under development.
-                    </p>
-
-                    <div class="project-tech">
-                        <span>PHP</span>
-                        <span>JavaScript</span>
-                        <span>MySQL</span>
-                        <span>Web App</span>
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- -------------------------
-                 LOAN APPLICATION
-            -------------------------- -->
-
-            <article class="project-card project-loan">
-
-                <div class="project-card-image">
-
-                    <div class="project-card-number">
-                        03
-                    </div>
-
-                    <img
-                        src="{% static 'images/projects/loan.png' %}"
-                        alt="Multi-Step Loan Application interface"
-                        loading="lazy"
-                        class="project-image"
-                    />
-
-                </div>
-
-                <div class="project-card-content">
-
-                    <div class="project-card-top">
-                        <p>FULL STACK PROJECT</p>
-                        <span>COMPLETED</span>
-                    </div>
-
-                    <h3 class="project-card-title">
-                        MULTI-STEP
-                        <span>LOAN APPLICATION</span>
-                    </h3>
-
-                    <p class="project-card-description">
-                        A multi-step application workflow built as a
-                        full-stack project with focus on form flow,
-                        interface structure and functional implementation.
-                    </p>
-
-                    <div class="project-tech">
-                        <span>Full Stack</span>
-                        <span>Forms</span>
-                        <span>UI</span>
-                        <span>Database</span>
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- -------------------------
-                 PARAMAHANSA DEFENCE
-            -------------------------- -->
-
-            <article class="project-card project-defence">
-
-                <div class="project-card-image">
-
-                    <div class="project-card-number">
-                        04
-                    </div>
-
-                    <img
-                        src="{% static 'images/projects/paramahansa-defence.png' %}"
-                        alt="Paramahansa Defence website"
-                        loading="lazy"
-                        class="project-image"
-                    />
-
-                </div>
-
-                <div class="project-card-content">
-
-                    <div class="project-card-top">
-                        <p>WEBSITE DEVELOPMENT</p>
-                        <span>BUILT</span>
-                    </div>
-
-                    <h3 class="project-card-title">
-                        PARAMAHANSA
-                        <span>DEFENCE</span>
-                    </h3>
-
-                    <p class="project-card-description">
-                        A complete website developed for a defence-focused
-                        organization with emphasis on responsive layout,
-                        clean presentation and functional web experience.
-                    </p>
-
-                    <div class="project-tech">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                        <span>Responsive</span>
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- -------------------------
-                 JASMINE JHAVERI
-            -------------------------- -->
-
-            <article class="project-card project-jasmine">
-
-                <div class="project-card-image">
-
-                    <div class="project-card-number">
-                        05
-                    </div>
-
-                    <img
-                        src="{% static 'images/projects/jasmine-jhaveri.png' %}"
-                        alt="Jasmine Jhaveri website"
-                        loading="lazy"
-                        class="project-image"
-                    />
-
-                </div>
-
-                <div class="project-card-content">
-
-                    <div class="project-card-top">
-                        <p>COMPANY / CLIENT WORK</p>
-                        <span>FIXED</span>
-                    </div>
-
-                    <h3 class="project-card-title">
-                        JASMINE
-                        <span>JHAVERI</span>
-                    </h3>
-
-                    <p class="project-card-description">
-                        Website issue resolution work completed during
-                        my company experience, including fixing errors
-                        and restoring the site's functionality.
-                    </p>
-
-                    <div class="project-tech">
-                        <span>Website Fix</span>
-                        <span>Debugging</span>
-                        <span>PHP</span>
-                        <span>WordPress</span>
-                    </div>
-
-                </div>
-
-            </article>
 
         </div>
 
 
-        <!-- =========================
-             FUTURE BUILD — AI STUDENTOS
-        ========================== -->
+        <!-- =================================================
+             BOTTOM STRIP
+        ================================================== -->
 
-        <article class="project-future">
+        <div class="about-bottom">
 
-            <div class="project-future-number">
-                06
+            <div class="about-bottom-item">
+                <span>FOCUS</span>
+                <strong>BACKEND / FULL STACK</strong>
             </div>
 
-            <div class="project-future-content">
+            <div class="about-bottom-item">
+                <span>BASED</span>
+                <strong>NEW DELHI / INDIA</strong>
+            </div>
 
-                <p class="project-category">
-                    FUTURE BUILD
+            <div class="about-bottom-item">
+                <span>STATUS</span>
+                <strong class="about-status">
+                    <i></i>
+                    BUILDING
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     END — PREMIUM ABOUT SECTION
+========================================================= -->
+<!-- =========================================================
+     PROJECTS
+     CINEMATIC PROJECT WALL / DOSSIER
+     ========================================================= -->
+
+<section id="projects" class="project-lab" aria-labelledby="project-lab-title">
+
+    <div class="project-lab-background" aria-hidden="true">
+        <div class="project-lab-grain"></div>
+        <div class="project-lab-grid"></div>
+        <div class="project-lab-radial"></div>
+        <div class="project-lab-orbit"></div>
+        <div class="project-lab-ghost-number">03</div>
+    </div>
+
+
+    <div class="project-lab-container">
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="project-lab-header">
+
+            <div class="project-lab-header-left">
+                <span class="project-lab-section-number">03</span>
+                <span class="project-lab-header-line"></span>
+                <span class="project-lab-header-label">
+                    SELECTED PROJECTS
+                </span>
+            </div>
+
+            <div class="project-lab-header-right">
+                <span>VIKAS KUMAR</span>
+                <span>SOFTWARE DEVELOPER</span>
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             TITLE AREA
+             ================================================= -->
+
+        <div class="project-lab-title-area">
+
+            <div class="project-lab-title-block">
+
+                <span class="project-lab-overline">
+                    DIGITAL WORK / 01—05
+                </span>
+
+                <h2 id="project-lab-title">
+                    THINGS
+                    <span>I’VE</span>
+                    <strong>BUILT.</strong>
+                </h2>
+
+            </div>
+
+
+            <div class="project-lab-title-note">
+
+                <div class="project-lab-title-note-top">
+                    <span>PROJECT WALL</span>
+                    <strong>05</strong>
+                </div>
+
+                <p>
+                    Practical products, websites and experiments
+                    built through development, iteration and learning.
                 </p>
 
-                <h3 class="project-future-title">
-                    ASO /
-                    <span>AI STUDENTOS</span>
-                </h3>
+            </div>
 
-                <p class="project-future-description">
-                    A future AI-powered student platform currently in
-                    the planning and exploration stage. The goal is to
-                    build useful AI-driven tools for students and learning.
-                </p>
+        </div>
 
-                <div class="project-tech">
-                    <span>AI</span>
-                    <span>Python</span>
-                    <span>Automation</span>
-                    <span>Student Tools</span>
+
+        <!-- =================================================
+             MAIN PROJECT WALL
+             ================================================= -->
+
+        <div class="project-lab-wall">
+
+
+            <!-- LEFT PROJECT INDEX -->
+
+            <aside class="project-lab-index">
+
+                <div class="project-lab-index-label">
+                    <span>WORK</span>
+                    <small>INDEX</small>
+                </div>
+
+
+                <div class="project-lab-index-list">
+
+                    <button
+                        type="button"
+                        class="project-lab-index-item is-active"
+                        data-project-tab="0"
+                        aria-label="Project 01"
+                    >
+                        <span class="project-lab-index-no">01</span>
+                        <span class="project-lab-index-name">OCARIUS</span>
+                        <i></i>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="project-lab-index-item"
+                        data-project-tab="1"
+                        aria-label="Project 02"
+                    >
+                        <span class="project-lab-index-no">02</span>
+                        <span class="project-lab-index-name">CHATTABYTE</span>
+                        <i></i>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="project-lab-index-item"
+                        data-project-tab="2"
+                        aria-label="Project 03"
+                    >
+                        <span class="project-lab-index-no">03</span>
+                        <span class="project-lab-index-name">JASMINE</span>
+                        <i></i>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="project-lab-index-item"
+                        data-project-tab="3"
+                        aria-label="Project 04"
+                    >
+                        <span class="project-lab-index-no">04</span>
+                        <span class="project-lab-index-name">LOAN</span>
+                        <i></i>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="project-lab-index-item"
+                        data-project-tab="4"
+                        aria-label="Project 05"
+                    >
+                        <span class="project-lab-index-no">05</span>
+                        <span class="project-lab-index-name">DEFENCE</span>
+                        <i></i>
+                    </button>
+
+                </div>
+
+
+                <div class="project-lab-index-bottom">
+                    <span>SCROLL</span>
+                    <strong>↓</strong>
+                </div>
+
+            </aside>
+
+
+            <!-- PROJECT CONTENT -->
+
+            <div class="project-lab-stage">
+
+                <!-- ARTWORK -->
+
+                <div class="project-lab-art">
+
+                    <div class="project-lab-art-topline">
+
+                        <span>
+                            DIGITAL DOSSIER
+                        </span>
+
+                        <span>
+                            <b data-project-current>01</b>
+                            / 05
+                        </span>
+
+                    </div>
+
+
+                    <div class="project-lab-art-frame">
+
+                        <div class="project-lab-art-corner corner-tl"></div>
+                        <div class="project-lab-art-corner corner-tr"></div>
+                        <div class="project-lab-art-corner corner-bl"></div>
+                        <div class="project-lab-art-corner corner-br"></div>
+
+
+                        <div
+                            class="project-lab-image-wrap"
+                            data-project-media
+                        >
+
+                            <img
+                                src="{% static 'images/projects/ocarius.png' %}"
+                                alt="Ocarius AI project"
+                                data-project-image
+                                loading="eager"
+                            >
+
+                            <div class="project-lab-image-dark"></div>
+
+                            <div class="project-lab-image-scan"></div>
+
+                            <div class="project-lab-image-glow"></div>
+
+
+                            <div class="project-lab-image-label">
+
+                                <span>PROJECT</span>
+
+                                <strong data-project-current>
+                                    01
+                                </strong>
+
+                            </div>
+
+
+                            <div class="project-lab-view-button">
+
+                                <span>OPEN</span>
+
+                                <strong>↗</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="project-lab-frame-footer">
+
+                            <span>
+                                VK / PROJECT
+                            </span>
+
+                            <span data-project-year>
+                                2026
+                            </span>
+
+                            <span>
+                                SELECTED WORK
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- IMAGE CAPTION -->
+
+                    <div class="project-lab-caption">
+
+                        <div class="project-lab-caption-line"></div>
+
+                        <div class="project-lab-caption-text">
+
+                            <span>
+                                CURRENT BUILD
+                            </span>
+
+                            <strong data-project-type>
+                                AI PLATFORM
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFORMATION -->
+
+                <div class="project-lab-information">
+
+                    <div class="project-lab-info-top">
+
+                        <span>
+                            PROJECT / <b data-project-current>01</b>
+                        </span>
+
+                        <span>
+                            <i></i>
+                            SELECTED
+                        </span>
+
+                    </div>
+
+
+                    <div class="project-lab-title-wrap">
+
+                        <span class="project-lab-title-prefix">
+                            01
+                        </span>
+
+                        <h3 data-project-title>
+                            OCARIUS AI
+                        </h3>
+
+                    </div>
+
+
+                    <div class="project-lab-info-rule"></div>
+
+
+                    <p
+                        class="project-lab-description"
+                        data-project-description
+                    >
+                        An AI-focused digital platform built around
+                        conversational experiences, backend systems
+                        and practical product workflows.
+                    </p>
+
+
+                    <!-- TECH -->
+
+                    <div class="project-lab-tech-area">
+
+                        <span class="project-lab-tech-label">
+                            BUILT WITH
+                        </span>
+
+                        <div
+                            class="project-lab-tech"
+                            data-project-tech
+                        >
+                            <span>PYTHON</span>
+                            <span>DJANGO</span>
+                            <span>AI</span>
+                            <span>JAVASCRIPT</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEATURE LINE -->
+
+                    <div class="project-lab-feature">
+
+                        <span>ROLE</span>
+
+                        <strong>
+                            DEVELOPMENT / SYSTEM BUILD
+                        </strong>
+
+                    </div>
+
+
+                    <div class="project-lab-feature">
+
+                        <span>FOCUS</span>
+
+                        <strong>
+                            BACKEND / PRODUCT / AI
+                        </strong>
+
+                    </div>
+
+
+                    <!-- ACTION -->
+
+                    <a
+                        href="#contact"
+                        class="project-lab-explore"
+                    >
+                        <span>DISCUSS THIS PROJECT</span>
+                        <strong>↗</strong>
+                    </a>
+
+
+                    <!-- SIDE QUOTE -->
+
+                    <div class="project-lab-motto">
+                        <span>BUILD</span>
+                        <span>LEARN</span>
+                        <span>REPEAT</span>
+                    </div>
+
                 </div>
 
             </div>
 
-            <div class="project-future-status">
-                <span class="project-status-dot"></span>
-                <span>COMING NEXT</span>
+        </div>
+
+
+        <!-- =================================================
+             PROJECT NAVIGATION
+             ================================================= -->
+
+        <div class="project-lab-navigation">
+
+            <div class="project-lab-navigation-track">
+
+
+                <button
+                    type="button"
+                    class="project-lab-navigation-item is-active"
+                    data-project-tab="0"
+                >
+
+                    <span>01</span>
+
+                    <div>
+                        <small>AI PLATFORM</small>
+                        <strong>OCARIUS AI</strong>
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="project-lab-navigation-item"
+                    data-project-tab="1"
+                >
+
+                    <span>02</span>
+
+                    <div>
+                        <small>WEB APPLICATION</small>
+                        <strong>CHATTABYTE</strong>
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="project-lab-navigation-item"
+                    data-project-tab="2"
+                >
+
+                    <span>03</span>
+
+                    <div>
+                        <small>PERSONAL BRAND</small>
+                        <strong>JASMINE JHAVERI</strong>
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="project-lab-navigation-item"
+                    data-project-tab="3"
+                >
+
+                    <span>04</span>
+
+                    <div>
+                        <small>WEB APPLICATION</small>
+                        <strong>LOAN APPLICATION</strong>
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="project-lab-navigation-item"
+                    data-project-tab="4"
+                >
+
+                    <span>05</span>
+
+                    <div>
+                        <small>BUSINESS WEBSITE</small>
+                        <strong>PARAMAHANSA DEFENCE</strong>
+                    </div>
+
+                </button>
+
             </div>
 
-        </article>
+        </div>
 
 
-        <!-- =========================
-             PROJECT FOOTER
-        ========================== -->
+        <!-- =================================================
+             PROJECT DATA
+             JS USES THIS DATA
+             ================================================= -->
 
-        <footer class="projects-footer">
+        <div class="project-lab-data" aria-hidden="true">
 
-            <div class="projects-footer-copy">
-                <span>REAL PROJECTS.</span>
-                <span>REAL LEARNING.</span>
-                <span>ALWAYS BUILDING.</span>
+            <article
+                data-project-item
+                data-image="{% static 'images/projects/ocarius.png' %}"
+                data-alt="Ocarius AI project"
+                data-title="OCARIUS AI"
+                data-type="AI PLATFORM"
+                data-year="2026"
+                data-description="An AI-focused digital platform built around conversational experiences, backend systems and practical product workflows."
+                data-tech="PYTHON|DJANGO|AI|JAVASCRIPT"
+            ></article>
+
+
+            <article
+                data-project-item
+                data-image="{% static 'images/projects/chattabyte.png' %}"
+                data-alt="Chattabyte web application"
+                data-title="CHATTABYTE"
+                data-type="WEB APPLICATION"
+                data-year="2026"
+                data-description="A web application project focused on online interaction, messaging workflows and a clear connected user experience."
+                data-tech="JAVASCRIPT|MYSQL|WEB APP|BACKEND"
+            ></article>
+
+
+            <article
+                data-project-item
+                data-image="{% static 'images/projects/jasmine-jhaveri.png' %}"
+                data-alt="Jasmine Jhaveri website"
+                data-title="JASMINE JHAVERI"
+                data-type="PERSONAL BRAND"
+                data-year="2025"
+                data-description="A personal brand website focused on presentation, visual hierarchy and creating a refined digital identity."
+                data-tech="WORDPRESS|PHP|CSS|SEO"
+            ></article>
+
+
+            <article
+                data-project-item
+                data-image="{% static 'images/projects/loan.png' %}"
+                data-alt="Multi-step loan application"
+                data-title="LOAN APPLICATION"
+                data-type="WEB APPLICATION"
+                data-year="2025"
+                data-description="A structured multi-step application flow designed to collect information through a clear and practical user journey."
+                data-tech="PHP|MYSQL|CRUD|AUTH"
+            ></article>
+
+
+            <article
+                data-project-item
+                data-image="{% static 'images/projects/paramahansa-defence.png' %}"
+                data-alt="Paramahansa Defence website"
+                data-title="PARAMAHANSA DEFENCE"
+                data-type="BUSINESS WEBSITE"
+                data-year="2025"
+                data-description="A business-focused web presence built with emphasis on structure, content hierarchy, usability and search visibility."
+                data-tech="WORDPRESS|PHP|SEO|UI"
+            ></article>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="project-lab-footer">
+
+            <div class="project-lab-footer-left">
+
+                <span class="project-lab-footer-dot"></span>
+
+                <span>
+                    ALWAYS BUILDING
+                </span>
+
             </div>
+
+
+            <div class="project-lab-footer-center">
+                REAL PROJECTS / REAL LEARNING
+            </div>
+
 
             <a
                 href="https://github.com/Vikas01-web"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="projects-github"
+                class="project-lab-github"
             >
-                VIEW GITHUB
-                <span>↗</span>
+                <span>VIEW GITHUB</span>
+                <strong>↗</strong>
             </a>
 
         </footer>
 
     </div>
-</section>
-
-{% load static %}
-
-<section class="experience-section" id="experience">
-
-    <!-- Section Header -->
-    <div class="experience-top">
-
-        <div class="experience-label">
-            <span class="experience-dot"></span>
-            <span>04 / EXPERIENCE</span>
-        </div>
-
-        <div class="experience-heading">
-            <span>WHERE I</span>
-            <strong>LEARNED</strong>
-            <span>TO BUILD.</span>
-        </div>
-
-        <p class="experience-intro">
-            My experience comes from building real products, solving real
-            problems and continuously improving the way I develop software.
-        </p>
-
-    </div>
-
-
-    <!-- Experience Timeline -->
-    <div class="experience-list">
-
-        <!-- Experience 01 -->
-        <article class="experience-item">
-
-            <div class="experience-number">
-                01
-            </div>
-
-            <div class="experience-date">
-                <span>EXPERIENCE</span>
-                <strong>PROFESSIONAL</strong>
-            </div>
-
-            <div class="experience-content">
-
-                <div class="experience-company">
-                    <span>SOFTWARE DEVELOPMENT</span>
-                    <span class="experience-status">
-                        • COMPLETED
-                    </span>
-                </div>
-
-                <h3>
-                    Software Developer
-                </h3>
-
-                <p>
-                    Worked on real-world web development tasks, website
-                    improvements, debugging and practical software solutions.
-                    Focused on writing functional code and solving problems
-                    based on actual project requirements.
-                </p>
-
-                <div class="experience-tech">
-                    <span>PHP</span>
-                    <span>MYSQL</span>
-                    <span>JAVASCRIPT</span>
-                    <span>HTML</span>
-                    <span>CSS</span>
-                </div>
-
-            </div>
-
-            <div class="experience-arrow">
-                ↗
-            </div>
-
-        </article>
-
-
-        <!-- Experience 02 -->
-        <article class="experience-item">
-
-            <div class="experience-number">
-                02
-            </div>
-
-            <div class="experience-date">
-                <span>WEB PROJECT</span>
-                <strong>CLIENT WORK</strong>
-            </div>
-
-            <div class="experience-content">
-
-                <div class="experience-company">
-                    <span>JASMINE JHAVERI</span>
-                    <span class="experience-status">
-                        • PROJECT
-                    </span>
-                </div>
-
-                <h3>
-                    Website Development & Problem Solving
-                </h3>
-
-                <p>
-                    Worked on the Jasmine Jhaveri website and resolved
-                    technical issues affecting the existing website.
-                    The work involved debugging, fixing functionality and
-                    getting the website back into a working state.
-                </p>
-
-                <div class="experience-tech">
-                    <span>WEB DEVELOPMENT</span>
-                    <span>DEBUGGING</span>
-                    <span>PHP</span>
-                    <span>HTML</span>
-                    <span>CSS</span>
-                </div>
-
-            </div>
-
-            <div class="experience-arrow">
-                ↗
-            </div>
-
-        </article>
-
-
-        <!-- Experience 03 -->
-        <article class="experience-item">
-
-            <div class="experience-number">
-                03
-            </div>
-
-            <div class="experience-date">
-                <span>CURRENT</span>
-                <strong>BUILDING</strong>
-            </div>
-
-            <div class="experience-content">
-
-                <div class="experience-company">
-                    <span>OCARIUS TECHNOLOGIES</span>
-                    <span class="experience-status">
-                        • IN PROGRESS
-                    </span>
-                </div>
-
-                <h3>
-                    Software & AI Product Development
-                </h3>
-
-                <p>
-                    Currently building practical software products and
-                    exploring AI-powered applications, automation,
-                    backend systems and full-stack development.
-                </p>
-
-                <div class="experience-tech">
-                    <span>PYTHON</span>
-                    <span>DJANGO</span>
-                    <span>JAVASCRIPT</span>
-                    <span>MYSQL</span>
-                    <span>AI</span>
-                </div>
-
-            </div>
-
-            <div class="experience-arrow">
-                ↗
-            </div>
-
-        </article>
-
-    </div>
-
-
-    <!-- Bottom Statement -->
-    <div class="experience-bottom">
-
-        <div class="experience-bottom-label">
-            <span class="experience-dot"></span>
-            <span>MY APPROACH</span>
-        </div>
-
-        <h2>
-            LEARN.
-            <span>BUILD.</span>
-            IMPROVE.
-        </h2>
-
-        <p>
-            Every project adds something new — a better idea, a better
-            solution or a better way to build.
-        </p>
-
-    </div>
-
-</section>
-<!-- ==================== CERTIFICATES SECTION ==================== -->
-<section id="certificates" class="certificates-section">
-
-    <!-- TOP -->
-    <div class="certificates-top">
-
-        <div class="certificates-label">
-            <span class="cert-dot"></span>
-            <span>05 / CERTIFICATES</span>
-        </div>
-
-        <div class="certificates-intro">
-            <span>LEARNING • EXPERIENCE • PROGRESS</span>
-        </div>
-
-    </div>
-
-
-    <!-- HEADING -->
-    <div class="certificates-heading">
-
-        <div class="heading-small">
-            PROOF OF LEARNING
-        </div>
-
-        <h2>
-            LEARNED
-            <span>BY BUILDING.</span>
-        </h2>
-
-        <p>
-            A small collection of certifications and practical
-            project experience earned while developing real-world
-            software and technical skills.
-        </p>
-
-    </div>
-
-
-    <!-- CERTIFICATES -->
-    <div class="certificates-grid">
-
-
-        <!-- =================================================
-             CERTIFICATE 01
-        ================================================== -->
-
-        <article class="certificate-card certificate-card-light">
-
-            <div class="certificate-number">
-                01
-            </div>
-
-
-            <!-- IMAGE -->
-            <div class="certificate-image">
-
-                <img
-                    src="{% static 'images/certificates/certificate-1.jpg' %}"
-                    alt="TCS iON Career Edge AI Foundation Certificate"
-                    loading="lazy"
-                >
-
-            </div>
-
-
-            <!-- CONTENT -->
-            <div class="certificate-content">
-
-                <div class="certificate-meta">
-
-                    <span>
-                        CERTIFICATE
-                    </span>
-
-                    <span>
-                        01 / 2026
-                    </span>
-
-                </div>
-
-
-                <h3>
-                    TCS iON<br>
-                    AI Foundation
-                </h3>
-
-
-                <p>
-                    Certificate of Achievement for successfully
-                    completing the TCS iON Career Edge – AI Foundation
-                    course covering AI and generative AI fundamentals.
-                </p>
-
-
-                <div class="certificate-footer">
-
-                    <span>
-                        AI • TCS iON
-                    </span>
-
-                    <a
-                        href="{% static 'images/certificates/certificate-1.jpg' %}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="certificate-link"
-                    >
-                        VIEW
-                        <span>↗</span>
-                    </a>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- =================================================
-             CERTIFICATE 02
-        ================================================== -->
-
-        <article class="certificate-card certificate-card-dark">
-
-            <div class="certificate-number">
-                02
-            </div>
-
-
-            <!-- IMAGE -->
-            <div class="certificate-image">
-
-                <img
-                    src="{% static 'images/certificates/certificate-2.jpg' %}"
-                    alt="Frontend Developer Multi Step Loan Application Form Certificate"
-                    loading="lazy"
-                >
-
-            </div>
-
-
-            <!-- CONTENT -->
-            <div class="certificate-content">
-
-                <div class="certificate-meta">
-
-                    <span>
-                        PROJECT / WORK
-                    </span>
-
-                    <span>
-                        02 / 2026
-                    </span>
-
-                </div>
-
-
-                <h3>
-                    Multi-Step<br>
-                    Loan Application
-                </h3>
-
-
-                <p>
-                    Frontend Developer project work focused on
-                    building a multi-step loan application form
-                    under the role of Full Stack Engineer.
-                </p>
-
-
-                <div class="certificate-footer">
-
-                    <span>
-                        FULL STACK ENGINEER
-                    </span>
-
-                    <a
-                        href="{% static 'images/certificates/certificate-2.jpg' %}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="certificate-link"
-                    >
-                        VIEW
-                        <span>↗</span>
-                    </a>
-
-                </div>
-
-            </div>
-
-        </article>
-
-
-    </div>
-
-
-    <!-- BOTTOM -->
-    <div class="certificates-bottom">
-
-        <span>
-            02 CERTIFICATES
-        </span>
-
-        <div class="certificates-line"></div>
-
-        <span>
-            ALWAYS LEARNING ↗
-        </span>
-
-    </div>
 
 </section>
 
 <!-- =========================================================
-     SKILLS / TECH STACK — SECTION 07
+     END — PROJECTS SECTION
 ========================================================= -->
 
-<section id="skills" class="skills-section">
+<!-- =========================================================
+     start — EXPERIENCE SECTION
+========================================================= -->
+<section
+    id="experience"
+    class="experience-path"
+    aria-labelledby="experience-path-title"
+>
 
     <!-- =====================================================
-         TOP BAR
-    ====================================================== -->
+         EXPERIENCE BACKGROUND
+         ===================================================== -->
 
-    <div class="skills-top">
+    <div class="experience-path-bg" aria-hidden="true">
+        <div class="experience-path-bg-grid"></div>
+        <div class="experience-path-bg-word">EXPERIENCE</div>
+        <div class="experience-path-bg-orb"></div>
+        <div class="experience-path-bg-line"></div>
 
-        <div class="skills-label">
-            <span class="skills-dot"></span>
-            <span>07 / SKILLS</span>
-        </div>
-
-        <div class="skills-intro">
-            <span>TOOLS • TECHNOLOGIES • STACK</span>
-        </div>
-
+        <div class="experience-bg-shape shape-one"></div>
+        <div class="experience-bg-shape shape-two"></div>
+        <div class="experience-bg-shape shape-three"></div>
     </div>
 
 
-    <!-- =====================================================
-         HEADING
-    ====================================================== -->
+    <div class="experience-path-container">
 
-    <div class="skills-heading">
+        <!-- =================================================
+             HEADER
+             ================================================= -->
 
-        <div class="skills-kicker">
-            WHAT I WORK WITH
-        </div>
+        <header class="experience-path-header">
 
-        <h2>
-            MY
-            <span>TECH STACK.</span>
-        </h2>
+            <div class="experience-header-left">
+                <span class="experience-header-index">
+                    04
+                </span>
 
-        <p>
-            Technologies and concepts I use while building web applications,
-            backend systems, databases and AI-powered digital products.
-        </p>
+                <span class="experience-header-separator"></span>
 
-    </div>
+                <span>
+                    EXPERIENCE
+                </span>
+            </div>
 
+            <div class="experience-header-right">
+                THE PATH
+                <span>/</span>
+                WORK
+                <span>/</span>
+                LEARNING
+                <span>/</span>
+                BUILDING
+            </div>
 
-    <!-- =====================================================
-         MOVING TECHNOLOGY STRIP
-    ====================================================== -->
-
-    <div class="skills-marquee">
-
-        <div class="skills-marquee-track">
-
-            <!-- ================= SET 01 ================= -->
-
-            <span>HTML5</span>
-            <i>✦</i>
-
-            <span>CSS3</span>
-            <i>✦</i>
-
-            <span>JAVASCRIPT</span>
-            <i>✦</i>
-
-            <span>PYTHON</span>
-            <i>✦</i>
-
-            <span>PHP</span>
-            <i>✦</i>
-
-            <span>DJANGO</span>
-            <i>✦</i>
-
-            <span>SQL</span>
-            <i>✦</i>
-
-            <span>MYSQL</span>
-            <i>✦</i>
-
-            <span>DBMS</span>
-            <i>✦</i>
-
-            <span>REST APIs</span>
-            <i>✦</i>
-
-            <span>GIT</span>
-            <i>✦</i>
-
-            <span>GITHUB</span>
-            <i>✦</i>
-
-            <span>AI</span>
-            <i>✦</i>
-
-            <span>AUTOMATION</span>
-            <i>✦</i>
+        </header>
 
 
-            <!-- ================= SET 02 ================= -->
-            <!-- Duplicate for seamless infinite scrolling -->
+        <!-- =================================================
+             INTRO
+             ================================================= -->
 
-            <span>HTML5</span>
-            <i>✦</i>
+        <div class="experience-path-intro">
 
-            <span>CSS3</span>
-            <i>✦</i>
+            <div class="experience-path-title">
 
-            <span>JAVASCRIPT</span>
-            <i>✦</i>
+                <span class="experience-path-kicker">
+                    MY PROFESSIONAL JOURNEY
+                </span>
 
-            <span>PYTHON</span>
-            <i>✦</i>
+                <h2 id="experience-path-title">
 
-            <span>PHP</span>
-            <i>✦</i>
+                    <span class="experience-title-small">
+                        Experience
+                    </span>
 
-            <span>DJANGO</span>
-            <i>✦</i>
+                    <span>
+                        That
+                    </span>
 
-            <span>SQL</span>
-            <i>✦</i>
+                    <strong>
+                        Builds
+                    </strong>
 
-            <span>MYSQL</span>
-            <i>✦</i>
+                    <span>
+                        What's
+                    </span>
 
-            <span>DBMS</span>
-            <i>✦</i>
+                    <strong>
+                        Next
+                    </strong>
 
-            <span>REST APIs</span>
-            <i>✦</i>
+                </h2>
 
-            <span>GIT</span>
-            <i>✦</i>
+                <div class="experience-title-line">
+                    <span></span>
+                </div>
 
-            <span>GITHUB</span>
-            <i>✦</i>
+            </div>
 
-            <span>AI</span>
-            <i>✦</i>
 
-            <span>AUTOMATION</span>
-            <i>✦</i>
+            <div class="experience-path-intro-copy">
+
+                <div class="experience-path-current-label">
+                    <span class="experience-live-dot"></span>
+
+                    <span>
+                        CURRENTLY BUILDING
+                    </span>
+                </div>
+
+                <p>
+                    From operations to web development, from
+                    structured workflows to independent projects —
+                    every step has given me real skills, discipline
+                    and a clearer vision for what I want to build next.
+                </p>
+
+                <div class="experience-intro-meta">
+
+                    <span>
+                        04 EXPERIENCES
+                    </span>
+
+                    <span>
+                        2024 — PRESENT
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- =================================================
+             EXPERIENCE STAGE
+             ================================================= -->
+
+        <div class="experience-path-stage">
 
 
-    <!-- =====================================================
-         SKILL CATEGORIES
-    ====================================================== -->
+            <!-- =================================================
+                 TIMELINE
+                 ================================================= -->
 
-    <div class="skills-grid">
+            <div
+                class="experience-path-route"
+                aria-hidden="true"
+            >
+
+                <span class="experience-path-route-base"></span>
+
+                <span class="experience-path-route-progress"></span>
+
+            </div>
+
+
+            <!-- =================================================
+                 01 — TELEONE
+                 ================================================= -->
+
+            <article
+                class="experience-path-station station-teleone"
+                data-experience-station
+            >
+
+                <div class="experience-station-index">
+                    <span>01</span>
+                    <span>START</span>
+                </div>
+
+
+                <div class="experience-path-year">
+
+                    <span class="experience-year-big">
+                        2024
+                    </span>
+
+                    <span class="experience-year-small">
+                        APR — SEP
+                    </span>
+
+                </div>
+
+
+                <div class="experience-path-node">
+
+                    <span class="experience-node-number">
+                        01
+                    </span>
+
+                    <span class="experience-node-dot"></span>
+
+                </div>
+
+
+                <div class="experience-path-story">
+
+                    <div class="experience-story-corner">
+                        CAREER / 01
+                    </div>
+
+
+                    <div class="experience-path-story-top">
+
+                        <span>
+                            FIRST PROFESSIONAL STEP
+                        </span>
+
+                        <span>
+                            DATA / OPERATIONS
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-main">
+
+                        <div class="experience-path-company-mark">
+                            T
+                        </div>
+
+                        <div>
+
+                            <div class="experience-path-story-period">
+                                APR 2024 — SEP 2024
+                            </div>
+
+                            <h3>
+                                Data Entry
+                                <br>
+                                Executive
+                            </h3>
+
+                            <div class="experience-path-story-role">
+                                TELEONE COMPANY
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="experience-story-divider"></div>
+
+
+                    <p class="experience-path-story-detail">
+                        My first professional experience, where I
+                        developed discipline around structured data,
+                        accuracy, documentation and everyday workflow
+                        management.
+                    </p>
+
+
+                    <div class="experience-path-story-focus">
+
+                        <span class="experience-path-story-focus-label">
+                            CORE EXPERIENCE
+                        </span>
+
+                        <span class="experience-path-story-focus-value">
+                            DATA ACCURACY /
+                            WORKFLOW /
+                            DOCUMENTATION /
+                            PROCESS DISCIPLINE
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-skills">
+
+                        <span>DATA</span>
+                        <span>ACCURACY</span>
+                        <span>WORKFLOW</span>
+                        <span>DOCUMENTATION</span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-footer">
+
+                        <span>
+                            NEW DELHI / INDIA
+                        </span>
+
+                        <span>
+                            START
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 02 — DIGITAL TERRENE
+                 ================================================= -->
+
+            <article
+                class="experience-path-station station-terrene"
+                data-experience-station
+            >
+
+                <div class="experience-station-index">
+                    <span>02</span>
+                    <span>BUILD</span>
+                </div>
+
+
+                <div class="experience-path-year">
+
+                    <span class="experience-year-big">
+                        2025
+                    </span>
+
+                    <span class="experience-year-small">
+                        AUG — MAR 26
+                    </span>
+
+                </div>
+
+
+                <div class="experience-path-node">
+
+                    <span class="experience-node-number">
+                        02
+                    </span>
+
+                    <span class="experience-node-dot"></span>
+
+                </div>
+
+
+                <div class="experience-path-story">
+
+                    <div class="experience-story-corner">
+                        CAREER / 02
+                    </div>
+
+
+                    <div class="experience-path-story-top">
+
+                        <span>
+                            WEBSITE DEVELOPMENT
+                        </span>
+
+                        <span>
+                            WEB / CMS
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-main">
+
+                        <div class="experience-path-company-mark">
+                            D
+                        </div>
+
+                        <div>
+
+                            <div class="experience-path-story-period">
+                                AUG 2025 — MAR 2026
+                            </div>
+
+                            <h3>
+                                Website
+                                <br>
+                                Developer
+                            </h3>
+
+                            <div class="experience-path-story-role">
+                                DIGITAL TERRENE
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="experience-story-divider"></div>
+
+
+                    <p class="experience-path-story-detail">
+                        Worked on real website development using
+                        WordPress and PHP while gaining practical
+                        experience with SEO, Git/GitHub, AI tools and
+                        modern website development workflows.
+                    </p>
+
+
+                    <div class="experience-path-story-focus">
+
+                        <span class="experience-path-story-focus-label">
+                            WHAT I BUILT
+                        </span>
+
+                        <span class="experience-path-story-focus-value">
+                            WORDPRESS /
+                            PHP /
+                            SEO /
+                            GIT &amp; GITHUB /
+                            AI TOOLS
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-skills">
+
+                        <span>WORDPRESS</span>
+                        <span>PHP</span>
+                        <span>SEO</span>
+                        <span>GIT</span>
+                        <span>GITHUB</span>
+                        <span>AI TOOLS</span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-footer">
+
+                        <span>
+                            NEW DELHI / INDIA
+                        </span>
+
+                        <span>
+                            BUILD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 03 — ZETHETA
+                 ================================================= -->
+
+            <article
+                class="experience-path-station station-zetheta"
+                data-experience-station
+            >
+
+                <div class="experience-station-index">
+                    <span>03</span>
+                    <span>LEARN</span>
+                </div>
+
+
+                <div class="experience-path-year">
+
+                    <span class="experience-year-big">
+                        2026
+                    </span>
+
+                    <span class="experience-year-small">
+                        PROJECT WORK
+                    </span>
+
+                </div>
+
+
+                <div class="experience-path-node">
+
+                    <span class="experience-node-number">
+                        03
+                    </span>
+
+                    <span class="experience-node-dot"></span>
+
+                </div>
+
+
+                <div class="experience-path-story">
+
+                    <div class="experience-story-corner">
+                        LEARNING / 03
+                    </div>
+
+
+                    <div class="experience-path-story-top">
+
+                        <span>
+                            PRACTICAL PROJECT TRACK
+                        </span>
+
+                        <span>
+                            FULL STACK / FINTECH
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-main">
+
+                        <div class="experience-path-company-mark">
+                            Z
+                        </div>
+
+                        <div>
+
+                            <div class="experience-path-story-period">
+                                CURRENT PROJECT TRACK
+                            </div>
+
+                            <h3>
+                                Full Stack
+                                <br>
+                                Engineer
+                            </h3>
+
+                            <div class="experience-path-story-role">
+                                ZETHETA ALGORITHMS
+                                / PROJECT LEARNING
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="experience-story-divider"></div>
+
+
+                    <p class="experience-path-story-detail">
+                        Working through a remote, non-chargeable
+                        Full Stack Engineer project track focused on
+                        practical application development,
+                        integrations and engineering workflows.
+                    </p>
+
+
+                    <div class="experience-path-story-focus">
+
+                        <span class="experience-path-story-focus-label">
+                            PROJECT TRACK
+                        </span>
+
+                        <span class="experience-path-story-focus-value">
+                            MULTI-STEP LOAN APPLICATION /
+                            CUSTOM API INTEGRATION /
+                            DEVOPS &amp; CLOUD /
+                            EVENT-DRIVEN NOTIFICATIONS
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-skills">
+
+                        <span>FULL STACK</span>
+                        <span>API</span>
+                        <span>FINTECH</span>
+                        <span>BACKEND</span>
+                        <span>DEVOPS</span>
+                        <span>CLOUD</span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-footer">
+
+                        <span>
+                            REMOTE / PROJECT BASED
+                        </span>
+
+                        <span>
+                            LEARN
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 04 — FREELANCE
+                 ================================================= -->
+
+            <article
+                class="experience-path-station station-freelance"
+                data-experience-station
+            >
+
+                <div class="experience-station-index">
+                    <span>04</span>
+                    <span>NOW</span>
+                </div>
+
+
+                <div class="experience-path-year">
+
+                    <span class="experience-year-big">
+                        NOW
+                    </span>
+
+                    <span class="experience-year-small">
+                        2026 →
+                    </span>
+
+                </div>
+
+
+                <div class="experience-path-node">
+
+                    <span class="experience-node-number">
+                        04
+                    </span>
+
+                    <span class="experience-node-dot"></span>
+
+                </div>
+
+
+                <div class="experience-path-story">
+
+                    <div class="experience-story-corner">
+                        CURRENT / 04
+                    </div>
+
+
+                    <div class="experience-path-story-top">
+
+                        <span>
+                            INDEPENDENT WORK
+                        </span>
+
+                        <span>
+                            WEB / BACKEND / AI
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-main">
+
+                        <div class="experience-path-company-mark">
+                            VK
+                        </div>
+
+                        <div>
+
+                            <div class="experience-path-story-period">
+                                2026 — PRESENT
+                            </div>
+
+                            <h3>
+                                Freelance
+                                <br>
+                                Developer
+                            </h3>
+
+                            <div class="experience-path-story-role">
+                                INDEPENDENT / WEB / BACKEND
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="experience-story-divider"></div>
+
+
+                    <p class="experience-path-story-detail">
+                        Building websites, backend systems, AI
+                        integrations and custom digital experiences
+                        while working independently with real project
+                        requirements and product goals.
+                    </p>
+
+
+                    <div class="experience-path-story-focus">
+
+                        <span class="experience-path-story-focus-label">
+                            CURRENT DIRECTION
+                        </span>
+
+                        <span class="experience-path-story-focus-value">
+                            WEB DEVELOPMENT /
+                            PHP /
+                            PYTHON /
+                            DJANGO /
+                            BACKEND /
+                            AI INTEGRATION
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-current-badge">
+
+                        <span class="experience-current-pulse"></span>
+
+                        <span>
+                            AVAILABLE FOR NEW PROJECTS
+                        </span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-skills">
+
+                        <span>WEB DEVELOPMENT</span>
+                        <span>PHP</span>
+                        <span>PYTHON</span>
+                        <span>DJANGO</span>
+                        <span>BACKEND</span>
+                        <span>AI</span>
+
+                    </div>
+
+
+                    <div class="experience-path-story-footer">
+
+                        <span>
+                            INDEPENDENT / REMOTE
+                        </span>
+
+                        <span>
+                            NOW
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
 
 
         <!-- =================================================
-             01 — WEB DEVELOPMENT
-        ================================================== -->
+             BOTTOM MESSAGE
+             ================================================= -->
 
-        <article class="skill-group skill-group-dark">
+        <div class="experience-path-bottom">
 
-            <div class="skill-group-top">
-                <span>01</span>
-                <span>DEVELOPMENT</span>
-            </div>
+            <span>
+                DIFFERENT STEPS
+            </span>
 
-            <div class="skill-group-title">
-                WEB<br>
-                <span>DEVELOPMENT</span>
-            </div>
+            <span class="experience-bottom-mark">
+                /
+            </span>
 
-            <div class="skill-list">
+            <span>
+                SAME DIRECTION
+            </span>
 
-                <div class="skill-item">
-                    <span>HTML5</span>
-                    <small>CORE</small>
-                </div>
+            <span class="experience-bottom-mark">
+                /
+            </span>
 
-                <div class="skill-item">
-                    <span>CSS3</span>
-                    <small>CORE</small>
-                </div>
+            <span>
+                MORE TO BUILD
+            </span>
 
-                <div class="skill-item">
-                    <span>JavaScript</span>
-                    <small>CORE</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>PHP</span>
-                    <small>BACKEND</small>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- =================================================
-             02 — PROGRAMMING
-        ================================================== -->
-
-        <article class="skill-group skill-group-light">
-
-            <div class="skill-group-top">
-                <span>02</span>
-                <span>PROGRAMMING</span>
-            </div>
-
-            <div class="skill-group-title">
-                CODE<br>
-                <span>&amp; LOGIC</span>
-            </div>
-
-            <div class="skill-list">
-
-                <div class="skill-item">
-                    <span>Python</span>
-                    <small>CORE</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>JavaScript</span>
-                    <small>CORE</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>OOP</span>
-                    <small>CONCEPT</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>Problem Solving</span>
-                    <small>SKILL</small>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- =================================================
-             03 — BACKEND & DATABASE
-        ================================================== -->
-
-        <article class="skill-group skill-group-orange">
-
-            <div class="skill-group-top">
-                <span>03</span>
-                <span>BACKEND / DATABASE</span>
-            </div>
-
-            <div class="skill-group-title">
-                BACKEND<br>
-                <span>&amp; DATA</span>
-            </div>
-
-            <div class="skill-list">
-
-                <div class="skill-item">
-                    <span>Django</span>
-                    <small>FRAMEWORK</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>SQL</span>
-                    <small>CORE</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>MySQL</span>
-                    <small>DATABASE</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>DBMS</span>
-                    <small>CORE</small>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- =================================================
-             04 — API / TOOLS / AI
-        ================================================== -->
-
-        <article class="skill-group skill-group-outline">
-
-            <div class="skill-group-top">
-                <span>04</span>
-                <span>TOOLS / AI</span>
-            </div>
-
-            <div class="skill-group-title">
-                AI<br>
-                <span>&amp; TOOLS</span>
-            </div>
-
-            <div class="skill-list">
-
-                <div class="skill-item">
-                    <span>REST APIs</span>
-                    <small>API</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>Git</span>
-                    <small>VERSION CONTROL</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>GitHub</span>
-                    <small>COLLABORATION</small>
-                </div>
-
-                <div class="skill-item">
-                    <span>AI Automation</span>
-                    <small>BUILDING</small>
-                </div>
-
-            </div>
-
-        </article>
-
-    </div>
-
-
-    <!-- =====================================================
-         BOTTOM STATEMENT
-    ====================================================== -->
-
-    <div class="skills-bottom">
-
-        <span>STACK EVOLVING</span>
-
-        <div class="skills-line"></div>
-
-        <span>LEARN • BUILD • IMPROVE ↗</span>
+        </div>
 
     </div>
 
 </section>
-{% load static %}
+
+<!-- END SECTION : experience-->
+
+<!-- =========================================================
+     CERTIFICATES / CREDENTIALS
+     Premium Light Editorial Section
+     ========================================================= -->
+
+<section
+    id="certificates"
+    class="certificates-section"
+    aria-labelledby="certificates-title"
+>
+
+    <!-- =====================================================
+         BACKGROUND / DECORATIVE ELEMENTS
+         ===================================================== -->
+
+    <div class="certificates-background" aria-hidden="true">
+
+        <div class="certificates-bg-grid"></div>
+
+        <div class="certificates-bg-word">
+            CREDENTIALS
+        </div>
+
+        <div class="certificates-bg-circle circle-one"></div>
+
+        <div class="certificates-bg-circle circle-two"></div>
+
+        <div class="certificates-bg-line line-one"></div>
+
+        <div class="certificates-bg-line line-two"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+         ===================================================== -->
+
+    <div class="certificates-container">
+
+
+        <!-- =================================================
+             SECTION HEADER
+             ================================================= -->
+
+        <header class="certificates-header">
+
+            <div class="certificates-header-left">
+
+                <span class="cert-index">
+                    05
+                </span>
+
+                <span class="cert-separator"></span>
+
+                <span>
+                    CERTIFICATES
+                </span>
+
+            </div>
+
+
+            <div class="certificates-header-right">
+
+                <span>
+                    LEARNED
+                </span>
+
+                <span>
+                    CERTIFIED
+                </span>
+
+                <span>
+                    STILL BUILDING
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             INTRO / SECTION TITLE
+             ================================================= -->
+
+        <div class="certificates-intro">
+
+
+            <!-- Main heading -->
+
+            <div class="certificates-heading-wrap">
+
+                <span class="cert-kicker">
+                    LEARNING &amp; CREDENTIALS
+                </span>
+
+                <h2 id="certificates-title">
+                    <span>
+                        PROOF
+                    </span>
+
+                    <span>
+                        OF PROGRESS
+                    </span>
+                </h2>
+
+                <p class="certificates-heading-note">
+                    A mix of formal certification, practical project
+                    work and continuous technical learning.
+                </p>
+
+            </div>
+
+
+            <!-- Intro information -->
+
+            <div class="certificates-intro-side">
+
+                <div class="certificates-intro-stat">
+
+                    <strong>
+                        05
+                    </strong>
+
+                    <span>
+                        CREDENTIALS<br>
+                        2026
+                    </span>
+
+                </div>
+
+                <div class="certificates-intro-rule"></div>
+
+                <p class="certificates-intro-copy">
+                    Certifications matter, but real progress also comes
+                    from building, testing, debugging and learning
+                    through practical work.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FEATURED CERTIFICATE
+             TCS iON
+             ================================================= -->
+
+        <div class="certificates-feature">
+
+
+            <!-- =============================================
+                 TCS CERTIFICATE DOCUMENT
+                 certificate-1.jpg
+                 ============================================= -->
+
+            <div class="certificate-document-wrap">
+
+                <article
+                    class="certificate-document"
+                    data-certificate-card
+                >
+
+                    <div class="certificate-document-top">
+
+                        <span>
+                            CERTIFICATE / 01
+                        </span>
+
+                        <span>
+                            VERIFIED LEARNING
+                        </span>
+
+                    </div>
+
+
+                    <!-- Certificate brand -->
+
+                    <div class="certificate-document-brand">
+                        TCS iON CAREER EDGE
+                    </div>
+
+
+                    <!-- Actual certificate image -->
+
+                    <div class="certificate-image-container">
+
+                        <img
+                            src="{% static 'images/certificates/certificate-1.jpg' %}"
+                            alt="TCS iON Career Edge AI Foundation Certificate"
+                            class="certificate-image"
+                        >
+
+                    </div>
+
+
+                    <!-- Small certificate seal -->
+
+                    <div
+                        class="certificate-document-seal"
+                        aria-hidden="true"
+                    >
+
+                        <strong>
+                            AI
+                        </strong>
+
+                        <small>
+                            FOUNDATION
+                        </small>
+
+                    </div>
+
+
+                    <!-- Certificate footer -->
+
+                    <div class="certificate-document-footer">
+
+                        <span>
+                            TCS iON
+                        </span>
+
+                        <span>
+                            AUG 2026
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- =============================================
+                 TCS CERTIFICATE INFORMATION
+                 ============================================= -->
+
+            <div class="certificate-feature-info">
+
+                <div class="certificate-info-status">
+                    FORMAL CERTIFICATION
+                </div>
+
+                <h3>
+                    <span>
+                        TCS iON
+                    </span>
+
+                    <span>
+                        AI FOUNDATION
+                    </span>
+                </h3>
+
+                <p class="certificate-feature-description">
+                    Career Edge — AI Foundation certification focused
+                    on building foundational understanding of
+                    artificial intelligence and modern technology.
+                </p>
+
+
+                <!-- Certificate metadata -->
+
+                <div class="certificate-feature-meta">
+
+                    <div class="certificate-feature-meta-item">
+
+                        <span>
+                            ISSUED
+                        </span>
+
+                        <strong>
+                            AUG 2026
+                        </strong>
+
+                    </div>
+
+                    <div class="certificate-feature-meta-item">
+
+                        <span>
+                            TYPE
+                        </span>
+
+                        <strong>
+                            CERTIFICATION
+                        </strong>
+
+                    </div>
+
+                    <div class="certificate-feature-meta-item">
+
+                        <span>
+                            AREA
+                        </span>
+
+                        <strong>
+                            ARTIFICIAL INTELLIGENCE
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Certificate tags -->
+
+                <div class="certificate-feature-tags">
+
+                    <span>
+                        AI FOUNDATION
+                    </span>
+
+                    <span>
+                        CAREER EDGE
+                    </span>
+
+                    <span>
+                        ARTIFICIAL INTELLIGENCE
+                    </span>
+
+                    <span>
+                        LEARNING
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECONDARY CREDENTIALS
+             ================================================= -->
+
+        <div class="certificates-secondary">
+
+
+            <!-- =============================================
+                 ZETHETA CERTIFICATE
+                 certificate-2.jpg
+                 ============================================= -->
+
+            <article
+                class="credential-card credential-learning"
+                data-certificate-card
+                tabindex="0"
+            >
+
+                <!-- Card mark -->
+
+                <div
+                    class="credential-card-mark"
+                    aria-hidden="true"
+                >
+                    Z
+                </div>
+
+
+                <!-- Actual certificate image -->
+
+                <div class="credential-image-container">
+
+                    <img
+                        src="{% static 'images/certificates/certificate-2.jpg' %}"
+                        alt="Zetheta Project Based Learning Certificate"
+                        class="credential-image"
+                    >
+
+                </div>
+
+
+                <!-- Certificate content -->
+
+                <h3>
+                    <span>
+                        PROJECT
+                    </span>
+
+                    <span>
+                        BASED LEARNING
+                    </span>
+                </h3>
+
+                <p class="credential-card-description">
+                    Practical project experience through the Zetheta
+                    learning and development track, focused on
+                    full stack engineering and real-world builds.
+                </p>
+
+
+                <!-- Skills / focus -->
+
+                <div class="credential-card-tags">
+
+                    <span>
+                        FULL STACK
+                    </span>
+
+                    <span>
+                        API
+                    </span>
+
+                    <span>
+                        FINTECH
+                    </span>
+
+                    <span>
+                        BACKEND
+                    </span>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="credential-card-status">
+                    ONGOING
+                </div>
+
+            </article>
+
+
+            <!-- =============================================
+                 NEXT LEARNING / CURRENT FOCUS
+                 ============================================= -->
+
+            <article
+                class="credential-card credential-learning-next"
+                tabindex="0"
+            >
+
+                <!-- Animated visual -->
+
+                <div
+                    class="credential-next-visual"
+                    aria-hidden="true"
+                >
+
+                    <div class="credential-next-ring ring-a"></div>
+
+                    <div class="credential-next-ring ring-b"></div>
+
+                    <div class="credential-next-core">
+                        VK
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="credential-card-mark"
+                    aria-hidden="true"
+                >
+                    +
+                </div>
+
+
+                <h3>
+                    <span>
+                        BUILDING
+                    </span>
+
+                    <span>
+                        WHILE LEARNING
+                    </span>
+                </h3>
+
+                <p class="credential-card-description">
+                    Continuing to strengthen backend and full stack
+                    development through Python, Django, APIs and
+                    AI integration.
+                </p>
+
+
+                <!-- Current learning areas -->
+
+                <div class="credential-card-tags">
+
+                    <span>
+                        PYTHON
+                    </span>
+
+                    <span>
+                        DJANGO
+                    </span>
+
+                    <span>
+                        API
+                    </span>
+
+                    <span>
+                        AI
+                    </span>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="credential-card-status">
+                    IN PROGRESS
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTINUOUS LEARNING STRIP
+             ================================================= -->
+
+        <div class="certificates-learning-strip">
+
+            <div class="certificates-learning-track">
+
+                <span class="accent">
+                    CONTINUOUS LEARNING
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    PYTHON
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    DJANGO
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    BACKEND
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    APIS
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    AI INTEGRATION
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    FULL STACK
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    BUILD
+                </span>
+
+
+                <!-- Duplicate set for seamless marquee -->
+
+                <span class="accent">
+                    CONTINUOUS LEARNING
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    PYTHON
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    DJANGO
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    BACKEND
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    APIS
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    AI INTEGRATION
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    FULL STACK
+                </span>
+
+                <span class="dot"></span>
+
+                <span>
+                    BUILD
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECTION FOOTER
+             ================================================= -->
+
+        <footer class="certificates-bottom">
+
+            <div class="certificates-bottom-left">
+
+                <span>
+                    01 FORMAL CERTIFICATION
+                </span>
+
+                <span>
+                    +
+                </span>
+
+                <span>
+                    PRACTICAL PROJECT LEARNING
+                </span>
+
+            </div>
+
+
+            <a
+                href="#contact"
+                class="certificates-bottom-link"
+            >
+                MORE TO LEARN
+                <span aria-hidden="true">
+                    ↗
+                </span>
+            </a>
+
+        </footer>
+
+    </div>
+
+</section>
+
+<!-- END SECTION : CERTIFICATES -->
+
+<!-- =========================================================
+     SKILLS / DEVELOPER ARSENAL
+     Premium Light Brand System
+     ========================================================= -->
+
+<section
+    id="skills"
+    class="skills-section"
+    aria-labelledby="skills-title"
+>
+
+    <!-- =====================================================
+         BACKGROUND / DECORATIVE SYSTEM
+         ===================================================== -->
+
+    <div
+        class="skills-background"
+        aria-hidden="true"
+    >
+
+        <!-- Fine architectural grid -->
+        <div class="skills-bg-grid"></div>
+
+        <!-- Large editorial background word -->
+        <div class="skills-bg-word">
+            SKILLS
+        </div>
+
+        <!-- Soft brand glow -->
+        <div class="skills-bg-glow"></div>
+
+        <!-- Large geometric circles -->
+        <div class="skills-bg-circle circle-one"></div>
+        <div class="skills-bg-circle circle-two"></div>
+
+        <!-- Decorative technical lines -->
+        <div class="skills-bg-line line-one"></div>
+        <div class="skills-bg-line line-two"></div>
+
+        <!-- Small registration marks -->
+        <span class="skills-bg-mark mark-one">+</span>
+        <span class="skills-bg-mark mark-two">+</span>
+        <span class="skills-bg-mark mark-three">+</span>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+         ===================================================== -->
+
+    <div class="skills-container">
+
+
+        <!-- =================================================
+             SECTION HEADER
+             ================================================= -->
+
+        <header class="skills-header">
+
+            <div class="skills-header-left">
+
+                <span class="skills-index">
+                    06
+                </span>
+
+                <span class="skills-header-rule"></span>
+
+                <span class="skills-header-label">
+                    SKILL SYSTEM
+                </span>
+
+            </div>
+
+
+            <div class="skills-header-right">
+
+                <span>
+                    BACKEND
+                </span>
+
+                <span>
+                    FULL STACK
+                </span>
+
+                <span>
+                    AI / NEXT
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HERO INTRO
+             ================================================= -->
+
+        <div class="skills-intro">
+
+
+            <!-- =============================================
+                 LEFT / MAIN TYPOGRAPHY
+                 ============================================= -->
+
+            <div class="skills-intro-main">
+
+                <span class="skills-kicker">
+                    DEVELOPER ARSENAL
+                </span>
+
+                <h2 id="skills-title">
+
+                    <span>
+                        BUILT
+                    </span>
+
+                    <span class="skills-title-outline">
+                        TO BUILD
+                    </span>
+
+                    <strong>
+                        MORE.
+                    </strong>
+
+                </h2>
+
+            </div>
+
+
+            <!-- =============================================
+                 RIGHT / POSITIONING COPY
+                 ============================================= -->
+
+            <div class="skills-intro-side">
+
+                <div class="skills-side-label">
+                    HOW I WORK
+                </div>
+
+                <p>
+                    A practical technology stack shaped around
+                    backend systems, full stack applications,
+                    databases, APIs and continuous learning.
+                </p>
+
+
+                <div class="skills-side-meta">
+
+                    <div class="skills-side-meta-item">
+
+                        <span>
+                            FOCUS
+                        </span>
+
+                        <strong>
+                            BACKEND
+                        </strong>
+
+                    </div>
+
+                    <div class="skills-side-meta-item">
+
+                        <span>
+                            MODE
+                        </span>
+
+                        <strong>
+                            BUILD
+                        </strong>
+
+                    </div>
+
+                    <div class="skills-side-meta-item">
+
+                        <span>
+                            DIRECTION
+                        </span>
+
+                        <strong>
+                            AI + WEB
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAIN CAPABILITY SYSTEM
+             ================================================= -->
+
+        <div class="skills-system">
+
+
+            <!-- =================================================
+                 LEFT / CATEGORY NAVIGATION
+                 ================================================= -->
+
+            <aside class="skills-navigation">
+
+                <div class="skills-navigation-heading">
+                    CAPABILITY INDEX
+                </div>
+
+
+                <!-- Backend -->
+
+                <button
+                    type="button"
+                    class="skills-category is-active"
+                    data-skill-category="backend"
+                    aria-selected="true"
+                >
+
+                    <span class="skills-category-number">
+                        01
+                    </span>
+
+                    <span class="skills-category-name">
+                        BACKEND
+                    </span>
+
+                    <span class="skills-category-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+
+                <!-- Frontend -->
+
+                <button
+                    type="button"
+                    class="skills-category"
+                    data-skill-category="frontend"
+                    aria-selected="false"
+                >
+
+                    <span class="skills-category-number">
+                        02
+                    </span>
+
+                    <span class="skills-category-name">
+                        FRONTEND
+                    </span>
+
+                    <span class="skills-category-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+
+                <!-- Database -->
+
+                <button
+                    type="button"
+                    class="skills-category"
+                    data-skill-category="database"
+                    aria-selected="false"
+                >
+
+                    <span class="skills-category-number">
+                        03
+                    </span>
+
+                    <span class="skills-category-name">
+                        DATABASE
+                    </span>
+
+                    <span class="skills-category-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+
+                <!-- Tools -->
+
+                <button
+                    type="button"
+                    class="skills-category"
+                    data-skill-category="tools"
+                    aria-selected="false"
+                >
+
+                    <span class="skills-category-number">
+                        04
+                    </span>
+
+                    <span class="skills-category-name">
+                        TOOLS
+                    </span>
+
+                    <span class="skills-category-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+
+                <!-- AI -->
+
+                <button
+                    type="button"
+                    class="skills-category"
+                    data-skill-category="ai"
+                    aria-selected="false"
+                >
+
+                    <span class="skills-category-number">
+                        05
+                    </span>
+
+                    <span class="skills-category-name">
+                        AI / NEXT
+                    </span>
+
+                    <span class="skills-category-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+
+                <!-- Navigation footer -->
+
+                <div class="skills-navigation-footer">
+
+                    <span>
+                        05 DOMAINS
+                    </span>
+
+                    <span>
+                        01 STACK
+                    </span>
+
+                </div>
+
+            </aside>
+
+
+            <!-- =================================================
+                 CENTER / BRAND CORE
+                 ================================================= -->
+
+            <div class="skills-brand-core">
+
+
+                <!-- Decorative outer frame -->
+
+                <div class="skills-core-frame">
+
+                    <span class="core-corner corner-top-left"></span>
+                    <span class="core-corner corner-top-right"></span>
+                    <span class="core-corner corner-bottom-left"></span>
+                    <span class="core-corner corner-bottom-right"></span>
+
+                </div>
+
+
+                <!-- Large orbital system -->
+
+                <div class="skills-core-ring ring-one"></div>
+
+                <div class="skills-core-ring ring-two"></div>
+
+                <div class="skills-core-ring ring-three"></div>
+
+
+                <!-- Rotating signal line -->
+
+                <div class="skills-core-signal">
+                    <span></span>
+                </div>
+
+
+                <!-- Brand logo -->
+
+                <div class="skills-core-logo">
+
+                    <div class="skills-logo-halo"></div>
+
+                    <div class="skills-logo-box">
+
+                        <img
+                            src="{% static 'images/profile/vikas-logo.png' %}"
+                            alt="Vikas Kumar VK Logo"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Core label -->
+
+                <div class="skills-core-label">
+
+                    <span>
+                        VK
+                    </span>
+
+                    <strong>
+                        DEVELOPER
+                    </strong>
+
+                    <small>
+                        BACKEND / FULL STACK
+                    </small>
+
+                </div>
+
+
+                <!-- Floating stack markers -->
+
+                <span class="skills-floating-tag tag-one">
+                    PHP
+                </span>
+
+                <span class="skills-floating-tag tag-two">
+                    PY
+                </span>
+
+                <span class="skills-floating-tag tag-three">
+                    JS
+                </span>
+
+                <span class="skills-floating-tag tag-four">
+                    SQL
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT / ACTIVE SKILL INFORMATION
+                 ================================================= -->
+
+            <div class="skills-information">
+
+
+                <!-- =============================================
+                     BACKEND
+                     ============================================= -->
+
+                <article
+                    class="skills-panel is-active"
+                    data-skill-panel="backend"
+                    aria-hidden="false"
+                >
+
+                    <div class="skills-panel-top">
+
+                        <span>
+                            01 / BACKEND
+                        </span>
+
+                        <span>
+                            CORE
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills-panel-heading">
+
+                        <span>
+                            SERVER
+                        </span>
+
+                        <strong>
+                            &amp; LOGIC
+                        </strong>
+
+                    </div>
+
+
+                    <p class="skills-panel-description">
+                        Building practical backend systems,
+                        authentication flows, CRUD applications,
+                        business logic and structured APIs.
+                    </p>
+
+
+                    <div class="skills-stack">
+
+                        <span>PHP</span>
+                        <span>PYTHON</span>
+                        <span>DJANGO</span>
+                        <span>MVC</span>
+                        <span>CRUD</span>
+                        <span>AUTHENTICATION</span>
+                        <span>REST API</span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =============================================
+                     FRONTEND
+                     ============================================= -->
+
+                <article
+                    class="skills-panel"
+                    data-skill-panel="frontend"
+                    aria-hidden="true"
+                >
+
+                    <div class="skills-panel-top">
+
+                        <span>
+                            02 / FRONTEND
+                        </span>
+
+                        <span>
+                            INTERFACE
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills-panel-heading">
+
+                        <span>
+                            WEB
+                        </span>
+
+                        <strong>
+                            &amp; UI
+                        </strong>
+
+                    </div>
+
+
+                    <p class="skills-panel-description">
+                        Creating responsive interfaces with clean
+                        structure, reusable styling and interactive
+                        frontend experiences.
+                    </p>
+
+
+                    <div class="skills-stack">
+
+                        <span>HTML5</span>
+                        <span>CSS3</span>
+                        <span>JAVASCRIPT</span>
+                        <span>BOOTSTRAP</span>
+                        <span>RESPONSIVE UI</span>
+                        <span>WORDPRESS</span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =============================================
+                     DATABASE
+                     ============================================= -->
+
+                <article
+                    class="skills-panel"
+                    data-skill-panel="database"
+                    aria-hidden="true"
+                >
+
+                    <div class="skills-panel-top">
+
+                        <span>
+                            03 / DATABASE
+                        </span>
+
+                        <span>
+                            DATA
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills-panel-heading">
+
+                        <span>
+                            DATA
+                        </span>
+
+                        <strong>
+                            &amp; STORAGE
+                        </strong>
+
+                    </div>
+
+
+                    <p class="skills-panel-description">
+                        Working with relational databases,
+                        structured queries and application
+                        data models.
+                    </p>
+
+
+                    <div class="skills-stack">
+
+                        <span>MYSQL</span>
+                        <span>MARIADB</span>
+                        <span>MONGODB</span>
+                        <span>DBMS</span>
+                        <span>SQL</span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =============================================
+                     TOOLS
+                     ============================================= -->
+
+                <article
+                    class="skills-panel"
+                    data-skill-panel="tools"
+                    aria-hidden="true"
+                >
+
+                    <div class="skills-panel-top">
+
+                        <span>
+                            04 / TOOLS
+                        </span>
+
+                        <span>
+                            WORKFLOW
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills-panel-heading">
+
+                        <span>
+                            TOOLS
+                        </span>
+
+                        <strong>
+                            &amp; FLOW
+                        </strong>
+
+                    </div>
+
+
+                    <p class="skills-panel-description">
+                        Development tools and workflows used to
+                        build, test, version and manage projects.
+                    </p>
+
+
+                    <div class="skills-stack">
+
+                        <span>GIT</span>
+                        <span>GITHUB</span>
+                        <span>VS CODE</span>
+                        <span>XAMPP</span>
+                        <span>DEVTOOLS</span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =============================================
+                     AI / NEXT
+                     ============================================= -->
+
+                <article
+                    class="skills-panel"
+                    data-skill-panel="ai"
+                    aria-hidden="true"
+                >
+
+                    <div class="skills-panel-top">
+
+                        <span>
+                            05 / AI / NEXT
+                        </span>
+
+                        <span>
+                            LEARNING
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills-panel-heading">
+
+                        <span>
+                            AI
+                        </span>
+
+                        <strong>
+                            &amp; NEXT
+                        </strong>
+
+                    </div>
+
+
+                    <p class="skills-panel-description">
+                        Exploring Python-based AI workflows,
+                        API integration, automation and modern
+                        backend development.
+                    </p>
+
+
+                    <div class="skills-stack">
+
+                        <span>PYTHON</span>
+                        <span>AI INTEGRATION</span>
+                        <span>DJANGO</span>
+                        <span>APIS</span>
+                        <span>AUTOMATION</span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TECHNOLOGY STRIP
+             ================================================= -->
+
+        <div class="skills-tech-strip">
+
+            <div class="skills-tech-strip-head">
+
+                <span>
+                    CURRENT STACK
+                </span>
+
+                <span>
+                    ALWAYS EVOLVING
+                </span>
+
+            </div>
+
+
+            <div class="skills-tech-list">
+
+                <span class="is-highlighted">
+                    PHP
+                </span>
+
+                <span>
+                    PYTHON
+                </span>
+
+                <span>
+                    JAVASCRIPT
+                </span>
+
+                <span>
+                    DJANGO
+                </span>
+
+                <span>
+                    MYSQL
+                </span>
+
+                <span>
+                    MONGODB
+                </span>
+
+                <span>
+                    GITHUB
+                </span>
+
+                <span>
+                    API
+                </span>
+
+                <span>
+                    AI
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECTION FOOTER
+             ================================================= -->
+
+        <footer class="skills-footer">
+
+            <div class="skills-footer-left">
+
+                <span>
+                    06
+                </span>
+
+                <span>
+                    CAPABILITIES
+                </span>
+
+            </div>
+
+
+            <div class="skills-footer-center">
+                LEARN → BUILD → SHIP → IMPROVE
+            </div>
+
+
+            <a
+                href="#projects"
+                class="skills-footer-link"
+            >
+
+                SEE WHAT I BUILD
+
+                <span aria-hidden="true">
+                    ↗
+                </span>
+
+            </a>
+
+        </footer>
+
+    </div>
+
+</section>
+<!-- END SECTION : SKILLS -->
 
 <!-- =========================================================
      SECTION 08 — BLOG
-========================================================= -->
-<section id="blog" class="blog-section">
+     Premium Editorial / Journal System
+     ========================================================= -->
+
+<section
+    id="blog"
+    class="blog-section"
+    aria-labelledby="blog-title"
+>
+
+    <!-- =====================================================
+         BACKGROUND
+         ===================================================== -->
+
+    <div
+        class="blog-background"
+        aria-hidden="true"
+    >
+
+        <div class="blog-bg-grid"></div>
+
+        <div class="blog-bg-word">
+            JOURNAL
+        </div>
+
+        <div class="blog-bg-line blog-bg-line-one"></div>
+        <div class="blog-bg-line blog-bg-line-two"></div>
+
+        <div class="blog-bg-orb blog-bg-orb-one"></div>
+        <div class="blog-bg-orb blog-bg-orb-two"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+         ===================================================== -->
 
     <div class="blog-container">
 
-        <!-- TOP ROW -->
+
+        <!-- =================================================
+             TOP BAR
+             ================================================= -->
+
         <div class="blog-top">
 
             <div class="blog-section-label">
+
                 <span class="blog-dot"></span>
-                <span>08</span>
-                <span>/</span>
-                <strong>BLOG</strong>
+
+                <span>
+                    08
+                </span>
+
+                <span>
+                    /
+                </span>
+
+                <strong>
+                    BLOG
+                </strong>
+
             </div>
 
+
             <div class="blog-top-links">
-                IDEAS&nbsp;&nbsp;·&nbsp;&nbsp;LEARN&nbsp;&nbsp;·&nbsp;&nbsp;BUILD&nbsp;&nbsp;·&nbsp;&nbsp;GROW
+                IDEAS&nbsp;&nbsp;·&nbsp;&nbsp;
+                LEARN&nbsp;&nbsp;·&nbsp;&nbsp;
+                BUILD&nbsp;&nbsp;·&nbsp;&nbsp;
+                GROW
             </div>
 
         </div>
 
 
-        <!-- DIVIDER -->
+        <!-- =================================================
+             HEADER DIVIDER
+             ================================================= -->
+
         <div class="blog-divider"></div>
 
 
-        <!-- HEADER -->
+        <!-- =================================================
+             INTRO
+             ================================================= -->
+
         <div class="blog-heading-area">
+
+
+            <!-- Main heading -->
 
             <div class="blog-heading">
 
@@ -2075,32 +3887,56 @@
                     NOTES FROM THE BUILD
                 </span>
 
-                <h2>
-                    PRACTICAL<br>
-                    READS TO<br>
-                    HELP<br>
-                    YOU MOVE<br>
-                    <span>FASTER.</span>
+                <h2 id="blog-title">
+
+                    <span>
+                        PRACTICAL
+                    </span>
+
+                    <span class="blog-heading-outline">
+                        THOUGHTS
+                    </span>
+
+                    <span>
+                        THAT
+                    </span>
+
+                    <span class="blog-heading-accent">
+                        SHIP.
+                    </span>
+
                 </h2>
 
             </div>
 
 
+            <!-- Intro copy -->
+
             <div class="blog-intro">
 
+                <div class="blog-intro-number">
+                    08
+                </div>
+
                 <p>
-                    Insights, tutorials and real experiences from building
-                    web applications, backend systems, AI products and
-                    software.
+                    Insights, tutorials and real experiences from
+                    building web applications, backend systems,
+                    AI products and software.
                 </p>
 
-                <!-- SCROLL TO POSTS -->
                 <a
                     href="#blog-posts"
                     class="blog-view-all"
                 >
-                    <span>VIEW ALL POSTS</span>
-                    <span class="blog-arrow">↗</span>
+
+                    <span>
+                        VIEW ARTICLES
+                    </span>
+
+                    <span class="blog-arrow">
+                        ↘
+                    </span>
+
                 </a>
 
             </div>
@@ -2108,16 +3944,25 @@
         </div>
 
 
-        <!-- =====================================================
+        <!-- =================================================
              BLOG POSTS
-        ====================================================== -->
-        <div class="blog-posts" id="blog-posts">
+             ================================================= -->
+
+        <div
+            class="blog-posts"
+            id="blog-posts"
+        >
 
 
             <!-- =================================================
-                 BLOG 01 — FEATURED
-            ================================================== -->
+                 FEATURED ARTICLE
+                 PATH PRESERVED
+                 ================================================= -->
+
             <article class="blog-featured">
+
+
+                <!-- Featured visual -->
 
                 <a
                     href="{% url 'single_blog' 'design-wrong' %}"
@@ -2131,40 +3976,69 @@
                         loading="lazy"
                     >
 
-                    <div class="featured-image-overlay">
 
-                        <span>IDEAS</span>
-                        <span>CODE</span>
-                        <span>BUILD</span>
-                        <span>GROW</span>
+                    <!-- Image UI -->
 
-                        <small>// TECH BLOG</small>
+                    <div class="featured-image-ui">
+
+                        <span>
+                            ARTICLE / 01
+                        </span>
+
+                        <span>
+                            06 MIN
+                        </span>
 
                     </div>
+
+
+                    <div class="featured-image-scan"></div>
+
+
+                    <div class="featured-image-corner corner-tl"></div>
+                    <div class="featured-image-corner corner-tr"></div>
+                    <div class="featured-image-corner corner-bl"></div>
+                    <div class="featured-image-corner corner-br"></div>
 
                 </a>
 
 
+                <!-- Featured content -->
+
                 <div class="blog-featured-content">
 
-                    <span class="blog-tag">
-                        FEATURED
-                    </span>
+
+                    <div class="blog-featured-meta">
+
+                        <span class="blog-tag">
+                            FEATURED
+                        </span>
+
+                        <span>
+                            IDEAS / DESIGN
+                        </span>
+
+                    </div>
+
 
                     <h3>
                         Why Most Startups Keep
                         Getting Design Wrong
                     </h3>
 
+
                     <p>
-                        Many teams move fast on product but fall behind on
-                        design. This post breaks down why that happens,
+                        Many teams move fast on product but fall behind
+                        on design. This post breaks down why that happens,
                         how it holds you back, and what to do instead if
                         you want to stay clear and competitive.
                     </p>
 
 
+                    <!-- Featured bottom -->
+
                     <div class="blog-post-bottom">
+
 
                         <div class="blog-author">
 
@@ -2173,11 +4047,17 @@
                             </div>
 
                             <div>
-                                <strong>Vikas Kumar</strong>
+
+                                <strong>
+                                    Vikas Kumar
+                                </strong>
 
                                 <span>
-                                    6 min read&nbsp; · &nbsp;Sep 4, 2026
+                                    6 min read
+                                    &nbsp;·&nbsp;
+                                    Sep 4, 2026
                                 </span>
+
                             </div>
 
                         </div>
@@ -2187,8 +4067,15 @@
                             href="{% url 'single_blog' 'design-wrong' %}"
                             class="blog-read-link"
                         >
-                            <span>Read Article</span>
-                            <span class="blog-circle-arrow">→</span>
+
+                            <span>
+                                READ ARTICLE
+                            </span>
+
+                            <span class="blog-circle-arrow">
+                                ↗
+                            </span>
+
                         </a>
 
                     </div>
@@ -2199,233 +4086,362 @@
 
 
             <!-- =================================================
-                 BLOG 02 — BAD CODE
-            ================================================== -->
-            <article class="blog-card">
+                 ARTICLE GRID
+                 ================================================= -->
 
-                <a
-                    href="{% url 'single_blog' 'bad-code' %}"
-                    class="blog-card-image"
-                    aria-label="Read The Real Cost of Bad Code"
+            <div class="blog-secondary-grid">
+
+
+                <!-- =============================================
+                     ARTICLE 02
+                     PATH PRESERVED
+                     ============================================= -->
+
+                <article
+                    class="blog-card blog-card-dark"
                 >
 
-                    <img
-                        src="{% static 'images/blog/blog-code.png' %}"
-                        alt="The Real Cost of Bad Code"
-                        loading="lazy"
+                    <a
+                        href="{% url 'single_blog' 'bad-code' %}"
+                        class="blog-card-image"
+                        aria-label="Read The Real Cost of Bad Code"
                     >
 
-                    <span class="blog-card-tag">
-                        DEVELOPMENT
-                    </span>
+                        <img
+                            src="{% static 'images/blog/blog-code.png' %}"
+                            alt="The Real Cost of Bad Code"
+                            loading="lazy"
+                        >
 
-                </a>
+                        <div class="blog-card-image-top">
 
+                            <span>
+                                02
+                            </span>
 
-                <div class="blog-card-content">
-
-                    <h3>
-                        The Real Cost of Bad Code
-                        <span>(It's Not What You Think)</span>
-                    </h3>
-
-                    <p>
-                        Poor code today becomes technical debt tomorrow.
-                        Learn how to write cleaner, more maintainable code
-                        and avoid common mistakes.
-                    </p>
-
-
-                    <div class="blog-card-bottom">
-
-                        <div class="blog-mini-author">
-
-                            <div class="blog-author-avatar">
-                                VK
-                            </div>
-
-                            <div>
-                                <strong>Vikas Kumar</strong>
-
-                                <span>
-                                    5 min read&nbsp; · &nbsp;Aug 28, 2026
-                                </span>
-                            </div>
+                            <span>
+                                DEV
+                            </span>
 
                         </div>
 
 
-                        <a
-                            href="{% url 'single_blog' 'bad-code' %}"
-                            class="blog-small-arrow"
-                            aria-label="Read The Real Cost of Bad Code"
-                        >
-                            →
-                        </a>
+                        <div class="blog-card-image-number">
+                            02
+                        </div>
+
+
+                        <span class="blog-card-tag">
+                            DEVELOPMENT
+                        </span>
+
+                    </a>
+
+
+                    <div class="blog-card-content">
+
+                        <div class="blog-card-kicker">
+                            CODE / SYSTEMS
+                        </div>
+
+
+                        <h3>
+                            The Real Cost of Bad Code
+
+                            <span>
+                                (It's Not What You Think)
+                            </span>
+                        </h3>
+
+
+                        <p>
+                            Poor code today becomes technical debt tomorrow.
+                            Learn how to write cleaner, more maintainable code
+                            and avoid common mistakes.
+                        </p>
+
+
+                        <div class="blog-card-bottom">
+
+                            <div class="blog-mini-author">
+
+                                <div class="blog-author-avatar">
+                                    VK
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Vikas Kumar
+                                    </strong>
+
+                                    <span>
+                                        5 min read
+                                        &nbsp;·&nbsp;
+                                        Aug 28, 2026
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <a
+                                href="{% url 'single_blog' 'bad-code' %}"
+                                class="blog-small-arrow"
+                                aria-label="Read The Real Cost of Bad Code"
+                            >
+                                ↗
+                            </a>
+
+                        </div>
 
                     </div>
 
-                </div>
-
-            </article>
+                </article>
 
 
-            <!-- =================================================
-                 BLOG 03 — AI PRODUCTIVITY
-            ================================================== -->
-            <article class="blog-card">
+                <!-- =============================================
+                     ARTICLE 03
+                     PATH PRESERVED
+                     ============================================= -->
 
-                <a
-                    href="{% url 'single_blog' 'ai-productivity' %}"
-                    class="blog-card-image"
-                    aria-label="Read How to Get More Done Without Hiring a Full Team"
+                <article
+                    class="blog-card blog-card-offset"
                 >
 
-                    <img
-                        src="{% static 'images/blog/blog-ai.png' %}"
-                        alt="How to Get More Done Without Hiring a Full Team"
-                        loading="lazy"
+                    <a
+                        href="{% url 'single_blog' 'ai-productivity' %}"
+                        class="blog-card-image"
+                        aria-label="Read How to Get More Done Without Hiring a Full Team"
                     >
 
-                    <span class="blog-card-tag">
-                        AI
-                    </span>
-
-                </a>
-
-
-                <div class="blog-card-content">
-
-                    <h3>
-                        How to Get More Done
-                        Without Hiring a Full Team
-                    </h3>
-
-                    <p>
-                        Learn practical ways to use AI tools and automation
-                        to improve productivity as a developer or founder.
-                    </p>
+                        <img
+                            src="{% static 'images/blog/blog-ai.png' %}"
+                            alt="How to Get More Done Without Hiring a Full Team"
+                            loading="lazy"
+                        >
 
 
-                    <div class="blog-card-bottom">
+                        <div class="blog-card-image-top">
 
-                        <div class="blog-mini-author">
+                            <span>
+                                03
+                            </span>
 
-                            <div class="blog-author-avatar">
-                                VK
-                            </div>
-
-                            <div>
-                                <strong>Vikas Kumar</strong>
-
-                                <span>
-                                    6 min read&nbsp; · &nbsp;Aug 20, 2026
-                                </span>
-                            </div>
+                            <span>
+                                AI
+                            </span>
 
                         </div>
 
 
-                        <a
-                            href="{% url 'single_blog' 'ai-productivity' %}"
-                            class="blog-small-arrow"
-                            aria-label="Read AI productivity article"
-                        >
-                            →
-                        </a>
+                        <div class="blog-card-image-number">
+                            03
+                        </div>
+
+
+                        <span class="blog-card-tag">
+                            AI
+                        </span>
+
+                    </a>
+
+
+                    <div class="blog-card-content">
+
+                        <div class="blog-card-kicker">
+                            AI / PRODUCTIVITY
+                        </div>
+
+
+                        <h3>
+                            How to Get More Done
+                            Without Hiring a Full Team
+                        </h3>
+
+
+                        <p>
+                            Learn practical ways to use AI tools and
+                            automation to improve productivity as a
+                            developer or founder.
+                        </p>
+
+
+                        <div class="blog-card-bottom">
+
+                            <div class="blog-mini-author">
+
+                                <div class="blog-author-avatar">
+                                    VK
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Vikas Kumar
+                                    </strong>
+
+                                    <span>
+                                        6 min read
+                                        &nbsp;·&nbsp;
+                                        Aug 20, 2026
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <a
+                                href="{% url 'single_blog' 'ai-productivity' %}"
+                                class="blog-small-arrow"
+                                aria-label="Read AI productivity article"
+                            >
+                                ↗
+                            </a>
+
+                        </div>
 
                     </div>
 
-                </div>
-
-            </article>
+                </article>
 
 
-            <!-- =================================================
-                 BLOG 04 — DESIGN SUBSCRIPTION
-            ================================================== -->
-            <article class="blog-card">
+                <!-- =============================================
+                     ARTICLE 04
+                     PATH PRESERVED
+                     ============================================= -->
 
-                <a
-                    href="{% url 'single_blog' 'design-subscription' %}"
-                    class="blog-card-image"
-                    aria-label="Read What Working With a Design Subscription Actually Looks Like"
+                <article
+                    class="blog-card blog-card-wide"
                 >
 
-                    <img
-                        src="{% static 'images/blog/blog-design.png' %}"
-                        alt="What Working With a Design Subscription Actually Looks Like"
-                        loading="lazy"
+                    <a
+                        href="{% url 'single_blog' 'design-subscription' %}"
+                        class="blog-card-image"
+                        aria-label="Read What Working With a Design Subscription Actually Looks Like"
                     >
 
-                    <span class="blog-card-tag">
-                        PRODUCTIVITY
-                    </span>
-
-                </a>
-
-
-                <div class="blog-card-content">
-
-                    <h3>
-                        What Working With a Design
-                        Subscription Actually Looks Like
-                    </h3>
-
-                    <p>
-                        A behind-the-scenes look at how founders use design
-                        subscriptions to move faster and stay consistent.
-                    </p>
+                        <img
+                            src="{% static 'images/blog/blog-design.png' %}"
+                            alt="What Working With a Design Subscription Actually Looks Like"
+                            loading="lazy"
+                        >
 
 
-                    <div class="blog-card-bottom">
+                        <div class="blog-card-image-top">
 
-                        <div class="blog-mini-author">
+                            <span>
+                                04
+                            </span>
 
-                            <div class="blog-author-avatar">
-                                VK
-                            </div>
-
-                            <div>
-                                <strong>Vikas Kumar</strong>
-
-                                <span>
-                                    4 min read&nbsp; · &nbsp;Aug 15, 2026
-                                </span>
-                            </div>
+                            <span>
+                                PRODUCTIVITY
+                            </span>
 
                         </div>
 
 
-                        <a
-                            href="{% url 'single_blog' 'design-subscription' %}"
-                            class="blog-small-arrow"
-                            aria-label="Read productivity article"
-                        >
-                            →
-                        </a>
+                        <div class="blog-card-image-number">
+                            04
+                        </div>
+
+
+                        <span class="blog-card-tag">
+                            PRODUCTIVITY
+                        </span>
+
+                    </a>
+
+
+                    <div class="blog-card-content">
+
+                        <div class="blog-card-kicker">
+                            WORK / PROCESS
+                        </div>
+
+
+                        <h3>
+                            What Working With a Design
+                            Subscription Actually Looks Like
+                        </h3>
+
+
+                        <p>
+                            A behind-the-scenes look at how founders
+                            use design subscriptions to move faster
+                            and stay consistent.
+                        </p>
+
+
+                        <div class="blog-card-bottom">
+
+                            <div class="blog-mini-author">
+
+                                <div class="blog-author-avatar">
+                                    VK
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Vikas Kumar
+                                    </strong>
+
+                                    <span>
+                                        4 min read
+                                        &nbsp;·&nbsp;
+                                        Aug 15, 2026
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <a
+                                href="{% url 'single_blog' 'design-subscription' %}"
+                                class="blog-small-arrow"
+                                aria-label="Read productivity article"
+                            >
+                                ↗
+                            </a>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
-            </article>
+            </div>
 
         </div>
 
 
-        <!-- =====================================================
-             BOTTOM
-        ====================================================== -->
+        <!-- =================================================
+             BOTTOM SIGNAL
+             ================================================= -->
+
         <div class="blog-bottom-line">
 
-            <span></span>
+            <div class="blog-bottom-marker">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
 
             <p>
                 MORE ARTICLES LOADING SOON...
             </p>
 
-            <span></span>
+
+            <div class="blog-bottom-marker">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
         </div>
 
@@ -2436,6 +4452,8 @@
 <!-- =========================================================
    SECTION 09 — CONTACT
 ========================================================= -->
+
+<!-- END SECTION 08: BLOG -->
 
 <section id="contact" class="contact-section">
 
@@ -2616,5 +4634,7 @@
     </div>
 
 </section>
+
+<!-- END SECTION 09: CONTACT -->
 
 {% endblock %}

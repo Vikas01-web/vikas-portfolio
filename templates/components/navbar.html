@@ -1,89 +1,186 @@
-<!-- =========================================
-     NAVBAR
-========================================= -->
+{% load static %}
 
-<header class="site-header">
+<!-- =========================================================
+     VIKAS.DEV
+     START — PREMIUM NAVBAR
+========================================================= -->
 
-    <nav class="navbar" aria-label="Primary navigation">
+<header
+    class="site-header"
+    id="site-header"
+>
+
+    <nav
+        class="navbar"
+        aria-label="Primary navigation"
+    >
+
+        <!-- =================================================
+             NAVBAR MAIN
+        ================================================== -->
 
         <div class="navbar-container">
 
-            <!-- BRAND -->
-            <a href="#home" class="navbar-brand" aria-label="Vikas Kumar home">
 
-                <span class="navbar-brand-mark">
-                    VK
+            <!-- =============================================
+                 BRAND
+            ============================================== -->
+
+            <a
+                href="#home"
+                class="navbar-brand"
+                aria-label="Vikas Kumar home"
+            >
+
+                <span class="navbar-logo">
+
+                    <img
+                        src="{% static 'images/profile/vikas-logo.png' %}"
+                        alt="Vikas Kumar"
+                    >
+
                 </span>
 
-                <span class="navbar-brand-name">
-                    Vikas <strong>Kumar</strong>
+                <span class="navbar-brand-copy">
+
+                    <span class="navbar-brand-name">
+                        VIKAS KUMAR
+                    </span>
+
+                    <span class="navbar-brand-role">
+                        SOFTWARE DEVELOPER
+                    </span>
+
                 </span>
 
             </a>
 
 
-            <!-- DESKTOP NAV -->
+            <!-- =============================================
+                 DESKTOP NAVIGATION
+                 Section names only — no numbers
+            ============================================== -->
+
             <div class="navbar-links">
 
-                <a href="#home" class="navbar-link is-active">
+                <a
+                    href="#home"
+                    class="navbar-link is-active"
+                    data-section="home"
+                >
                     HOME
                 </a>
 
-                <a href="#about" class="navbar-link">
+                <a
+                    href="#about"
+                    class="navbar-link"
+                    data-section="about"
+                >
                     ABOUT
                 </a>
 
-                <a href="#projects" class="navbar-link">
+                <a
+                    href="#projects"
+                    class="navbar-link"
+                    data-section="projects"
+                >
                     WORK
                 </a>
 
-                <a href="#experience" class="navbar-link">
+                <a
+                    href="#experience"
+                    class="navbar-link"
+                    data-section="experience"
+                >
                     EXPERIENCE
                 </a>
 
-                <a href="#certificates" class="navbar-link">
+                <a
+                    href="#certificates"
+                    class="navbar-link"
+                    data-section="certificates"
+                >
                     CERTIFICATES
                 </a>
 
-                <a href="#skills" class="navbar-link">
+                <a
+                    href="#skills"
+                    class="navbar-link"
+                    data-section="skills"
+                >
                     SKILLS
                 </a>
 
-                <a href="#blog" class="navbar-link">
+                <a
+                    href="#blog"
+                    class="navbar-link"
+                    data-section="blog"
+                >
                     BLOG
                 </a>
 
-                <a href="#contact" class="navbar-link">
+                <a
+                    href="#contact"
+                    class="navbar-link"
+                    data-section="contact"
+                >
                     CONTACT
                 </a>
 
             </div>
 
 
-            <!-- RIGHT -->
-            <div class="navbar-right">
+            <!-- =============================================
+                 RIGHT SIDE
+            ============================================== -->
+
+            <div class="navbar-actions">
+
+
+                <!-- Availability -->
 
                 <div class="navbar-availability">
-                    <span></span>
-                    AVAILABLE
+
+                    <span class="navbar-availability-dot"></span>
+
+                    <span>
+                        AVAILABLE
+                    </span>
+
                 </div>
 
-                <a href="#contact" class="navbar-cta">
-                    LET'S TALK
-                    <strong>↗</strong>
+
+                <!-- CTA -->
+
+                <a
+                    href="#contact"
+                    class="navbar-cta"
+                >
+
+                    <span>
+                        LET'S TALK
+                    </span>
+
+                    <span class="navbar-cta-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
 
-                <!-- MOBILE BUTTON -->
+                <!-- Mobile Menu -->
+
                 <button
-                    class="navbar-menu-button"
                     type="button"
+                    class="navbar-menu-toggle"
                     aria-label="Open navigation"
                     aria-expanded="false"
-                    aria-controls="navbar-menu"
+                    aria-controls="navbar-mobile-menu"
                 >
+
                     <span></span>
                     <span></span>
+
                 </button>
 
             </div>
@@ -91,32 +188,135 @@
         </div>
 
 
-        <!-- MOBILE MENU -->
-        <div class="navbar-mobile-menu" id="navbar-menu">
+        <!-- =================================================
+             MOBILE NAVIGATION
+        ================================================== -->
 
-            <a href="#home">HOME</a>
+        <div
+            class="navbar-mobile"
+            id="navbar-mobile-menu"
+        >
 
-            <a href="#about">ABOUT</a>
+            <div class="navbar-mobile-header">
 
-            <a href="#projects">WORK</a>
+                <span>
+                    NAVIGATION
+                </span>
 
-            <a href="#experience">EXPERIENCE</a>
+                <span>
+                    VK.DEV
+                </span>
 
-            <a href="#certificates">CERTIFICATES</a>
+            </div>
 
-            <a href="#skills">SKILLS</a>
 
-            <a href="#blog">BLOG</a>
+            <div class="navbar-mobile-links">
 
-            <a href="#contact">CONTACT</a>
+                <a
+                    href="#home"
+                    data-section="home"
+                >
+                    HOME
+                    <strong>↗</strong>
+                </a>
 
-            <a href="#contact" class="navbar-mobile-cta">
-                LET'S TALK
-                <span>↗</span>
+                <a
+                    href="#about"
+                    data-section="about"
+                >
+                    ABOUT
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#projects"
+                    data-section="projects"
+                >
+                    WORK
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#experience"
+                    data-section="experience"
+                >
+                    EXPERIENCE
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#certificates"
+                    data-section="certificates"
+                >
+                    CERTIFICATES
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#skills"
+                    data-section="skills"
+                >
+                    SKILLS
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#blog"
+                    data-section="blog"
+                >
+                    BLOG
+                    <strong>↗</strong>
+                </a>
+
+                <a
+                    href="#contact"
+                    data-section="contact"
+                >
+                    CONTACT
+                    <strong>↗</strong>
+                </a>
+
+            </div>
+
+
+            <!-- Mobile CTA -->
+
+            <a
+                href="#contact"
+                class="navbar-mobile-cta"
+            >
+
+                <span>
+                    LET'S TALK
+                </span>
+
+                <strong>
+                    ↗
+                </strong>
+
             </a>
+
+
+            <!-- Mobile Footer -->
+
+            <div class="navbar-mobile-footer">
+
+                <span>
+                    PYTHON / DJANGO
+                </span>
+
+                <span>
+                    NEW DELHI, INDIA
+                </span>
+
+            </div>
 
         </div>
 
     </nav>
 
 </header>
+
+<!-- =========================================================
+     END — PREMIUM NAVBAR
+========================================================= -->

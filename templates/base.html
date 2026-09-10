@@ -25,7 +25,11 @@
         name="theme-color"
         content="#15120F"
     >
-
+<link
+    rel="icon"
+    type="image/png"
+    href="{% static 'images/profile/fav-logo.png' %}"
+>
 
     <!-- =====================================
          TITLE
@@ -99,8 +103,10 @@
         rel="stylesheet"
         href="{% static 'css/hero.css' %}"
     >
+    
+<link rel="stylesheet" href="{% static 'css/tech-ribbon.css' %}">
 
-    <link
+<link
         rel="stylesheet"
         href="{% static 'css/about.css' %}"
     >
@@ -198,6 +204,8 @@
 
     </main>
 
+    <!-- END MAIN CONTENT -->
+
 
     <!-- =====================================
          FOOTER
@@ -208,6 +216,8 @@
         {% include "components/footer.html" %}
 
     {% endblock %}
+
+    <!-- END FOOTER -->
 
 
     <!-- =====================================

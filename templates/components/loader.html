@@ -1,44 +1,186 @@
-<!-- =========================================
-     VIKAS.DEV
-     PAGE LOADER
-========================================= -->
+{% load static %}
+
+<!-- =========================================================
+     VIKAS KUMAR — SIGNATURE BRAND LOADER
+     ========================================================= -->
 
 <div
     id="page-loader"
-    class="page-loader"
-    aria-hidden="true"
+    class="signature-loader"
+    aria-hidden="false"
 >
 
-    <div class="loader-inner">
+    <!-- BACKGROUND -->
+    <div class="signature-loader-bg">
 
-        <!-- Brand mark -->
-        <div class="loader-mark">
-            VK
+        <div class="signature-loader-grain"></div>
+
+        <div class="signature-loader-grid"></div>
+
+        <div class="signature-loader-glow glow-left"></div>
+        <div class="signature-loader-glow glow-right"></div>
+
+        <div class="signature-loader-diagonal diagonal-a"></div>
+        <div class="signature-loader-diagonal diagonal-b"></div>
+
+    </div>
+
+
+    <!-- TOP INFORMATION -->
+    <div class="signature-loader-top">
+
+        <div class="signature-loader-brand">
+            <span class="signature-loader-live"></span>
+            <span>VK.DEV</span>
         </div>
 
-        <!-- Loading information -->
-        <div class="loader-info">
-
-            <div class="loader-topline">
-                <span>INITIALIZING</span>
-                <span id="loader-percent">00%</span>
-            </div>
-
-            <div class="loader-progress">
-                <span id="loader-progress-bar"></span>
-            </div>
-
-        </div>
-
-        <!-- Small system text -->
-        <div class="loader-status">
-            <span class="loader-dot"></span>
-
-            <span id="loader-status-text">
-                Loading portfolio
-            </span>
+        <div class="signature-loader-stack">
+            SOFTWARE
+            <span>/</span>
+            DEVELOPMENT
         </div>
 
     </div>
+
+
+    <!-- SIDE INFORMATION -->
+    <div class="signature-loader-side signature-loader-side-left">
+        <span>01</span>
+        <span>LOADING</span>
+    </div>
+
+    <div class="signature-loader-side signature-loader-side-right">
+        <span>VK — 001</span>
+        <span>2026</span>
+    </div>
+
+
+    <!-- MAIN -->
+    <main class="signature-loader-main">
+
+        <!-- PORTAL -->
+        <div class="signature-loader-portal">
+
+            <div class="portal-ring ring-outer"></div>
+            <div class="portal-ring ring-middle"></div>
+            <div class="portal-ring ring-inner"></div>
+
+            <div class="portal-cross cross-top"></div>
+            <div class="portal-cross cross-right"></div>
+            <div class="portal-cross cross-bottom"></div>
+            <div class="portal-cross cross-left"></div>
+
+            <div class="portal-orbit orbit-one">
+                <span></span>
+            </div>
+
+            <div class="portal-orbit orbit-two">
+                <span></span>
+            </div>
+
+            <div class="portal-light"></div>
+
+
+            <!-- REAL LOGO -->
+            <div class="signature-loader-logo-lens">
+
+                <div class="logo-lens-inner"></div>
+
+                <img
+                    src="{% static 'images/profile/vikas-logo.png' %}"
+                    alt="Vikas Kumar"
+                    class="signature-loader-logo"
+                />
+
+                <span class="logo-sweep"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BRAND TITLE -->
+        <div class="signature-loader-name">
+
+            <div class="signature-loader-name-line">
+                VIKAS KUMAR
+            </div>
+
+            <div class="signature-loader-name-role">
+                SOFTWARE DEVELOPER
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+        <div class="signature-loader-progress">
+
+            <div class="signature-loader-progress-head">
+
+                <span id="loader-status-text">
+                    INITIALIZING DIGITAL EXPERIENCE
+                </span>
+
+                <strong id="loader-percent">
+                    00%
+                </strong>
+
+            </div>
+
+
+            <div class="signature-loader-progress-track">
+
+                <span
+                    id="loader-progress-bar"
+                    class="signature-loader-progress-fill"
+                ></span>
+
+                <span
+                    id="loader-progress-point"
+                    class="signature-loader-progress-point"
+                ></span>
+
+            </div>
+
+
+            <div class="signature-loader-progress-meta">
+
+                <span>BACKEND</span>
+                <span>PYTHON</span>
+                <span>DJANGO</span>
+                <span>FULL STACK</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BOTTOM STATEMENT -->
+        <div class="signature-loader-statement">
+
+            <span class="statement-line"></span>
+
+            <span>
+                BUILDING DIGITAL EXPERIENCES
+            </span>
+
+        </div>
+
+    </main>
+
+
+    <!-- BOTTOM -->
+    <div class="signature-loader-bottom">
+
+        <span>NEW DELHI / INDIA</span>
+
+        <span>EST. 2026</span>
+
+    </div>
+
+
+    <!-- EXIT WIPE -->
+    <div class="signature-loader-exit"></div>
 
 </div>
