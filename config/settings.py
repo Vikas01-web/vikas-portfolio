@@ -273,7 +273,10 @@ SITE_URL = (
     os.getenv("SITE_URL", "").strip().rstrip("/")
     or (f"https://{RENDER_EXTERNAL_HOSTNAME}" if RENDER_EXTERNAL_HOSTNAME else "")
 )
-GOOGLE_SITE_VERIFICATION = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+GOOGLE_SITE_VERIFICATION = (
+    os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+    or "lp7Xf5Kvb9dh1Hog1fwisLKYrC5I3NIbaiu5GOy67mc"
+)
 
 EMAIL_BACKEND = os.getenv(
     "EMAIL_BACKEND",
