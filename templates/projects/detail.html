@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-{% block title %}{{ project.title }} — Vikas Kumar{% endblock %}
+{% block title %}{{ project.title }} | Vikas Kumar{% endblock %}
+{% block meta_description %}{{ project.description|truncatechars:155 }}{% endblock %}
+{% block og_title %}{{ project.title }} | Vikas Kumar{% endblock %}
+{% block og_description %}{{ project.description|truncatechars:200 }}{% endblock %}
+{% block twitter_title %}{{ project.title }} | Vikas Kumar{% endblock %}
+{% block twitter_description %}{{ project.description|truncatechars:200 }}{% endblock %}
 {% block content %}
 <section class="section project-detail">
     <p class="eyebrow">{{ project.category }} · {{ project.status }}</p>

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}{{ case_study.title }} Case Study | Vikas Kumar{% endblock %}
+{% block meta_description %}{{ case_study.description|truncatechars:155 }}{% endblock %}
+{% block og_title %}{{ case_study.title }} Case Study | Vikas Kumar{% endblock %}
+{% block og_description %}{{ case_study.description|truncatechars:200 }}{% endblock %}
+{% block twitter_title %}{{ case_study.title }} Case Study | Vikas Kumar{% endblock %}
+{% block twitter_description %}{{ case_study.description|truncatechars:200 }}{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="single-case-page">
+    <div class="single-case-container">
+        <a href="{% url 'case_study_list' %}" class="single-case-back">&larr; All case studies</a>
+
+        <header class="single-case-header" data-case-reveal>
+            <span class="single-case-eyebrow">PROJECT CASE STUDY</span>
+            <span class="single-case-category">{{ case_study.category }}</span>
+            <h1>{{ case_study.title }}</h1>
+            <p>{{ case_study.description }}</p>
+            <div class="single-case-meta">
+                <span><small>PROJECT TYPE</small><strong>{{ case_study.category }}</strong></span>
+                <span><small>MY APPROACH</small><strong>Understand · Improve · Verify</strong></span>
+                <span><small>DELIVERABLE</small><strong>Practical digital experience</strong></span>
+            </div>
+        </header>
+
+        <figure class="single-case-hero" data-case-reveal>
+            <img src="{{ case_study.image_url }}" alt="Illustrative image related to {{ case_study.category }} work" fetchpriority="high">
+            <figcaption>Illustrative visual for this project category. <a href="{{ case_study.image_credit_url }}" target="_blank" rel="noopener noreferrer">Image: {{ case_study.image_credit }}</a></figcaption>
+        </figure>
+
+        <section class="single-case-snapshot" aria-label="Project snapshot" data-case-reveal>
+            <div><span>PROJECT</span><strong>{{ case_study.title }}</strong></div>
+            <div><span>FOCUS</span><strong>{{ case_study.challenge }}</strong></div>
+            <div><span>TOOLS</span><strong>{{ case_study.technologies|length }} technologies</strong></div>
+            <div><span>APPROACH</span><strong>Understand, improve, verify</strong></div>
+        </section>
+
+        <div class="single-case-content" data-case-reveal>
+            <article class="single-case-block">
+                <span class="single-case-number">01</span>
+                <div>
+                    <span class="single-case-section-kicker">THE CONTEXT</span>
+                    <h2>Project Overview</h2>
+                    <p>{{ case_study.context }}</p>
+                    <p class="single-case-detail-note"><b>Project goal</b>{{ case_study.project_goal }}</p>
+                </div>
+            </article>
+
+            <article class="single-case-block">
+                <span class="single-case-number">02</span>
+                <div>
+                    <span class="single-case-section-kicker">THE PROBLEM</span>
+                    <h2>The Challenge</h2>
+                    <p>{{ case_study.challenge }}. The work called for a focused solution that supports the people using the site while respecting the project's existing context.</p>
+                </div>
+            </article>
+
+            <article class="single-case-block">
+                <span class="single-case-number">03</span>
+                <div>
+                    <span class="single-case-section-kicker">THE EXECUTION</span>
+                    <h2>Approach &amp; Solution</h2>
+                    <p>{{ case_study.solution }}</p>
+                    <ol class="single-case-steps">
+                        <li><b>Understand</b><span>Clarify the need and intended experience.</span></li>
+                        <li><b>Improve</b><span>Work through the relevant design or technical changes.</span></li>
+                        <li><b>Verify</b><span>Review the result in context before wrapping up.</span></li>
+                    </ol>
+                </div>
+            </article>
+
+            <article class="single-case-block">
+                <span class="single-case-number">04</span>
+                <div>
+                    <span class="single-case-section-kicker">DETAILS THAT MATTER</span>
+                    <h2>Key Focus Areas</h2>
+                    <ul class="single-case-focus-list">
+                        {% for point in case_study.focus_points %}<li>{{ point }}</li>{% endfor %}
+                    </ul>
+                </div>
+            </article>
+
+            <article class="single-case-block">
+                <span class="single-case-number">05</span>
+                <div>
+                    <span class="single-case-section-kicker">THE TOOLKIT</span>
+                    <h2>Technologies Used</h2>
+                    <div class="single-case-tags">
+                        {% for technology in case_study.technologies %}<span>{{ technology }}</span>{% endfor %}
+                    </div>
+                </div>
+            </article>
+
+            <article class="single-case-block">
+                <span class="single-case-number">06</span>
+                <div>
+                    <span class="single-case-section-kicker">A TAKEAWAY</span>
+                    <h2>What This Work Reinforced</h2>
+                    <p>{{ case_study.reflection }}</p>
+                </div>
+            </article>
+        </div>
+
+        {% if related_case_studies %}
+        <section class="single-case-related" aria-labelledby="related-case-title" data-case-reveal>
+            <div class="single-case-related-heading">
+                <div><span>KEEP EXPLORING</span><h2 id="related-case-title">More work, similar care.</h2></div>
+                <a href="{% url 'case_study_list' %}">View all case studies <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="single-case-related-grid">
+                {% for related in related_case_studies %}
+                <a class="single-case-related-card" href="{% url 'case_study_detail' slug=related.slug %}">
+                    <span class="single-case-related-category">{{ related.category }}</span>
+                    <h3>{{ related.title }}</h3>
+                    <p>{{ related.description }}</p>
+                    <span class="single-case-related-link">Explore story <b aria-hidden="true">↗</b></span>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <footer class="single-case-footer">
+            <a href="{% url 'case_study_list' %}" class="single-case-button">Explore all case studies <span aria-hidden="true">↗</span></a>
+        </footer>
+    </div>
+</div>
+{% endblock %}

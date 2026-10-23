@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2172" height="724" viewBox="0 0 2172 724" fill="none">
+  <defs>
+    <radialGradient id="sunGlow" cx="0" cy="0" r="1" gradientTransform="matrix(0 230 -420 0 1086 474)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE9A8" stop-opacity=".9"/>
+      <stop offset=".34" stop-color="#DDA353" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#DDA353" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sun" x1="1086" x2="1086" y1="346" y2="570" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE8A5"/>
+      <stop offset="1" stop-color="#D88D3E"/>
+    </linearGradient>
+    <linearGradient id="distant" x1="1086" x2="1086" y1="413" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9BAF7B"/>
+      <stop offset="1" stop-color="#536F43"/>
+    </linearGradient>
+    <linearGradient id="ridge" x1="1086" x2="1086" y1="459" y2="628" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#567343"/>
+      <stop offset="1" stop-color="#173D28"/>
+    </linearGradient>
+    <linearGradient id="foreground" x1="1086" x2="1086" y1="560" y2="704" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#274B2B"/>
+      <stop offset="1" stop-color="#10291D"/>
+    </linearGradient>
+    <linearGradient id="copper" x1="0" x2="2172" y1="592" y2="634" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D1A568"/>
+      <stop offset=".5" stop-color="#F0D29A"/>
+      <stop offset="1" stop-color="#B97842"/>
+    </linearGradient>
+    <g id="pine" fill="#153A25">
+      <path d="M0 0 31 73H17l29 52H31l38 67H0V0Z"/>
+      <path d="M0 0 31 73H17l29 52H31l38 67H0V0Z" transform="translate(12 54) scale(.78)"/>
+      <rect x="27" y="173" width="12" height="25" rx="3" fill="#392B1D"/>
+    </g>
+    <g id="leaf" fill="#526F2B" stroke="#839447" stroke-width="2">
+      <path d="M0 0C31-26 63-24 82-1 55 20 25 21 0 0Z"/>
+      <path d="M5 0 74-1" fill="none" stroke="#A5AE58" stroke-width="1.5"/>
+    </g>
+  </defs>
+
+  <!-- Warm horizon glow and low sun -->
+  <ellipse cx="1086" cy="474" fill="url(#sunGlow)" rx="420" ry="230"/>
+  <circle cx="1086" cy="470" r="119" fill="url(#sun)"/>
+
+  <!-- Far ridges -->
+  <path d="M0 519 103 480 173 504 289 452 372 482 495 423 572 457 692 433 784 474 884 452 977 478 1086 438 1190 472 1287 439 1382 475 1496 427 1594 462 1708 414 1818 467 1916 431 2008 483 2084 453 2172 475V620H0V519Z" fill="url(#distant)"/>
+  <path d="m0 535 103-55 70 24 116-52 83 30 123-59 77 34 120-24 92 41 100-22 93 26 109-40 104 34 97-33 95 36 114-48 98 35 114-48 110 53 98-36 92 52 76-30 88 22" stroke="#B7C49A" stroke-opacity=".52" stroke-width="5"/>
+
+  <!-- Layered forest hills -->
+  <path d="M0 561c128-31 207-71 340-61 126 10 191 66 321 57 113-8 174-69 298-63 102 5 171 50 269 48 113-3 175-66 292-58 111 8 172 71 286 61 129-12 203-75 366-47v137H0V561Z" fill="#3D6338"/>
+  <path d="M0 584c163-53 265-41 402-10 102 24 191 27 283 7 124-26 199-73 317-59 112 13 165 72 278 76 137 5 222-68 354-66 169 2 279 79 538 39v132H0V584Z" fill="url(#ridge)"/>
+
+  <!-- Pine silhouettes framing the horizon -->
+  <g opacity=".95">
+    <use href="#pine" transform="translate(4 374) scale(1.38)"/>
+    <use href="#pine" transform="translate(56 426) scale(.96)"/>
+    <use href="#pine" transform="translate(101 452) scale(.72)"/>
+    <use href="#pine" transform="translate(148 475) scale(.56)"/>
+    <use href="#pine" transform="translate(200 492) scale(.43)"/>
+    <use href="#pine" transform="translate(2172 382) scale(-1.28 1.28)"/>
+    <use href="#pine" transform="translate(2116 427) scale(-.92 .92)"/>
+    <use href="#pine" transform="translate(2071 455) scale(-.7 .7)"/>
+    <use href="#pine" transform="translate(2024 479) scale(-.54 .54)"/>
+    <use href="#pine" transform="translate(1975 494) scale(-.42 .42)"/>
+  </g>
+
+  <!-- Foreground contour and warm copper edge -->
+  <path d="M0 578c177 22 309 123 510 105 199-18 309-126 497-126 201 0 298 104 495 111 212 8 374-101 670-80v136H0V578Z" fill="url(#foreground)"/>
+  <path d="M0 582c177 22 309 123 510 105 199-18 309-126 497-126 201 0 298 104 495 111 212 8 374-101 670-80" stroke="#DFBD7F" stroke-width="8"/>
+  <path d="M0 603c181 24 314 105 507 88 200-18 322-95 502-92 191 3 308 91 498 98 211 8 382-75 665-60" stroke="url(#copper)" stroke-width="16"/>
+  <path d="M0 614c182 24 315 105 508 88 200-18 321-95 501-92 192 3 309 91 499 98 211 8 382-75 664-60v76H0v-110Z" fill="#10281D" fill-opacity=".88"/>
+
+  <!-- Leafy branches in the top corners -->
+  <g opacity=".87" stroke="#344F23" stroke-width="8" stroke-linecap="round">
+    <path d="M-24 24c91 58 162 102 277 137M-14 61c89 8 158 21 249 52M-5 20c54 91 97 142 177 207" fill="none"/>
+    <path d="M2196 25c-91 58-162 102-277 137m267-101c-89 8-158 21-249 52m238-93c-54 91-97 142-177 207" fill="none"/>
+  </g>
+  <g opacity=".9">
+    <use href="#leaf" transform="translate(30 38) rotate(31) scale(.92)"/>
+    <use href="#leaf" transform="translate(82 81) rotate(8) scale(.76)"/>
+    <use href="#leaf" transform="translate(132 103) rotate(31) scale(.72)"/>
+    <use href="#leaf" transform="translate(173 124) rotate(7) scale(.67)"/>
+    <use href="#leaf" transform="translate(216 142) rotate(29) scale(.58)"/>
+    <use href="#leaf" transform="translate(34 93) rotate(81) scale(.72)"/>
+    <use href="#leaf" transform="translate(82 135) rotate(65) scale(.68)"/>
+    <use href="#leaf" transform="translate(129 165) rotate(72) scale(.63)"/>
+    <use href="#leaf" transform="translate(2142 38) rotate(149) scale(.92)"/>
+    <use href="#leaf" transform="translate(2090 81) rotate(172) scale(.76)"/>
+    <use href="#leaf" transform="translate(2040 103) rotate(149) scale(.72)"/>
+    <use href="#leaf" transform="translate(1999 124) rotate(173) scale(.67)"/>
+    <use href="#leaf" transform="translate(1956 142) rotate(151) scale(.58)"/>
+    <use href="#leaf" transform="translate(2138 93) rotate(99) scale(.72)"/>
+    <use href="#leaf" transform="translate(2090 135) rotate(115) scale(.68)"/>
+    <use href="#leaf" transform="translate(2043 165) rotate(108) scale(.63)"/>
+  </g>
+</svg>

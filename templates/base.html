@@ -18,8 +18,43 @@
 
     <meta
         name="description"
-        content="Vikas Kumar — Software Developer building backend systems, full-stack applications and modern digital products."
+        content="{% block meta_description %}Vikas Kumar is a software developer in India building Django and Python backends, full-stack websites, and practical web applications. Explore projects and case studies.{% endblock %}"
     >
+
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% if google_site_verification %}
+    <meta name="google-site-verification" content="{{ google_site_verification }}">
+    {% endif %}
+
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Vikas Kumar | Django &amp; Python Full-Stack Developer{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Django and Python backends, full-stack websites, and practical web applications by Vikas Kumar.{% endblock %}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:image" content="{{ seo_image_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Vikas Kumar | Django &amp; Python Full-Stack Developer{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Django and Python backends, full-stack websites, and practical web applications by Vikas Kumar.{% endblock %}">
+    <meta name="twitter:image" content="{{ seo_image_url }}">
+
+    <script type="application/ld+json" nonce="{{ csp_nonce }}">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Vikas Kumar",
+      "url": "{{ canonical_url|escapejs }}",
+      "image": "{{ seo_image_url|escapejs }}",
+      "jobTitle": "Software Developer",
+      "email": "mailto:vikas7501kumar@gmail.com",
+      "sameAs": [
+        "https://github.com/Vikas01-web",
+        "https://www.linkedin.com/in/vikas-kumar-b7788a380/",
+        "https://www.instagram.com/the_vikass.03/"
+      ],
+      "knowsAbout": ["Django", "Python", "Full-stack web development", "Backend development"]
+    }
+    </script>
 
     <meta
         name="theme-color"
@@ -37,7 +72,7 @@
 
     <title>
         {% block title %}
-            Vikas Kumar — Software Developer
+            Vikas Kumar | Django &amp; Python Full-Stack Developer
         {% endblock %}
     </title>
 
@@ -55,7 +90,7 @@
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
         rel="stylesheet"
     >
 
@@ -86,12 +121,12 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'css/navbar.css' %}"
+        href="{% static 'css/navbar.css' %}?v=20261023-2"
     >
 
     <link
         rel="stylesheet"
-        href="{% static 'css/footer.css' %}"
+        href="{% static 'css/footer.css' %}?v=20261023-6"
     >
 
 
@@ -104,11 +139,11 @@
         href="{% static 'css/hero.css' %}"
     >
     
-<link rel="stylesheet" href="{% static 'css/tech-ribbon.css' %}">
+<link rel="stylesheet" href="{% static 'css/tech-ribbon.css' %}?v=20261021-5">
 
 <link
         rel="stylesheet"
-        href="{% static 'css/about.css' %}"
+        href="{% static 'css/about.css' %}?v=20261021-2"
     >
 
     <link
@@ -118,27 +153,35 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'css/projects.css' %}"
+        href="{% static 'css/projects.css' %}?v=20261022-6"
     >
 
     <link
         rel="stylesheet"
-        href="{% static 'css/experience.css' %}"
+        href="{% static 'css/process.css' %}"
     >
 
     <link
         rel="stylesheet"
-        href="{% static 'css/certificates.css' %}"
+        href="{% static 'css/services-showcase.css' %}?v=20261023-3"
+    >
+
+    <link rel="stylesheet"
+      href="{% static 'css/case-studies.css' %}">
+
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/testimonials.css' %}?v=20261023-1"
+    >
+    <link
+        rel="stylesheet"
+        href="{% static 'css/credentials.css' %}?v=20261023-5"
     >
 
     <link
         rel="stylesheet"
-        href="{% static 'css/skills.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/blog.css' %}"
+        href="{% static 'css/blog.css' %}?v=20261023-7"
     >
 
     <link
@@ -148,7 +191,7 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'css/contact.css' %}"
+        href="{% static 'css/contact.css' %}?v=20261023-1"
     >
 
 
@@ -160,6 +203,9 @@
         rel="stylesheet"
         href="{% static 'css/responsive.css' %}"
     >
+
+    <!-- Shared section palette and warm, tinted card surfaces. -->
+    <link rel="stylesheet" href="{% static 'css/section-harmony.css' %}?v=20261023-1">
 
 
     <!-- =====================================
@@ -224,10 +270,18 @@
          MAIN JAVASCRIPT
     ====================================== -->
 
+    <script src="{% static 'js/credentials.js' %}?v=20261023-2" defer></script>
+
     <script
-        src="{% static 'js/main.js' %}"
+        src="{% static 'js/main.js' %}?v=20261023-13"
         defer
     ></script>
+
+    <script src="{% static 'js/services-showcase.js' %}?v=20261023-1" defer></script>
+
+    <script src="{% static 'js/case-studies.js' %}" defer></script>
+
+    <script src="{% static 'js/footer-motion.js' %}?v=20261023-2" defer></script>
 
 
     <!-- =====================================

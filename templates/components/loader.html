@@ -1,186 +1,67 @@
 {% load static %}
 
-<!-- =========================================================
-     VIKAS KUMAR — SIGNATURE BRAND LOADER
-     ========================================================= -->
-
-<div
-    id="page-loader"
-    class="signature-loader"
-    aria-hidden="false"
->
-
-    <!-- BACKGROUND -->
-    <div class="signature-loader-bg">
-
-        <div class="signature-loader-grain"></div>
-
-        <div class="signature-loader-grid"></div>
-
-        <div class="signature-loader-glow glow-left"></div>
-        <div class="signature-loader-glow glow-right"></div>
-
-        <div class="signature-loader-diagonal diagonal-a"></div>
-        <div class="signature-loader-diagonal diagonal-b"></div>
-
+<div id="page-loader" class="signature-loader" aria-hidden="false" aria-label="Loading Vikas Kumar's portfolio">
+    <div class="loader-atmosphere" aria-hidden="true">
+        <div class="loader-grain"></div>
+        <div class="loader-grid"></div>
+        <div class="loader-glow loader-glow-one"></div>
+        <div class="loader-glow loader-glow-two"></div>
+        <div class="loader-sweep"></div>
     </div>
 
+    <header class="loader-header">
+        <a class="loader-brand" href="#" aria-label="Vikas Kumar">
+            <span class="loader-brand-mark">V<span>K</span></span>
+            <span class="loader-brand-name">VIKAS KUMAR<span>INDEPENDENT DEVELOPER</span></span>
+        </a>
+        <div class="loader-header-note"><span class="loader-live-dot"></span> PERSONAL PORTFOLIO <i>·</i> 2026</div>
+    </header>
 
-    <!-- TOP INFORMATION -->
-    <div class="signature-loader-top">
+    <main class="loader-composition">
+        <div class="loader-index" aria-hidden="true"><span>SELECTED WORK</span><b>001 — 026</b></div>
 
-        <div class="signature-loader-brand">
-            <span class="signature-loader-live"></span>
-            <span>VK.DEV</span>
+        <div class="loader-visual" aria-hidden="true">
+            <div class="loader-orbit orbit-back"></div>
+            <div class="loader-orbit orbit-front"></div>
+            <div class="loader-floor"></div>
+            <div class="loader-cube-shadow"></div>
+            <div class="loader-cube">
+                <div class="cube-face cube-front"><span class="cube-face-label">VK / 01</span><img src="{% static 'images/profile/1vikas-logo.png' %}" alt="" class="loader-logo"></div>
+                <div class="cube-face cube-side"><span>BUILD<br>WITH<br>INTENT.</span></div>
+                <div class="cube-face cube-top"><span>DESIGN × CODE</span></div>
+                <div class="cube-highlight"></div>
+            </div>
+            <div class="loader-orbit-dot orbit-dot-one"></div>
+            <div class="loader-orbit-dot orbit-dot-two"></div>
+            <div class="loader-visual-caption"><span>CREATIVE<br>ENGINEERING</span><b>28° 34′ N</b></div>
         </div>
 
-        <div class="signature-loader-stack">
-            SOFTWARE
-            <span>/</span>
-            DEVELOPMENT
-        </div>
+        <section class="loader-copy" aria-label="Loading portfolio">
+            <p class="loader-eyebrow"><span></span> A DIGITAL SPACE BY VIKAS</p>
+            <h1>Ideas into<br><em>experiences.</em></h1>
+            <p class="loader-description">Thoughtful design. Purposeful code.<br>One detail at a time.</p>
 
-    </div>
-
-
-    <!-- SIDE INFORMATION -->
-    <div class="signature-loader-side signature-loader-side-left">
-        <span>01</span>
-        <span>LOADING</span>
-    </div>
-
-    <div class="signature-loader-side signature-loader-side-right">
-        <span>VK — 001</span>
-        <span>2026</span>
-    </div>
-
-
-    <!-- MAIN -->
-    <main class="signature-loader-main">
-
-        <!-- PORTAL -->
-        <div class="signature-loader-portal">
-
-            <div class="portal-ring ring-outer"></div>
-            <div class="portal-ring ring-middle"></div>
-            <div class="portal-ring ring-inner"></div>
-
-            <div class="portal-cross cross-top"></div>
-            <div class="portal-cross cross-right"></div>
-            <div class="portal-cross cross-bottom"></div>
-            <div class="portal-cross cross-left"></div>
-
-            <div class="portal-orbit orbit-one">
-                <span></span>
+            <div class="signature-loader-progress">
+                <div class="signature-loader-progress-head">
+                    <span id="loader-status-text" role="status" aria-live="polite" aria-atomic="true">SETTING THE STAGE</span>
+                    <strong id="loader-percent">00%</strong>
+                </div>
+                <div class="signature-loader-progress-track" role="progressbar" aria-label="Portfolio loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <span id="loader-progress-bar" class="signature-loader-progress-fill"></span>
+                    <span id="loader-progress-point" class="signature-loader-progress-point"></span>
+                </div>
+                <div class="loader-progress-foot"><span>PORTFOLIO</span><span>PLEASE WAIT A MOMENT</span></div>
             </div>
+        </section>
 
-            <div class="portal-orbit orbit-two">
-                <span></span>
-            </div>
-
-            <div class="portal-light"></div>
-
-
-            <!-- REAL LOGO -->
-            <div class="signature-loader-logo-lens">
-
-                <div class="logo-lens-inner"></div>
-
-                <img
-                    src="{% static 'images/profile/vikas-logo.png' %}"
-                    alt="Vikas Kumar"
-                    class="signature-loader-logo"
-                />
-
-                <span class="logo-sweep"></span>
-
-            </div>
-
-        </div>
-
-
-        <!-- BRAND TITLE -->
-        <div class="signature-loader-name">
-
-            <div class="signature-loader-name-line">
-                VIKAS KUMAR
-            </div>
-
-            <div class="signature-loader-name-role">
-                SOFTWARE DEVELOPER
-            </div>
-
-        </div>
-
-
-        <!-- PROGRESS -->
-        <div class="signature-loader-progress">
-
-            <div class="signature-loader-progress-head">
-
-                <span id="loader-status-text">
-                    INITIALIZING DIGITAL EXPERIENCE
-                </span>
-
-                <strong id="loader-percent">
-                    00%
-                </strong>
-
-            </div>
-
-
-            <div class="signature-loader-progress-track">
-
-                <span
-                    id="loader-progress-bar"
-                    class="signature-loader-progress-fill"
-                ></span>
-
-                <span
-                    id="loader-progress-point"
-                    class="signature-loader-progress-point"
-                ></span>
-
-            </div>
-
-
-            <div class="signature-loader-progress-meta">
-
-                <span>BACKEND</span>
-                <span>PYTHON</span>
-                <span>DJANGO</span>
-                <span>FULL STACK</span>
-
-            </div>
-
-        </div>
-
-
-        <!-- BOTTOM STATEMENT -->
-        <div class="signature-loader-statement">
-
-            <span class="statement-line"></span>
-
-            <span>
-                BUILDING DIGITAL EXPERIENCES
-            </span>
-
-        </div>
-
+        <div class="loader-wordmark" aria-hidden="true">VIKAS<span>.</span></div>
     </main>
 
+    <footer class="loader-footer">
+        <span>DESIGNED & BUILT IN NEW DELHI</span>
+        <span class="loader-footer-center"><i></i> GOOD THINGS TAKE A MOMENT <i></i></span>
+        <span>SCROLL TO EXPLORE <b>↓</b></span>
+    </footer>
 
-    <!-- BOTTOM -->
-    <div class="signature-loader-bottom">
-
-        <span>NEW DELHI / INDIA</span>
-
-        <span>EST. 2026</span>
-
-    </div>
-
-
-    <!-- EXIT WIPE -->
-    <div class="signature-loader-exit"></div>
-
+    <div class="loader-exit" aria-hidden="true"></div>
 </div>

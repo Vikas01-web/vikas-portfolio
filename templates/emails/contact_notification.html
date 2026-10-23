@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New portfolio inquiry</title>
+</head>
+<body style="margin:0;padding:32px 12px;background:#f2efe8;color:#252821;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;margin:0 auto;border-collapse:collapse;background:#fffdf9;border:1px solid #e7e0d5;border-radius:18px;overflow:hidden;">
+    <tr>
+      <td style="padding:30px 36px;background:#273c32;border-bottom:4px solid #b98753;">
+        <p style="margin:0 0 12px;color:#d7b990;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;">{{ site_name }}</p>
+        <h1 style="margin:0;color:#fffaf2;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:normal;line-height:1.25;">A new project conversation</h1>
+        <p style="margin:10px 0 0;color:#d5ddd6;font-size:14px;line-height:1.6;">Someone reached out through your portfolio contact form.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px 36px 10px;">
+        <p style="margin:0 0 7px;color:#94714e;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Subject</p>
+        <h2 style="margin:0;color:#273c32;font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:normal;line-height:1.35;">{{ subject }}</h2>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 36px 8px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+          <tr>
+            <td width="50%" valign="top" style="padding:15px;background:#f7f4ee;border:1px solid #ebe4d9;border-radius:10px;">
+              <p style="margin:0 0 6px;color:#8a8175;font-size:10px;font-weight:bold;letter-spacing:1.3px;text-transform:uppercase;">From</p>
+              <p style="margin:0;color:#273c32;font-size:15px;font-weight:bold;line-height:1.5;">{{ sender_name }}</p>
+            </td>
+            <td width="12"></td>
+            <td width="50%" valign="top" style="padding:15px;background:#f7f4ee;border:1px solid #ebe4d9;border-radius:10px;">
+              <p style="margin:0 0 6px;color:#8a8175;font-size:10px;font-weight:bold;letter-spacing:1.3px;text-transform:uppercase;">Email</p>
+              <p style="margin:0;font-size:14px;line-height:1.5;word-break:break-word;"><a href="mailto:{{ sender_email }}" style="color:#355f4a;text-decoration:underline;">{{ sender_email }}</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 36px 10px;">
+        <p style="margin:0 0 10px;color:#94714e;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;">Message</p>
+        <div style="padding:20px 22px;background:#fbf9f5;border-left:3px solid #b98753;border-radius:0 10px 10px 0;color:#36382f;font-size:15px;line-height:1.8;">{{ message|linebreaksbr }}</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 36px 34px;">
+        <a href="mailto:{{ sender_email }}?subject=Re%3A%20{{ subject|urlencode }}" style="display:inline-block;padding:13px 20px;border-radius:8px;background:#273c32;color:#fffaf2;font-size:13px;font-weight:bold;text-decoration:none;">Reply to {{ sender_name }}</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:17px 36px;border-top:1px solid #e9e2d8;color:#827c70;font-size:11px;line-height:1.6;">Sent securely from your portfolio contact form. Reply directly to this email to reach {{ sender_name }}.</td>
+    </tr>
+  </table>
+</body>
+</html>

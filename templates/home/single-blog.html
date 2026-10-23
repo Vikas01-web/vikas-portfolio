@@ -18,13 +18,44 @@
 
     <meta
         name="description"
-        content="{{ blog.excerpt }}"
+        content="{{ blog.excerpt|truncatechars:160 }}"
     >
+
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% if google_site_verification %}
+    <meta name="google-site-verification" content="{{ google_site_verification }}">
+    {% endif %}
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ blog.title }} | Vikas Kumar">
+    <meta property="og:description" content="{{ blog.excerpt|truncatechars:200 }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:image" content="{{ site_origin }}{% static blog.image %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ blog.title }} | Vikas Kumar">
+    <meta name="twitter:description" content="{{ blog.excerpt|truncatechars:200 }}">
+    <meta name="twitter:image" content="{{ site_origin }}{% static blog.image %}">
+    <script type="application/ld+json" nonce="{{ csp_nonce }}">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "{{ blog.title|escapejs }}",
+      "description": "{{ blog.excerpt|escapejs }}",
+      "datePublished": "{{ blog.published_date|date:'c' }}",
+      "author": {"@type": "Person", "name": "Vikas Kumar"},
+      "mainEntityOfPage": "{{ canonical_url|escapejs }}",
+      "image": "{{ site_origin|escapejs }}{% static blog.image %}"
+    }
+    </script>
 
     <link
         rel="stylesheet"
-        href="{% static 'css/single-blog.css' %}"
+        href="{% static 'css/single-blog.css' %}?v=20261023-1"
     >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -202,6 +233,14 @@
                         {{ blog.published_date|date:"M d, Y" }}
                     </strong>
 
+                </div>
+
+                <div class="single-reading-nook" aria-hidden="true">
+                    <span class="reading-lamp"><i></i></span>
+                    <span class="reading-book reading-book-one"></span>
+                    <span class="reading-book reading-book-two"></span>
+                    <span class="reading-shelf"></span>
+                    <span class="reading-nook-caption">A LITTLE ROOM TO THINK</span>
                 </div>
 
             </aside>

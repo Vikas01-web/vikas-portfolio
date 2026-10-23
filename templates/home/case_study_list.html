@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Web Development Case Studies | Vikas Kumar{% endblock %}
+{% block meta_description %}Read Vikas Kumar's web development case studies covering project goals, challenges, solutions, and technology choices.{% endblock %}
+{% block og_title %}Web Development Case Studies | Vikas Kumar{% endblock %}
+{% block twitter_title %}Web Development Case Studies | Vikas Kumar{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="case-index-page">
+    <div class="case-index-container">
+        <a class="case-index-back" href="{% url 'home' %}#case-studies">&larr; Back to portfolio</a>
+
+        <header class="case-index-header" data-case-reveal>
+            <span class="case-index-kicker"><i></i> SELECTED WORK / CASE STUDIES</span>
+            <h1>Thoughtful work.<br><em>Clear outcomes.</em></h1>
+            <p>A closer look at the challenges, decisions and craft behind each project. Every study shares the context, approach and tools that shaped the result.</p>
+            <div class="case-index-stats">
+                <span><strong>{{ case_studies|length }}</strong> project stories</span>
+                <span><strong>01—04</strong> discover to delivery</span>
+            </div>
+        </header>
+
+        <section class="case-index-feature" aria-labelledby="case-index-feature-title" data-case-reveal>
+            <div class="case-index-feature-copy">
+                <span class="case-index-label">FEATURED PROJECT <b>01 / 03</b></span>
+                <span class="case-index-category">{{ featured_case_study.category }}</span>
+                <h2 id="case-index-feature-title">{{ featured_case_study.title }}</h2>
+                <p>{{ featured_case_study.description }}</p>
+                <div class="case-index-meta"><span>CHALLENGE</span><strong>{{ featured_case_study.challenge }}</strong></div>
+                <a class="case-index-button" href="{% url 'case_study_detail' slug='mpi-job-portal' %}">Explore the project <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="case-index-art" aria-hidden="true">
+                <img class="case-index-art-image" src="{{ featured_case_study.image_url }}" alt="" loading="lazy" decoding="async">
+                <div class="case-index-art-top"><span>MPI / OPPORTUNITY BOARD</span><span class="case-index-live">● PROJECT STORY</span></div>
+                <div class="case-index-board">
+                    <div class="case-index-board-heading"><span>Find your next move</span><i>⌕</i></div>
+                    <div class="case-index-job"><b>Product Designer</b><small>Design · Full time</small><i>↗</i></div>
+                    <div class="case-index-job"><b>Frontend Developer</b><small>Engineering · Hybrid</small><i>↗</i></div>
+                    <div class="case-index-job"><b>Project Coordinator</b><small>Operations · Remote</small><i>↗</i></div>
+                </div>
+                <span class="case-index-art-note">A clearer path from discovery to application.</span>
+            </div>
+        </section>
+
+        <div class="case-index-section-heading" data-case-reveal>
+            <div><span>MORE PROJECT STORIES</span><h2>Built with care, from brief to finish.</h2></div>
+            <p>Different problems, one steady process: understand first, then make the solution useful.</p>
+        </div>
+
+        <section class="case-index-grid" aria-label="All case studies">
+            {% for slug, study in case_studies.items %}
+                {% if slug != 'mpi-job-portal' %}
+                <article class="case-index-card" data-case-reveal>
+                    <div class="case-index-card-art" aria-hidden="true">
+                        <img class="case-index-card-image" src="{{ study.image_url }}" alt="" loading="lazy" decoding="async">
+                        <span class="case-index-card-number">0{{ forloop.counter }} / CASE STUDY</span>
+                        {% if 'Debugging' in study.category %}
+                            <div class="case-index-code"><span>diagnostics.log</span><b>✓ issue identified</b><i></i><i></i><i></i></div>
+                        {% else %}
+                            <div class="case-index-layers"><i>Content</i><i>Theme &amp; layout</i><i>Responsive experience</i></div>
+                        {% endif %}
+                    </div>
+                    <div class="case-index-card-body">
+                        <span class="case-index-category">{{ study.category }}</span>
+                        <h3>{{ study.title }}</h3>
+                        <p>{{ study.description }}</p>
+                        <div class="case-index-challenge"><span>THE CHALLENGE</span><strong>{{ study.challenge }}</strong></div>
+                        <a href="{% url 'case_study_detail' slug=slug %}" class="case-index-link">Read the case study <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                {% endif %}
+            {% endfor %}
+        </section>
+
+        <footer class="case-index-cta">
+            <span>HAVE A PROJECT IN MIND?</span>
+            <h2>Let’s make something <em>meaningful.</em></h2>
+            <a href="{% url 'home' %}#contact">Start a conversation <span aria-hidden="true">↗</span></a>
+        </footer>
+    </div>
+</div>
+{% endblock %}

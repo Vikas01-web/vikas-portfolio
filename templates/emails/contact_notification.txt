@@ -1,0 +1,10 @@
+NEW PORTFOLIO INQUIRY
+{{ site_name }}
+
+Subject: {{ subject }}
+From: {{ sender_name }} <{{ sender_email }}>
+
+Message:
+{{ message }}
+
+Reply to this email to respond to {{ sender_name }}.

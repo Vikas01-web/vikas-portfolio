@@ -1,7 +1,14 @@
 /* =========================================================
-   VIKAS KUMAR PORTFOLIO
-   MAIN.JS
-   CENTRAL / EXTENDABLE / ANIMATION FIRST
+   VIKAS KUMAR PORTFOLIO - MAIN.JS
+
+   FILE MAP
+   CORE   Boot, loader, navigation, scroll, hero, technology, about,
+          projects, and experience
+   CORE   Ends at the closing IIFE before the standalone sections
+   AFTER  Certificates, skills, and blog (each has a local registration)
+
+   Each standalone section below the core IIFE owns its initializer and
+   its registerSection() call. Keep each registration inside that section.
    ========================================================= */
 
 (() => {
@@ -146,25 +153,20 @@
         );
 
         runInitializer(
-            "home",
-            initHome
-        );
-
-        runInitializer(
             "about",
-            initAbout
+            () => {
+                const initializeAbout =
+                    window.VikasPortfolio?.initAbout;
+
+                if (typeof initializeAbout === "function") {
+                    initializeAbout();
+                }
+            }
         );
 
-        runInitializer(
-            "projects",
-            initProjects
-        );
-
-        runInitializer(
-            "experience",
-            initExperience
-        );
-
+        // Projects and experience own independent initializers below.
+        // Keeping them out of this registry avoids references to missing
+        // core functions and lets queued section initializers run normally.
         while (
             pendingInitializers.length
         ) {
@@ -198,17 +200,76 @@
 
 
     /* =====================================================
-       01 — LOADER
+       01 â€” LOADER
        ===================================================== */
 
     function initLoader() {
         const loader =
             qs("#page-loader");
 
+        const revealHero = () => {
+            if (reduceMotion) {
+                return;
+            }
+
+            const hero = qs("#home");
+            if (!hero) {
+                return;
+            }
+
+            // Let the loader finish fading before the hero entrance begins.
+            window.setTimeout(() => {
+                hero.classList.add("hero-animations-ready");
+                startHeroRoleTyping(hero);
+            }, 180);
+        };
+
+        const startHeroRoleTyping = (hero) => {
+            const roleText = qs("#hero-role-text", hero);
+            if (!roleText) return;
+
+            const roles = [
+                "Backend Developer",
+                "Full Stack Web Developer",
+                "Python Developer"
+            ];
+            let roleIndex = 0;
+            let deleting = false;
+
+            const typeNextCharacter = () => {
+                const currentRole = roles[roleIndex];
+                const visibleText = roleText.textContent || "";
+
+                if (!deleting) {
+                    roleText.textContent = currentRole.slice(0, visibleText.length + 1);
+                    if (roleText.textContent === currentRole) {
+                        deleting = true;
+                        window.setTimeout(typeNextCharacter, 1350);
+                        return;
+                    }
+                    window.setTimeout(typeNextCharacter, 72);
+                    return;
+                }
+
+                roleText.textContent = visibleText.slice(0, -1);
+                if (!roleText.textContent) {
+                    deleting = false;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    window.setTimeout(typeNextCharacter, 260);
+                    return;
+                }
+                window.setTimeout(typeNextCharacter, 34);
+            };
+
+            roleText.textContent = "";
+            typeNextCharacter();
+        };
+
         if (!loader) {
             document.body.classList.add(
                 "page-loaded"
             );
+            revealHero();
             return;
         }
 
@@ -252,14 +313,43 @@
         let finished = false;
         let statusIndex = 0;
         let statusTimer = null;
+        let pointerFrame = 0;
+        let finishScheduled = false;
+        const loaderStartedAt = performance.now();
+
+        const moveLoaderLight = (event) => {
+            if (finished || pointerFrame) {
+                return;
+            }
+
+            pointerFrame = window.requestAnimationFrame(() => {
+                pointerFrame = 0;
+                loader.style.setProperty(
+                    "--loader-light-x",
+                    `${event.clientX}px`
+                );
+                loader.style.setProperty(
+                    "--loader-light-y",
+                    `${event.clientY}px`
+                );
+            });
+        };
+
+        if (finePointer && !reduceMotion) {
+            window.addEventListener(
+                "pointermove",
+                moveLoaderLight,
+                { passive: true }
+            );
+        }
 
 
         const statuses = [
-            "INITIALIZING DIGITAL EXPERIENCE",
-            "LOADING PORTFOLIO SYSTEM",
-            "CONNECTING PROJECTS",
-            "PREPARING VIKAS.DEV",
-            "PORTFOLIO READY"
+            "SETTING THE STAGE",
+            "COMPOSING THE DETAILS",
+            "BRINGING IT TO LIFE",
+            "GETTING EVERYTHING READY",
+            "READY TO EXPLORE"
         ];
 
 
@@ -288,6 +378,18 @@
                         Math.round(progress)
                     ).padStart(2, "0")}%`;
             }
+
+            const progressTrack = qs(
+                ".signature-loader-progress-track",
+                loader
+            );
+
+            if (progressTrack) {
+                progressTrack.setAttribute(
+                    "aria-valuenow",
+                    String(Math.round(progress))
+                );
+            }
         };
 
 
@@ -296,7 +398,33 @@
                 return;
             }
 
+            const minimumIntroTime = 1650;
+            const timeRemaining =
+                minimumIntroTime -
+                (performance.now() - loaderStartedAt);
+
+            if (!reduceMotion && timeRemaining > 0) {
+                if (!finishScheduled) {
+                    finishScheduled = true;
+                    window.setTimeout(() => {
+                        finishScheduled = false;
+                        finishLoader();
+                    }, timeRemaining);
+                }
+                return;
+            }
+
             finished = true;
+
+            window.removeEventListener(
+                "pointermove",
+                moveLoaderLight
+            );
+
+            if (pointerFrame) {
+                window.cancelAnimationFrame(pointerFrame);
+                pointerFrame = 0;
+            }
 
 
             if (statusTimer) {
@@ -327,9 +455,12 @@
                     "is-hidden"
                 );
 
+                loader.setAttribute("aria-hidden", "true");
+
                 document.body.classList.add(
                     "page-loaded"
                 );
+                revealHero();
 
                 return;
             }
@@ -347,9 +478,12 @@
                     "is-hidden"
                 );
 
+                loader.setAttribute("aria-hidden", "true");
+
                 document.body.classList.add(
                     "page-loaded"
                 );
+                revealHero();
             }, 1050);
         };
 
@@ -469,7 +603,7 @@
 
 
     /* =====================================================
-       02 — NAVBAR
+       02 â€” NAVBAR
        ===================================================== */
 
     function initNavbar() {
@@ -493,13 +627,13 @@
 
         const menuButton =
             qs(
-                ".navbar-menu",
+                ".navbar-menu-toggle",
                 header
             );
 
         const mobileMenu =
             qs(
-                "#navbar-mobile",
+                "#navbar-mobile-menu",
                 header
             );
 
@@ -511,20 +645,21 @@
 
         const mobileLinks =
             qsa(
-                ".navbar-mobile-link",
+                ".navbar-mobile-links a",
                 header
             );
 
 
         const closeMenu = () => {
             header.classList.remove(
-                "menu-active"
+                "menu-open"
             );
 
             if (mobileMenu) {
                 mobileMenu.classList.remove(
                     "is-open"
                 );
+                mobileMenu.setAttribute("aria-hidden", "true");
             }
 
             if (menuButton) {
@@ -547,13 +682,14 @@
 
         const openMenu = () => {
             header.classList.add(
-                "menu-active"
+                "menu-open"
             );
 
             if (mobileMenu) {
                 mobileMenu.classList.add(
                     "is-open"
                 );
+                mobileMenu.setAttribute("aria-hidden", "false");
             }
 
             if (menuButton) {
@@ -582,7 +718,7 @@
 
                     if (
                         header.classList.contains(
-                            "menu-active"
+                        "menu-open"
                         )
                     ) {
                         closeMenu();
@@ -672,9 +808,7 @@
         );
 
 
-        let previousY =
-            window.scrollY;
-
+        const heroSection = qs("#home");
         let ticking = false;
 
 
@@ -682,44 +816,14 @@
             const currentY =
                 window.scrollY;
 
-            const delta =
-                currentY -
-                previousY;
-
-
-            if (
-                currentY <= 20
-            ) {
-                header.classList.remove(
-                    "header-hidden"
-                );
-            } else if (
-                delta > 6 &&
-                currentY > 100 &&
-                !header.classList.contains(
-                    "menu-active"
-                )
-            ) {
-                header.classList.add(
-                    "header-hidden"
-                );
-            } else if (
-                delta < -5
-            ) {
-                header.classList.remove(
-                    "header-hidden"
-                );
-            }
-
+            const hasLeftHero = heroSection
+                ? heroSection.getBoundingClientRect().bottom <= 110
+                : currentY > 24;
 
             header.classList.toggle(
                 "is-scrolled",
-                currentY > 20
+                hasLeftHero
             );
-
-
-            previousY =
-                currentY;
 
             ticking = false;
         };
@@ -743,7 +847,6 @@
             }
         );
 
-
         window.addEventListener(
             "resize",
             () => {
@@ -764,8 +867,13 @@
             qsa("section[id]");
 
 
+        const allNavigationLinks = [
+            ...navLinks,
+            ...mobileLinks
+        ];
+
         const getNavLink = (id) =>
-            navLinks.find(
+            allNavigationLinks.find(
                 (link) =>
                     link.getAttribute(
                         "href"
@@ -789,6 +897,12 @@
                                 return;
                             }
 
+                            const activeLink =
+                                getNavLink(entry.target.id);
+
+                            // Keep the last main-section marker while scrolling through helper sections.
+                            if (!activeLink) return;
+
                             navLinks.forEach(
                                 (link) => {
                                     link.classList.remove(
@@ -797,18 +911,13 @@
                                 }
                             );
 
-
-                            const activeLink =
-                                getNavLink(
-                                    entry.target.id
+                            mobileLinks.forEach((link) => {
+                                link.classList.toggle(
+                                    "is-active",
+                                    link.getAttribute("href") === `#${entry.target.id}`
                                 );
-
-
-                            if (activeLink) {
-                                activeLink.classList.add(
-                                    "is-active"
-                                );
-                            }
+                            });
+                            activeLink.classList.add("is-active");
                         }
                     );
                 },
@@ -831,7 +940,7 @@
 
 
     /* =====================================================
-       03 — GLOBAL SMOOTH SCROLL
+       03 â€” GLOBAL SMOOTH SCROLL
        ===================================================== */
 
     function initSmoothScroll() {
@@ -913,2319 +1022,1018 @@
     }
 
 
-    /* =====================================================
-       04 — HOME / HERO
-       ===================================================== */
+/* =====================================================
+   HERO INTERACTIONS
+   1. Mouse parallax
+   2. Scroll-based portrait shrink
+   3. Background typography movement
+===================================================== */
 
-    function initHome() {
-        const hero =
-            qs(
-                "#home.hero-section"
-            );
+(() => {
+    "use strict";
 
-        if (!hero) {
-            return;
-        }
+    function initHeroInteractions() {
+        const panel = document.querySelector("#home .hero-panel");
 
+        if (!panel) return;
 
-        if (
-            hero.dataset.vikasInitialized ===
-            "true"
-        ) {
-            return;
-        }
+        const visual = panel.querySelector("[data-hero-visual]");
+        const portrait = panel.querySelector(".hero-portrait-wrap");
+        const backdrop = panel.querySelector(".hero-backdrop-type");
 
+        if (!visual || !portrait) return;
 
-        hero.dataset.vikasInitialized =
-            "true";
+        // Avoid duplicate listeners if initialization runs again.
+        if (panel.dataset.heroMotionInitialized === "true") return;
+        panel.dataset.heroMotionInitialized = "true";
 
-
-        const visual =
-            qs(
-                ".hero-visual",
-                hero
-            );
-
-        const stage =
-            qs(
-                ".hero-image-stage",
-                hero
-            );
-
-        const image =
-            qs(
-                ".hero-image",
-                hero
-            );
-
-        const glow =
-            qs(
-                ".hero-background-glow",
-                hero
-            );
-
-        const dot =
-            qs(
-                ".hero-background-dot",
-                hero
-            );
-
-        const primary =
-            qs(
-                ".hero-primary-button",
-                hero
-            );
-
-
-        window.requestAnimationFrame(
-            () => {
-                hero.classList.add(
-                    "hero-ready"
-                );
-
-                window.setTimeout(
-                    () => {
-                        hero.classList.add(
-                            "hero-visible"
-                        );
-                    },
-                    reduceMotion
-                        ? 0
-                        : 80
-                );
-            }
+        const reducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
         );
 
+        const finePointer = window.matchMedia(
+            "(hover: hover) and (pointer: fine)"
+        );
 
-        if (
-            finePointer &&
-            !reduceMotion
-        ) {
-            let targetX = 0;
-            let targetY = 0;
+        if (reducedMotion.matches) return;
 
-            let currentX = 0;
-            let currentY = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+        let rotateX = 0;
+        let rotateY = 0;
+        let scrollProgress = 0;
+        let frameRequested = false;
 
-            let raf = null;
+        const clamp = (value, min, max) =>
+            Math.min(max, Math.max(min, value));
 
+        function calculateScrollProgress() {
+            const rect = panel.getBoundingClientRect();
 
-            const render = () => {
-                currentX +=
-                    (
-                        targetX -
-                        currentX
-                    ) * 0.075;
+            // Begin the shrink effect as the hero scrolls upward.
+            const distance = Math.max(rect.height * 0.72, 1);
 
-                currentY +=
-                    (
-                        targetY -
-                        currentY
-                    ) * 0.075;
-
-
-                if (visual) {
-                    visual.style.transform =
-                        `translate3d(
-                            ${currentX * 4}px,
-                            ${currentY * 4}px,
-                            0
-                        )`;
-                }
-
-
-                if (stage) {
-                    stage.style.transform =
-                        `translate3d(
-                            ${currentX * 8}px,
-                            ${currentY * 6}px,
-                            0
-                        )`;
-                }
-
-
-                if (glow) {
-                    glow.style.transform =
-                        `translate3d(
-                            ${currentX * -14}px,
-                            ${currentY * -10}px,
-                            0
-                        )`;
-                }
-
-
-                if (dot) {
-                    dot.style.transform =
-                        `translate3d(
-                            ${currentX * 20}px,
-                            ${currentY * 16}px,
-                            0
-                        )`;
-                }
-
-
-                raf = null;
-            };
-
-
-            hero.addEventListener(
-                "pointermove",
-                (event) => {
-                    const rect =
-                        hero.getBoundingClientRect();
-
-
-                    targetX =
-                        (
-                            (
-                                event.clientX -
-                                rect.left
-                            ) /
-                            rect.width
-                        ) -
-                        0.5;
-
-
-                    targetY =
-                        (
-                            (
-                                event.clientY -
-                                rect.top
-                            ) /
-                            rect.height
-                        ) -
-                        0.5;
-
-
-                    if (!raf) {
-                        raf =
-                            window.requestAnimationFrame(
-                                render
-                            );
-                    }
-                }
-            );
-
-
-            hero.addEventListener(
-                "pointerleave",
-                () => {
-                    targetX = 0;
-                    targetY = 0;
-
-
-                    if (!raf) {
-                        raf =
-                            window.requestAnimationFrame(
-                                render
-                            );
-                    }
-                }
+            scrollProgress = clamp(
+                -rect.top / distance,
+                0,
+                1
             );
         }
 
+        function renderMotion() {
+            frameRequested = false;
 
-        if (
-            primary &&
-            finePointer &&
-            !reduceMotion
-        ) {
-            primary.addEventListener(
-                "pointermove",
-                (event) => {
-                    const rect =
-                        primary.getBoundingClientRect();
+            const scale = 1 - scrollProgress * 0.18;
+            const moveDown = scrollProgress * 70;
+            const moveBackgroundUp = scrollProgress * -35;
 
+            // Keep mouse movement subtle and professional.
+            portrait.style.transform = `
+                translate3d(
+                    ${pointerX}px,
+                    ${moveDown + pointerY}px,
+                    20px
+                )
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale(${scale})
+            `;
 
-                    const x =
-                        (
-                            event.clientX -
-                            rect.left -
-                            rect.width / 2
-                        ) * 0.08;
-
-
-                    const y =
-                        (
-                            event.clientY -
-                            rect.top -
-                            rect.height / 2
-                        ) * 0.08;
-
-
-                    primary.style.transform =
-                        `translate3d(
-                            ${x}px,
-                            ${y}px,
-                            0
-                        )`;
-                }
-            );
-
-
-            primary.addEventListener(
-                "pointerleave",
-                () => {
-                    primary.style.transform =
-                        "";
-                }
-            );
-        }
-
-
-        if (image) {
-            if (image.complete) {
-                image.classList.add(
-                    "is-loaded"
-                );
+            // The giant background word shifts gently on scroll.
+            if (backdrop) {
+                backdrop.style.transform =
+                    `translate3d(0, ${moveBackgroundUp}px, 0)`;
             }
-
-
-            image.addEventListener(
-                "load",
-                () => {
-                    image.classList.add(
-                        "is-loaded"
-                    );
-                },
-                { once: true }
-            );
         }
+
+        function requestRender() {
+            if (frameRequested) return;
+
+            frameRequested = true;
+            window.requestAnimationFrame(renderMotion);
+        }
+
+        // Scroll: shrink the portrait gradually and move it downward.
+        function onScroll() {
+            calculateScrollProgress();
+            requestRender();
+        }
+
+        window.addEventListener("scroll", onScroll, {
+            passive: true
+        });
+
+        window.addEventListener("resize", onScroll, {
+            passive: true
+        });
+
+        // Mouse: add gentle 3D depth on desktop and laptops.
+        if (finePointer.matches) {
+            panel.addEventListener("pointermove", (event) => {
+                const rect = panel.getBoundingClientRect();
+
+                const x = (event.clientX - rect.left) / rect.width;
+                const y = (event.clientY - rect.top) / rect.height;
+
+                pointerX = (x - 0.5) * 12;
+                pointerY = (y - 0.5) * 8;
+
+                rotateX = (0.5 - y) * 1.2;
+                rotateY = (x - 0.5) * 1.8;
+
+                requestRender();
+            });
+
+            panel.addEventListener("pointerleave", () => {
+                pointerX = 0;
+                pointerY = 0;
+                rotateX = 0;
+                rotateY = 0;
+
+                requestRender();
+            });
+        }
+
+        // Initial state.
+        calculateScrollProgress();
+        renderMotion();
     }
 
-
-    /* =====================================================
-       05 — ABOUT
-       ===================================================== */
-
-    function initAbout() {
-        const section =
-            qs(
-                "#about.about-section"
-            );
-
-        if (!section) {
-            return;
-        }
-
-
-        if (
-            section.dataset.vikasInitialized ===
-            "true"
-        ) {
-            return;
-        }
-
-
-        section.dataset.vikasInitialized =
-            "true";
-
-
-        const revealItems =
-            qsa(
-                "[data-about-reveal]",
-                section
-            );
-
-        const visual =
-            qs(
-                "[data-about-visual]",
-                section
-            );
-
-
-        section.classList.add(
-            "about-ready"
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initHeroInteractions,
+            { once: true }
         );
+    } else {
+        initHeroInteractions();
+    }
+})();
 
 
-        let hasEntered = false;
+/* =========================================================
+   SECTION: TECHNOLOGY SHOWCASE
+   Scroll reveal, continuous marquees, and carousel controls.
+   Single initializer for .tech-showcase.
+========================================================= */
+(() => {
+    function initTechnologyShowcase() {
+        const section = document.querySelector(".tech-showcase");
 
+        if (!section || section.dataset.animationInitialized === "true") {
+            return;
+        }
 
-        const observer =
-            new IntersectionObserver(
-                (
-                    entries,
-                    observerInstance
-                ) => {
-                    entries.forEach(
-                        (entry) => {
-                            if (
-                                !entry.isIntersecting ||
-                                hasEntered
-                            ) {
-                                return;
-                            }
+        section.dataset.animationInitialized = "true";
 
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
 
-                            hasEntered = true;
+        /* ---------- SCROLL REVEAL ---------- */
+        const revealElements = [
+            section.querySelector(".tech-intro"),
+            ...section.querySelectorAll(".tech-row"),
+            section.querySelector(".tech-feature-strip")
+        ].filter(Boolean);
 
-
-                            section.classList.add(
-                                "about-visible"
-                            );
-
-
-                            if (visual) {
-                                window.setTimeout(
-                                    () => {
-                                        visual.classList.add(
-                                            "is-visible"
-                                        );
-                                    },
-                                    reduceMotion
-                                        ? 0
-                                        : 120
-                                );
-                            }
-
-
-                            revealItems.forEach(
-                                (
-                                    item,
-                                    index
-                                ) => {
-                                    window.setTimeout(
-                                        () => {
-                                            item.classList.add(
-                                                "is-visible"
-                                            );
-                                        },
-                                        reduceMotion
-                                            ? 0
-                                            : 80 +
-                                              index * 95
-                                    );
-                                }
-                            );
-
-
-                            observerInstance.unobserve(
-                                entry.target
-                            );
+        if (!reduceMotion && "IntersectionObserver" in window) {
+            const revealObserver = new IntersectionObserver(
+                entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("tech-is-visible");
+                            revealObserver.unobserve(entry.target);
                         }
-                    );
+                    });
                 },
                 {
                     threshold: 0.12,
-                    rootMargin:
-                        "0px 0px -10% 0px"
+                    rootMargin: "0px 0px -35px 0px"
                 }
             );
 
+            revealElements.forEach((element, index) => {
+                element.classList.add("tech-reveal-ready");
+                element.style.transitionDelay =
+                    `${Math.min(index * 100, 300)}ms`;
 
-        observer.observe(section);
-
-
-        if (
-            visual &&
-            finePointer &&
-            !reduceMotion
-        ) {
-            const mainFrame =
-                qs(
-                    ".about-main-frame",
-                    visual
-                );
-
-            const miniOne =
-                qs(
-                    ".about-mini-one",
-                    visual
-                );
-
-            const miniTwo =
-                qs(
-                    ".about-mini-two",
-                    visual
-                );
-
-
-            visual.addEventListener(
-                "pointermove",
-                (event) => {
-                    const rect =
-                        visual.getBoundingClientRect();
-
-
-                    const x =
-                        (
-                            (
-                                event.clientX -
-                                rect.left
-                            ) /
-                            rect.width
-                        ) -
-                        0.5;
-
-
-                    const y =
-                        (
-                            (
-                                event.clientY -
-                                rect.top
-                            ) /
-                            rect.height
-                        ) -
-                        0.5;
-
-
-                    if (mainFrame) {
-                        mainFrame.style.transform =
-                            `rotate(
-                                ${4.5 + x * 2}deg
-                            )
-                            translate3d(
-                                ${x * 10}px,
-                                ${y * 8}px,
-                                20px
-                            )`;
-                    }
-
-
-                    if (miniOne) {
-                        miniOne.style.transform =
-                            `rotate(
-                                ${-7 + x * 3}deg
-                            )
-                            translate3d(
-                                ${x * -13}px,
-                                ${y * -10}px,
-                                60px
-                            )`;
-                    }
-
-
-                    if (miniTwo) {
-                        miniTwo.style.transform =
-                            `rotate(
-                                ${6 + x * 3}deg
-                            )
-                            translate3d(
-                                ${x * 14}px,
-                                ${y * 11}px,
-                                90px
-                            )`;
-                    }
-                }
-            );
-
-
-            visual.addEventListener(
-                "pointerleave",
-                () => {
-                    if (mainFrame) {
-                        mainFrame.style.transform =
-                            "";
-                    }
-
-                    if (miniOne) {
-                        miniOne.style.transform =
-                            "";
-                    }
-
-                    if (miniTwo) {
-                        miniTwo.style.transform =
-                            "";
-                    }
-                }
-            );
+                revealObserver.observe(element);
+            });
         }
 
+        /* ---------- CONTINUOUS TECHNOLOGY MARQUEES ---------- */
+        const marqueeRows = section.querySelectorAll("[data-tech-marquee]");
 
-        if (reduceMotion) {
-            section.classList.add(
-                "about-visible"
-            );
+        marqueeRows.forEach((carousel, index) => {
+            const track = carousel.querySelector(".tech-track");
+            const inner = carousel.querySelector(".tech-track-inner");
+            if (!track || !inner || inner.dataset.marqueeReady === "true") return;
 
+            inner.dataset.marqueeReady = "true";
+            const originals = Array.from(inner.children);
+            const appendCopies = cards => cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute("aria-hidden", "true");
+                clone.querySelectorAll("a, button, input, [tabindex]").forEach(item => {
+                    item.setAttribute("tabindex", "-1");
+                });
+                inner.appendChild(clone);
+            });
 
-            revealItems.forEach(
-                (item) => {
-                    item.classList.add(
-                        "is-visible"
-                    );
-                }
-            );
-
-
-            if (visual) {
-                visual.classList.add(
-                    "is-visible"
-                );
+            // Ensure one full sequence is at least as wide as the viewport.
+            while (inner.scrollWidth < track.clientWidth * 1.5) {
+                appendCopies(originals);
             }
-        }
+            const sequence = Array.from(inner.children);
+            appendCopies(sequence);
+
+            // Backend moves left-to-right; the other rows move right-to-left.
+            carousel.classList.add(index === 1 ? "tech-marquee-reverse" : "tech-marquee-forward");
+            const setDuration = () => {
+                const firstCard = inner.firstElementChild;
+                const lastCard = inner.children[sequence.length - 1];
+                const sequenceWidth = firstCard && lastCard
+                    ? lastCard.offsetLeft + lastCard.offsetWidth - firstCard.offsetLeft
+                    : inner.scrollWidth / 2;
+                inner.style.setProperty("--tech-marquee-distance", `${sequenceWidth}px`);
+                inner.style.setProperty("--tech-marquee-duration", `${Math.max(18, sequenceWidth / 38)}s`);
+            };
+            setDuration();
+            if ("ResizeObserver" in window) new ResizeObserver(setDuration).observe(track);
+            else window.addEventListener("resize", setDuration);
+        });
+
+        /* ---------- CAROUSEL SETUP ---------- */
+        const carousels = section.querySelectorAll(
+            "[data-tech-carousel]:not([data-tech-marquee])"
+        );
+
+        carousels.forEach(carousel => {
+            const track = carousel.querySelector(".tech-track");
+            const inner = carousel.querySelector(".tech-track-inner");
+            const previousButton = carousel.querySelector("[data-tech-prev]");
+            const nextButton = carousel.querySelector("[data-tech-next]");
+            const dotsContainer = carousel.querySelector(".tech-dots");
+
+            if (!track || !inner || !previousButton ||
+                !nextButton || !dotsContainer) {
+                return;
+            }
+
+            let position = 0;
+            let maxPosition = 0;
+            let step = 180;
+            let autoTimer = null;
+            let isHovered = false;
+            let isFocused = false;
+
+            const getGap = () => {
+                const style = getComputedStyle(inner);
+                return parseFloat(style.columnGap || style.gap) || 12;
+            };
+
+            function calculateSizes() {
+                const firstCard = inner.querySelector(".tech-card");
+
+                if (!firstCard) return;
+
+                step = firstCard.getBoundingClientRect().width + getGap();
+
+                maxPosition = Math.max(
+                    0,
+                    inner.scrollWidth - track.clientWidth
+                );
+
+                position = Math.min(position, maxPosition);
+
+                updateCarousel();
+                buildDots();
+            }
+
+            function updateCarousel() {
+                inner.style.transition = reduceMotion
+                    ? "none"
+                    : "transform 650ms cubic-bezier(.22,.68,0,1)";
+
+                inner.style.transform = `translate3d(${-position}px, 0, 0)`;
+
+                previousButton.disabled = position <= 1;
+                nextButton.disabled = position >= maxPosition - 1;
+
+                previousButton.setAttribute(
+                    "aria-disabled",
+                    String(previousButton.disabled)
+                );
+
+                nextButton.setAttribute(
+                    "aria-disabled",
+                    String(nextButton.disabled)
+                );
+
+                updateDots();
+            }
+
+            function buildDots() {
+                dotsContainer.replaceChildren();
+
+                const pageCount = Math.max(
+                    1,
+                    Math.ceil(maxPosition / step) + 1
+                );
+
+                for (let index = 0; index < pageCount; index++) {
+                    const dot = document.createElement("span");
+
+                    dot.className = "tech-dot";
+                    dot.setAttribute("aria-hidden", "true");
+
+                    dotsContainer.appendChild(dot);
+                }
+
+                updateDots();
+            }
+
+            function updateDots() {
+                const dots = dotsContainer.querySelectorAll("span");
+
+                const activeIndex = Math.min(
+                    dots.length - 1,
+                    Math.round(position / step)
+                );
+
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle("is-active", index === activeIndex);
+                });
+            }
+
+            function move(direction) {
+                if (maxPosition <= 0) return;
+
+                if (direction > 0) {
+                    position = position >= maxPosition - 2
+                        ? 0
+                        : Math.min(position + step, maxPosition);
+                } else {
+                    position = position <= 1
+                        ? maxPosition
+                        : Math.max(position - step, 0);
+                }
+
+                updateCarousel();
+            }
+
+            previousButton.addEventListener("click", () => move(-1));
+            nextButton.addEventListener("click", () => move(1));
+
+            /* ---------- AUTOMATIC SLIDING ---------- */
+            function stopAutoSlide() {
+                if (autoTimer !== null) {
+                    clearInterval(autoTimer);
+                    autoTimer = null;
+                }
+            }
+
+            function startAutoSlide() {
+                stopAutoSlide();
+
+                if (reduceMotion || maxPosition <= 0 ||
+                    isHovered || isFocused) {
+                    return;
+                }
+
+                autoTimer = setInterval(() => {
+                    move(1);
+                }, 3200);
+            }
+
+            carousel.addEventListener("mouseenter", () => {
+                isHovered = true;
+                stopAutoSlide();
+            });
+
+            carousel.addEventListener("mouseleave", () => {
+                isHovered = false;
+                startAutoSlide();
+            });
+
+            carousel.addEventListener("focusin", () => {
+                isFocused = true;
+                stopAutoSlide();
+            });
+
+            carousel.addEventListener("focusout", event => {
+                if (!carousel.contains(event.relatedTarget)) {
+                    isFocused = false;
+                    startAutoSlide();
+                }
+            });
+
+            /* ---------- TOUCH / TRACKPAD SUPPORT ---------- */
+            let touchStartX = 0;
+
+            track.addEventListener("touchstart", event => {
+                touchStartX = event.changedTouches[0].clientX;
+            }, { passive: true });
+
+            track.addEventListener("touchend", event => {
+                const difference =
+                    event.changedTouches[0].clientX - touchStartX;
+
+                if (Math.abs(difference) > 40) {
+                    move(difference < 0 ? 1 : -1);
+                }
+            }, { passive: true });
+
+            /* ---------- PAUSE WHEN SECTION IS OFF-SCREEN ---------- */
+            let sectionIsVisible = true;
+
+            if ("IntersectionObserver" in window) {
+                const carouselObserver = new IntersectionObserver(entries => {
+                    sectionIsVisible = entries[0].isIntersecting;
+
+                    if (sectionIsVisible) {
+                        startAutoSlide();
+                    } else {
+                        stopAutoSlide();
+                    }
+                });
+
+                carouselObserver.observe(carousel);
+            }
+
+            const originalStartAutoSlide = startAutoSlide;
+
+            function refreshAutoSlide() {
+                stopAutoSlide();
+
+                if (!sectionIsVisible || isHovered || isFocused ||
+                    reduceMotion || maxPosition <= 0) {
+                    return;
+                }
+
+                originalStartAutoSlide();
+            }
+
+            /* Recalculate card sizes on layout changes */
+            calculateSizes();
+            startAutoSlide();
+
+            if ("ResizeObserver" in window) {
+                const resizeObserver = new ResizeObserver(() => {
+                    calculateSizes();
+                    refreshAutoSlide();
+                });
+
+                resizeObserver.observe(track);
+            } else {
+                window.addEventListener("resize", () => {
+                    calculateSizes();
+                    refreshAutoSlide();
+                });
+            }
+
+            window.addEventListener("load", calculateSizes, { once: true });
+        });
     }
 
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initTechnologyShowcase,
+            { once: true }
+        );
+    } else {
+        initTechnologyShowcase();
+    }
+})();
 
-    /* =====================================================
-       06 — PROJECTS
-       ===================================================== */
+/* END SECTION: TECHNOLOGY SHOWCASE */
 
-    function initProjects() {
-        const section =
-            qs(
-                "#projects.project-lab"
-            );
 
-        if (!section) {
+/* =========================================================
+   VIKAS KUMAR â€” ABOUT SECTION INTERACTIONS
+   Counters + Scroll Reveal + Portrait Motion
+========================================================= */
+
+(() => {
+    "use strict";
+
+    function initAboutSection() {
+        const section = document.querySelector("#about");
+        if (!section || section.dataset.aboutInitialized === "true") {
             return;
         }
 
+        section.dataset.aboutInitialized = "true";
 
-        if (
-            section.dataset.vikasInitialized ===
-            "true"
-        ) {
-            return;
-        }
+        const reducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
 
+        /* -----------------------------------------
+           1. ANIMATED COUNTERS
+        ----------------------------------------- */
 
-        section.dataset.vikasInitialized =
-            "true";
-
-
-        const data =
-            qsa(
-                "[data-project-item]",
-                section
-            );
-
-        const tabs =
-            qsa(
-                "[data-project-tab]",
-                section
-            );
-
-        const image =
-            qs(
-                "[data-project-image]",
-                section
-            );
-
-        const media =
-            qs(
-                "[data-project-media]",
-                section
-            );
-
-        const frame =
-            qs(
-                ".project-lab-art-frame",
-                section
-            );
-
-        const title =
-            qs(
-                "[data-project-title]",
-                section
-            );
-
-        const description =
-            qs(
-                "[data-project-description]",
-                section
-            );
-
-        const tech =
-            qs(
-                "[data-project-tech]",
-                section
-            );
-
-        const typeNodes =
-            qsa(
-                "[data-project-type]",
-                section
-            );
-
-        const year =
-            qs(
-                "[data-project-year]",
-                section
-            );
-
-        const total =
-            qs(
-                "[data-project-total]",
-                section
-            );
-
-        const currentNodes =
-            qsa(
-                "[data-project-current]",
-                section
-            );
-
-        const artNumber =
-            qs(
-                ".project-lab-art-number",
-                section
-            );
-
-        const ghost =
-            qs(
-                ".project-lab-ghost-number",
-                section
-            );
-
-        const orbit =
-            qs(
-                ".project-lab-orbit",
-                section
-            );
-
-        const radial =
-            qs(
-                ".project-lab-radial",
-                section
-            );
-
-        const info =
-            qs(
-                ".project-lab-information",
-                section
-            );
-
-
-        if (!data.length) {
-            return;
-        }
-
-
-        section.classList.add(
-            "project-js-ready"
+        const counters = section.querySelectorAll(
+            ".about-counter[data-count]"
         );
 
+        function setCounterFinal(counter) {
+            const target = Number(counter.dataset.count) || 0;
+            const suffix = counter.dataset.suffix || "";
 
-        let activeIndex = 0;
-        let changing = false;
+            counter.textContent = `${target}${suffix}`;
+        }
 
+        function animateCounter(counter) {
+            if (counter.dataset.counted === "true") return;
 
-        const getProject = (index) => {
-            const item =
-                data[index];
+            counter.dataset.counted = "true";
 
-            if (!item) {
-                return null;
-            }
+            const target = Math.max(
+                0,
+                Number(counter.dataset.count) || 0
+            );
 
+            const suffix = counter.dataset.suffix || "";
 
-            return {
-                image:
-                    item.dataset.image ||
-                    "",
-
-                alt:
-                    item.dataset.alt ||
-                    "",
-
-                title:
-                    item.dataset.title ||
-                    "",
-
-                type:
-                    item.dataset.type ||
-                    "",
-
-                year:
-                    item.dataset.year ||
-                    "",
-
-                description:
-                    item.dataset.description ||
-                    "",
-
-                tech:
-                    (
-                        item.dataset.tech ||
-                        ""
-                    )
-                        .split("|")
-                        .map(
-                            (value) =>
-                                value.trim()
-                        )
-                        .filter(Boolean)
-            };
-        };
-
-
-        const renderTech = (
-            items
-        ) => {
-            if (!tech) {
+            if (reducedMotion) {
+                setCounterFinal(counter);
                 return;
             }
 
+            const duration = 1300;
+            let startTime = null;
 
-            tech.innerHTML = "";
-
-
-            items.forEach(
-                (
-                    item,
-                    index
-                ) => {
-                    const tag =
-                        document.createElement(
-                            "span"
-                        );
-
-
-                    tag.textContent =
-                        item;
-
-
-                    tag.style.animationDelay =
-                        `${index * 45}ms`;
-
-
-                    tech.appendChild(
-                        tag
-                    );
+            function update(timestamp) {
+                if (startTime === null) {
+                    startTime = timestamp;
                 }
-            );
-        };
 
-
-        const renderProject = (
-            index
-        ) => {
-            const project =
-                getProject(index);
-
-            if (!project) {
-                return;
-            }
-
-
-            activeIndex =
-                index;
-
-
-            const number =
-                String(
-                    index + 1
-                ).padStart(
-                    2,
-                    "0"
+                const progress = Math.min(
+                    (timestamp - startTime) / duration,
+                    1
                 );
 
+                const eased = 1 - Math.pow(1 - progress, 4);
+                const value = Math.round(target * eased);
 
-            if (image) {
-                image.src =
-                    project.image;
+                counter.textContent = `${value}${suffix}`;
 
-                image.alt =
-                    project.alt ||
-                    project.title;
-            }
-
-
-            if (title) {
-                title.textContent =
-                    project.title;
-            }
-
-
-            if (description) {
-                description.textContent =
-                    project.description;
-            }
-
-
-            typeNodes.forEach(
-                (node) => {
-                    node.textContent =
-                        project.type;
-                }
-            );
-
-
-            if (year) {
-                year.textContent =
-                    project.year;
-            }
-
-
-            currentNodes.forEach(
-                (node) => {
-                    node.textContent =
-                        number;
-                }
-            );
-
-
-            if (total) {
-                total.textContent =
-                    String(
-                        data.length
-                    ).padStart(
-                        2,
-                        "0"
-                    );
-            }
-
-
-            if (artNumber) {
-                artNumber.textContent =
-                    number;
-            }
-
-
-            renderTech(
-                project.tech
-            );
-
-
-            tabs.forEach(
-                (tab) => {
-                    const tabIndex =
-                        Number(
-                            tab.dataset.projectTab
-                        );
-
-                    tab.classList.toggle(
-                        "is-active",
-                        tabIndex ===
-                            index
-                    );
-                }
-            );
-        };
-
-
-        const switchProject = (
-            index
-        ) => {
-            if (
-                data.length <= 1 ||
-                changing
-            ) {
-                return;
-            }
-
-
-            if (index < 0) {
-                index =
-                    data.length - 1;
-            }
-
-
-            if (
-                index >=
-                data.length
-            ) {
-                index = 0;
-            }
-
-
-            if (
-                index ===
-                activeIndex
-            ) {
-                return;
-            }
-
-
-            if (reduceMotion) {
-                renderProject(
-                    index
-                );
-                return;
-            }
-
-
-            changing = true;
-
-
-            if (media) {
-                media.classList.add(
-                    "is-project-changing"
-                );
-            }
-
-
-            if (info) {
-                info.classList.add(
-                    "is-project-changing"
-                );
-            }
-
-
-            window.setTimeout(
-                () => {
-                    renderProject(
-                        index
-                    );
-
-
-                    if (image) {
-                        image.style.opacity =
-                            "0";
-
-                        image.style.transform =
-                            "scale(1.1)";
-                    }
-                },
-                250
-            );
-
-
-            window.setTimeout(
-                () => {
-                    if (media) {
-                        media.classList.remove(
-                            "is-project-changing"
-                        );
-                    }
-
-
-                    if (info) {
-                        info.classList.remove(
-                            "is-project-changing"
-                        );
-                    }
-
-
-                    if (image) {
-                        window.requestAnimationFrame(
-                            () => {
-                                image.style.opacity =
-                                    "1";
-
-                                image.style.transform =
-                                    "";
-                            }
-                        );
-                    }
-
-
-                    changing = false;
-                },
-                520
-            );
-        };
-
-
-        tabs.forEach(
-            (tab) => {
-                tab.addEventListener(
-                    "click",
-                    () => {
-                        const index =
-                            Number(
-                                tab.dataset.projectTab
-                            );
-
-
-                        if (
-                            Number.isNaN(
-                                index
-                            )
-                        ) {
-                            return;
-                        }
-
-
-                        switchProject(
-                            index
-                        );
-                    }
-                );
-            }
-        );
-
-
-        section.addEventListener(
-            "keydown",
-            (event) => {
-                if (
-                    event.key !==
-                        "ArrowRight" &&
-                    event.key !==
-                        "ArrowLeft"
-                ) {
-                    return;
-                }
-
-
-                const activeElement =
-                    document.activeElement;
-
-
-                if (
-                    !activeElement ||
-                    !activeElement.matches(
-                        "[data-project-tab]"
-                    )
-                ) {
-                    return;
-                }
-
-
-                event.preventDefault();
-
-
-                if (
-                    event.key ===
-                    "ArrowRight"
-                ) {
-                    switchProject(
-                        activeIndex + 1
-                    );
+                if (progress < 1) {
+                    requestAnimationFrame(update);
                 } else {
-                    switchProject(
-                        activeIndex - 1
-                    );
+                    setCounterFinal(counter);
                 }
             }
-        );
 
+            requestAnimationFrame(update);
+        }
 
-        if (
-            media &&
-            finePointer &&
-            !reduceMotion
-        ) {
-            let targetX = 50;
-            let targetY = 50;
+        if ("IntersectionObserver" in window) {
+            const counterObserver = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
 
-            let currentX = 50;
-            let currentY = 50;
-
-            let raf = null;
-
-
-            const render = () => {
-                currentX +=
-                    (
-                        targetX -
-                        currentX
-                    ) * 0.08;
-
-                currentY +=
-                    (
-                        targetY -
-                        currentY
-                    ) * 0.08;
-
-
-                const offsetX =
-                    currentX - 50;
-
-                const offsetY =
-                    currentY - 50;
-
-
-                media.style.setProperty(
-                    "--mx",
-                    `${currentX}%`
-                );
-
-
-                media.style.setProperty(
-                    "--my",
-                    `${currentY}%`
-                );
-
-
-                if (image) {
-                    image.style.transform =
-                        `translate3d(
-                            ${offsetX * 0.055}px,
-                            ${offsetY * 0.055}px,
-                            0
-                        )
-                        scale(1.045)`;
-                }
-
-
-                if (frame) {
-                    frame.style.setProperty(
-                        "--rx",
-                        `${offsetY * -0.025}deg`
-                    );
-
-                    frame.style.setProperty(
-                        "--ry",
-                        `${offsetX * 0.03}deg`
-                    );
-                }
-
-
-                raf = null;
-            };
-
-
-            media.addEventListener(
-                "pointermove",
-                (event) => {
-                    const rect =
-                        media.getBoundingClientRect();
-
-
-                    targetX =
-                        (
-                            (
-                                event.clientX -
-                                rect.left
-                            ) /
-                            rect.width
-                        ) * 100;
-
-
-                    targetY =
-                        (
-                            (
-                                event.clientY -
-                                rect.top
-                            ) /
-                            rect.height
-                        ) * 100;
-
-
-                    targetX =
-                        Math.max(
-                            0,
-                            Math.min(
-                                100,
-                                targetX
-                            )
-                        );
-
-
-                    targetY =
-                        Math.max(
-                            0,
-                            Math.min(
-                                100,
-                                targetY
-                            )
-                        );
-
-
-                    if (!raf) {
-                        raf =
-                            window.requestAnimationFrame(
-                                render
-                            );
-                    }
-                }
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    });
+                },
+                { threshold: 0.2 }
             );
 
-
-            media.addEventListener(
-                "pointerleave",
-                () => {
-                    targetX = 50;
-                    targetY = 50;
-
-
-                    if (!raf) {
-                        raf =
-                            window.requestAnimationFrame(
-                                render
-                            );
-                    }
-                }
-            );
+            counters.forEach((counter) => {
+                counterObserver.observe(counter);
+            });
+        } else {
+            counters.forEach(setCounterFinal);
         }
 
 
-        let projectEntered =
-            false;
+        /* -----------------------------------------
+           2. REVEAL ABOUT CARDS ON SCROLL
+        ----------------------------------------- */
 
+        const revealItems = section.querySelectorAll(
+            ".about-profile, .about-journey, .about-side, .about-approach"
+        );
 
-        const observer =
-            new IntersectionObserver(
-                (
-                    entries,
-                    instance
-                ) => {
-                    entries.forEach(
-                        (entry) => {
-                            if (
-                                !entry.isIntersecting ||
-                                projectEntered
-                            ) {
-                                return;
-                            }
+        if (!reducedMotion && "IntersectionObserver" in window) {
+            const revealObserver = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
 
-
-                            projectEntered =
-                                true;
-
-
-                            section.classList.add(
-                                "project-visible"
-                            );
-
-
-                            renderProject(
-                                activeIndex
-                            );
-
-
-                            instance.unobserve(
-                                entry.target
-                            );
-                        }
-                    );
+                        const target = entry.target;
+                        requestAnimationFrame(() => {
+                            target.classList.add("about-is-visible");
+                        });
+                        observer.unobserve(entry.target);
+                    });
                 },
                 {
                     threshold: 0.1,
-                    rootMargin:
-                        "0px 0px -8% 0px"
+                    rootMargin: "0px 0px -8% 0px"
                 }
             );
 
-
-        observer.observe(
-            section
-        );
-
-
-        if (!reduceMotion) {
-            let ticking = false;
-
-
-            const updateBackground =
-                () => {
-                    const rect =
-                        section.getBoundingClientRect();
-
-                    const viewport =
-                        window.innerHeight;
-
-
-                    if (
-                        rect.bottom < 0 ||
-                        rect.top > viewport
-                    ) {
-                        ticking = false;
-                        return;
-                    }
-
-
-                    const progress =
-                        Math.max(
-                            0,
-                            Math.min(
-                                1,
-                                (
-                                    viewport -
-                                    rect.top
-                                ) /
-                                (
-                                    viewport +
-                                    rect.height
-                                )
-                            )
-                        );
-
-
-                    if (ghost) {
-                        ghost.style.transform =
-                            `translate3d(
-                                ${progress * -32}px,
-                                ${progress * 38}px,
-                                0
-                            )`;
-                    }
-
-
-                    if (orbit) {
-                        orbit.style.transform =
-                            `translate3d(
-                                ${progress * -18}px,
-                                ${progress * 24}px,
-                                0
-                            )
-                            rotate(
-                                ${progress * 8}deg
-                            )`;
-                    }
-
-
-                    if (radial) {
-                        radial.style.transform =
-                            `translate3d(
-                                ${progress * 16}px,
-                                ${progress * -20}px,
-                                0
-                            )`;
-                    }
-
-
-                    ticking = false;
-                };
-
-
-            window.addEventListener(
-                "scroll",
-                () => {
-                    if (ticking) {
-                        return;
-                    }
-
-
-                    ticking = true;
-
-
-                    window.requestAnimationFrame(
-                        updateBackground
-                    );
-                },
-                {
-                    passive: true
-                }
-            );
-
-
-            updateBackground();
+            revealItems.forEach((item) => {
+                item.classList.add("about-reveal-ready");
+                revealObserver.observe(item);
+            });
+        } else {
+            revealItems.forEach((item) => {
+                item.classList.add("about-reveal-ready");
+                item.classList.add("about-is-visible");
+            });
         }
 
 
-        let touchStartX = 0;
-        let touchStartY = 0;
+        /* -----------------------------------------
+           3. SUBTLE PORTRAIT PARALLAX
+        ----------------------------------------- */
 
+        const workspace = section.querySelector(".about-workspace");
+        const portrait = workspace?.querySelector("img");
 
-        section.addEventListener(
-            "touchstart",
-            (event) => {
-                if (
-                    !event.touches.length
-                ) {
-                    return;
-                }
-
-
-                touchStartX =
-                    event.touches[0].clientX;
-
-                touchStartY =
-                    event.touches[0].clientY;
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        section.addEventListener(
-            "touchend",
-            (event) => {
-                if (
-                    !event.changedTouches.length
-                ) {
-                    return;
-                }
-
-
-                const touch =
-                    event.changedTouches[0];
-
-
-                const deltaX =
-                    touch.clientX -
-                    touchStartX;
-
-
-                const deltaY =
-                    touch.clientY -
-                    touchStartY;
-
-
-                if (
-                    Math.abs(deltaX) <
-                        50 ||
-                    Math.abs(deltaX) <=
-                        Math.abs(deltaY)
-                ) {
-                    return;
-                }
-
-
-                if (
-                    deltaX < 0
-                ) {
-                    switchProject(
-                        activeIndex + 1
-                    );
-                } else {
-                    switchProject(
-                        activeIndex - 1
-                    );
-                }
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        data.forEach(
-            (item) => {
-                const src =
-                    item.dataset.image;
-
-                if (!src) {
-                    return;
-                }
-
-
-                const preload =
-                    new Image();
-
-                preload.src =
-                    src;
-            }
-        );
-
-
-        renderProject(0);
-    }
-
-
-    /* =====================================================
-       07 — EXPERIENCE / THE PATH
-       -----------------------------------------------------
-       Matches latest light Experience HTML:
-
-       #experience.experience-path
-       [data-experience-station]
-
-       Animation:
-       - Intro reveal
-       - Card stagger
-       - Timeline draw
-       - Station fade / slide
-       - Card tilt
-       - Background parallax
-       - Current pulse
-       - Hover skill interaction
-       ===================================================== */
-
-    function initExperience() {
-        const section =
-            qs(
-                "#experience.experience-path"
-            );
-
-        if (!section) {
-            return;
-        }
-
+        const supportsHover = window.matchMedia(
+            "(hover: hover) and (pointer: fine)"
+        ).matches;
 
         if (
-            section.dataset.vikasInitialized ===
-            "true"
+            !workspace ||
+            !portrait ||
+            reducedMotion ||
+            !supportsHover
         ) {
             return;
         }
 
+        let frame = null;
+        let moveX = 0;
+        let moveY = 0;
 
-        section.dataset.vikasInitialized =
-            "true";
+        workspace.addEventListener("pointermove", (event) => {
+            const rect = workspace.getBoundingClientRect();
+
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+            moveX = x * 7;
+            moveY = y * 5;
+
+            if (frame !== null) return;
+
+            frame = requestAnimationFrame(() => {
+                portrait.style.setProperty(
+                    "--about-photo-x",
+                    `${moveX}px`
+                );
+
+                portrait.style.setProperty(
+                    "--about-photo-y",
+                    `${moveY}px`
+                );
+
+                frame = null;
+            });
+        });
+
+        workspace.addEventListener("pointerleave", () => {
+            moveX = 0;
+            moveY = 0;
+
+            portrait.style.setProperty("--about-photo-x", "0px");
+            portrait.style.setProperty("--about-photo-y", "0px");
+        });
+    }
+
+    window.VikasPortfolio = window.VikasPortfolio || {};
+    window.VikasPortfolio.initAbout = initAboutSection;
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initAboutSection,
+            { once: true }
+        );
+    } else {
+        initAboutSection();
+    }
+})();
+
+/* END SECTION: ABOUT */
 
 
-        const stations =
-            qsa(
-                "[data-experience-station]",
-                section
-            );
+    /* =====================================================
+       06 â€” PROJECTS
+       ===================================================== */
 
+    
+/* ==========================================================
+   OCARIUS TECHNOLOGIES â€” PROJECTS
+   Django | Category Filters | Scroll Reveal | Card Animations
+   File: static/js/projects.js
+========================================================== */
 
-        if (!stations.length) {
+(function () {
+    "use strict";
+
+    function initializeProjects() {
+        const section = document.querySelector("#projects");
+
+        if (!section || section.dataset.projectsInitialized === "true") {
             return;
         }
 
-
-        /* ---------------------------------------------
-           ELEMENTS
-           --------------------------------------------- */
-
-        const route =
-            qs(
-                ".experience-path-route-progress",
-                section
-            );
-
-        const header =
-            qs(
-                ".experience-path-header",
-                section
-            );
-
-        const kicker =
-            qs(
-                ".experience-path-kicker",
-                section
-            );
-
-        const title =
-            qs(
-                ".experience-path-title h2",
-                section
-            );
-
-        const titleLine =
-            qs(
-                ".experience-title-line span",
-                section
-            );
-
-        const introCopy =
-            qs(
-                ".experience-path-intro-copy",
-                section
-            );
-
-        const bottom =
-            qs(
-                ".experience-path-bottom",
-                section
-            );
-
-        const backgroundWord =
-            qs(
-                ".experience-path-bg-word",
-                section
-            );
-
-        const backgroundOrb =
-            qs(
-                ".experience-path-bg-orb",
-                section
-            );
-
-        const backgroundLine =
-            qs(
-                ".experience-path-bg-line",
-                section
-            );
-
-
-        /* ---------------------------------------------
-           ENABLE ANIMATION MODE
-           --------------------------------------------- */
-
-        section.classList.add(
-            "experience-js-ready"
+        const buttons = Array.from(
+            section.querySelectorAll(".project-filter")
         );
 
+        const cards = Array.from(
+            section.querySelectorAll(".project-card[data-category]")
+        );
 
-        let hasEntered =
-            false;
+        const visibleCount = section.querySelector(
+            "#visible-project-count"
+        );
 
+        const totalCount = section.querySelector(
+            "#total-project-count"
+        );
 
-        /* ---------------------------------------------
-           INTRO REVEAL
-           --------------------------------------------- */
-
-        const revealIntro = () => {
-            section.classList.add(
-                "experience-visible"
+        if (!buttons.length || !cards.length) {
+            console.error(
+                "[Ocarius Projects] Filter buttons or project cards not found."
             );
+            return;
+        }
 
+        section.dataset.projectsInitialized = "true";
 
-            if (header) {
-                header.classList.add(
-                    "is-visible"
-                );
-            }
+        const reducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
 
+        // Only explicitly published projects appear on the website.
+        const publishedCards = cards.filter(function (card) {
+            return card.dataset.published === "true";
+        });
 
-            if (kicker) {
-                kicker.classList.add(
-                    "is-visible"
-                );
-            }
+        // Read each card's category tags.
+        function getCategories(card) {
+            return (card.dataset.category || "")
+                .toLowerCase()
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+        }
 
+        // Calculate the count for every category button.
+        function updateCategoryCounts() {
+            buttons.forEach(function (button) {
+                const filter = button.dataset.filter;
+                const countElement = button.querySelector(".filter-count");
 
-            if (title) {
-                title.classList.add(
-                    "is-visible"
-                );
-            }
+                if (!countElement) return;
 
+                const count = publishedCards.filter(function (card) {
+                    return filter === "all" ||
+                        getCategories(card).includes(filter);
+                }).length;
 
-            if (titleLine) {
-                titleLine.classList.add(
-                    "is-visible"
-                );
-            }
+                countElement.textContent = String(count).padStart(2, "0");
+            });
+        }
 
-
-            if (introCopy) {
-                introCopy.classList.add(
-                    "is-visible"
-                );
-            }
-        };
-
-
-        /* ---------------------------------------------
-           STATION REVEAL
-           --------------------------------------------- */
-
-        const revealStation = (
-            station,
-            index
-        ) => {
-            if (!station) {
+        // Animate cards when the user changes a category.
+        function animateVisibleCards(visibleCards) {
+            if (reducedMotion || typeof Element.prototype.animate !== "function") {
                 return;
             }
 
-
-            const delay =
-                reduceMotion
-                    ? 0
-                    : index * 170;
-
-
-            window.setTimeout(
-                () => {
-                    station.classList.add(
-                        "is-visible"
-                    );
-                },
-                delay
-            );
-        };
-
-
-        /* ---------------------------------------------
-           MAIN EXPERIENCE ENTRY
-           --------------------------------------------- */
-
-        const enterExperience = () => {
-            if (hasEntered) {
-                return;
-            }
-
-
-            hasEntered = true;
-
-
-            revealIntro();
-
-
-            stations.forEach(
-                (
-                    station,
-                    index
-                ) => {
-                    revealStation(
-                        station,
-                        index
-                    );
-                }
-            );
-
-
-            /* Timeline draw */
-
-            if (route) {
-                if (reduceMotion) {
-                    route.style.transform =
-                        "scaleY(1)";
-                } else {
-                    window.setTimeout(
-                        () => {
-                            route.style.transform =
-                                "scaleY(1)";
+            visibleCards.forEach(function (card, index) {
+                card.animate(
+                    [
+                        {
+                            opacity: 0,
+                            transform: "translateY(12px) scale(0.99)"
                         },
-                        250
-                    );
-                }
-            }
-
-
-            /* Bottom statement */
-
-            if (bottom) {
-                window.setTimeout(
-                    () => {
-                        bottom.classList.add(
-                            "is-visible"
-                        );
-                    },
-                    reduceMotion
-                        ? 0
-                        : 720
-                );
-            }
-        };
-
-
-        /* ---------------------------------------------
-           MAIN SECTION OBSERVER
-           --------------------------------------------- */
-
-        const sectionObserver =
-            new IntersectionObserver(
-                (
-                    entries,
-                    observerInstance
-                ) => {
-                    entries.forEach(
-                        (entry) => {
-                            if (
-                                !entry.isIntersecting
-                            ) {
-                                return;
-                            }
-
-
-                            enterExperience();
-
-
-                            observerInstance.unobserve(
-                                entry.target
-                            );
+                        {
+                            opacity: 1,
+                            transform: "translateY(0) scale(1)"
                         }
-                    );
+                    ],
+                    {
+                        duration: 380,
+                        delay: Math.min(index * 45, 220),
+                        easing: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+                        fill: "none"
+                    }
+                );
+            });
+        }
+
+        // Apply the selected filter.
+        function applyFilter(filter, animate) {
+            const supportedFilter = buttons.some(function (button) {
+                return button.dataset.filter === filter;
+            });
+
+            if (!supportedFilter) {
+                filter = "all";
+            }
+
+            let visible = 0;
+            const visibleCards = [];
+
+            cards.forEach(function (card) {
+                const isPublished = publishedCards.includes(card);
+                const matchesCategory =
+                    filter === "all" ||
+                    getCategories(card).includes(filter);
+
+                const shouldShow = isPublished && matchesCategory;
+
+                card.hidden = !shouldShow;
+
+                if (shouldShow) {
+                    visible++;
+                    visibleCards.push(card);
+                }
+            });
+
+            // Active state and accessibility.
+            buttons.forEach(function (button) {
+                const active = button.dataset.filter === filter;
+
+                button.classList.toggle("active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
+
+            // Update visible/total counters.
+            if (visibleCount) {
+                visibleCount.textContent =
+                    String(visible).padStart(2, "0");
+            }
+
+            if (totalCount) {
+                totalCount.textContent =
+                    String(publishedCards.length).padStart(2, "0");
+            }
+
+            section.dataset.activeFilter = filter;
+
+            if (animate) {
+                animateVisibleCards(visibleCards);
+            }
+        }
+
+        // Event delegation: works when the user clicks button text,
+        // count badges, icons, or the button itself.
+        section.addEventListener("click", function (event) {
+            const target = event.target;
+
+            if (!(target instanceof Element)) return;
+
+            const button = target.closest(".project-filter");
+
+            if (!button || !section.contains(button)) return;
+
+            event.preventDefault();
+
+            const filter = button.dataset.filter || "all";
+            applyFilter(filter, true);
+        });
+
+        // Initial filter and correct category totals.
+        updateCategoryCounts();
+        applyFilter("all", false);
+
+        // Scroll-triggered section reveal.
+        function setupScrollReveal() {
+            if (
+                reducedMotion ||
+                !("IntersectionObserver" in window)
+            ) {
+                section.classList.add("is-visible");
+                return;
+            }
+
+            const observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
+
+                        section.classList.add("is-visible");
+                        observer.unobserve(section);
+                    });
                 },
                 {
                     threshold: 0.08,
-                    rootMargin:
-                        "0px 0px -5% 0px"
+                    rootMargin: "0px 0px -35px 0px"
                 }
             );
 
-
-        sectionObserver.observe(
-            section
-        );
-
-
-        /* ---------------------------------------------
-           INDIVIDUAL STATION OBSERVER
-           ------------------------------------------------
-           This makes each card independently react as
-           it gets close to the viewport.
-           --------------------------------------------- */
-
-        if (!reduceMotion) {
-            const stationObserver =
-                new IntersectionObserver(
-                    (
-                        entries
-                    ) => {
-                        entries.forEach(
-                            (entry) => {
-                                if (
-                                    !entry.isIntersecting
-                                ) {
-                                    return;
-                                }
-
-
-                                const station =
-                                    entry.target;
-
-
-                                station.classList.add(
-                                    "is-visible"
-                                );
-
-
-                                stationObserver.unobserve(
-                                    station
-                                );
-                            }
-                        );
-                    },
-                    {
-                        threshold: 0.1,
-                        rootMargin:
-                            "0px 0px -10% 0px"
-                    }
-                );
-
-
-            stations.forEach(
-                (station) => {
-                    stationObserver.observe(
-                        station
-                    );
-                }
-            );
+            // CSS will enable the initial hidden states only after
+            // the observer is ready.
+            section.classList.add("reveal-enabled");
+            observer.observe(section);
         }
 
+        setupScrollReveal();
 
-        /* ---------------------------------------------
-           FALLBACK
-           ------------------------------------------------
-           Prevents animation from staying hidden when
-           page opens directly at #experience or browser
-           restores a previous scroll position.
-           --------------------------------------------- */
-
-        const checkInitialPosition = () => {
-            if (hasEntered) {
-                return;
-            }
-
-
-            const rect =
-                section.getBoundingClientRect();
-
-            const viewport =
-                window.innerHeight;
-
-
-            const isVisible =
-                rect.top <
-                    viewport * 0.9 &&
-                rect.bottom >
-                    viewport * 0.05;
-
-
-            if (isVisible) {
-                enterExperience();
-            }
-        };
-
-
-        window.setTimeout(
-            checkInitialPosition,
-            120
+        console.info(
+            "[Ocarius Projects] Ready.",
+            publishedCards.length,
+            "published projects."
         );
-
-
-        window.addEventListener(
-            "scroll",
-            checkInitialPosition,
-            {
-                passive: true,
-                once: true
-            }
-        );
-
-
-        /* ---------------------------------------------
-           REDUCED MOTION
-           --------------------------------------------- */
-
-        if (reduceMotion) {
-            section.classList.add(
-                "experience-visible"
-            );
-
-
-            stations.forEach(
-                (station) => {
-                    station.classList.add(
-                        "is-visible"
-                    );
-                }
-            );
-
-
-            if (route) {
-                route.style.transform =
-                    "scaleY(1)";
-            }
-
-
-            if (bottom) {
-                bottom.classList.add(
-                    "is-visible"
-                );
-            }
-        }
-
-
-        /* ---------------------------------------------
-           CARD TILT
-           --------------------------------------------- */
-
-        if (
-            finePointer &&
-            !reduceMotion
-        ) {
-            stations.forEach(
-                (station) => {
-                    const card =
-                        qs(
-                            ".experience-path-story",
-                            station
-                        );
-
-
-                    if (!card) {
-                        return;
-                    }
-
-
-                    let targetX = 0;
-                    let targetY = 0;
-
-                    let currentX = 0;
-                    let currentY = 0;
-
-                    let raf = null;
-
-
-                    const renderTilt = () => {
-                        currentX +=
-                            (
-                                targetX -
-                                currentX
-                            ) * 0.08;
-
-
-                        currentY +=
-                            (
-                                targetY -
-                                currentY
-                            ) * 0.08;
-
-
-                        card.style.setProperty(
-                            "--experience-rx",
-                            `${currentY * -0.55}deg`
-                        );
-
-
-                        card.style.setProperty(
-                            "--experience-ry",
-                            `${currentX * 0.7}deg`
-                        );
-
-
-                        if (
-                            Math.abs(
-                                targetX -
-                                currentX
-                            ) < 0.01 &&
-                            Math.abs(
-                                targetY -
-                                currentY
-                            ) < 0.01
-                        ) {
-                            raf = null;
-                            return;
-                        }
-
-
-                        raf =
-                            window.requestAnimationFrame(
-                                renderTilt
-                            );
-                    };
-
-
-                    card.addEventListener(
-                        "pointermove",
-                        (event) => {
-                            const rect =
-                                card.getBoundingClientRect();
-
-
-                            targetX =
-                                (
-                                    (
-                                        event.clientX -
-                                        rect.left
-                                    ) /
-                                        rect.width -
-                                    0.5
-                                ) * 4;
-
-
-                            targetY =
-                                (
-                                    (
-                                        event.clientY -
-                                        rect.top
-                                    ) /
-                                        rect.height -
-                                    0.5
-                                ) * 4;
-
-
-                            if (!raf) {
-                                raf =
-                                    window.requestAnimationFrame(
-                                        renderTilt
-                                    );
-                            }
-                        }
-                    );
-
-
-                    card.addEventListener(
-                        "pointerleave",
-                        () => {
-                            targetX = 0;
-                            targetY = 0;
-
-
-                            if (!raf) {
-                                raf =
-                                    window.requestAnimationFrame(
-                                        renderTilt
-                                    );
-                            }
-                        }
-                    );
-                }
-            );
-        }
-
-
-        /* ---------------------------------------------
-           SKILL TAG INTERACTION
-           --------------------------------------------- */
-
-        const skillTags =
-            qsa(
-                ".experience-path-story-skills span",
-                section
-            );
-
-
-        skillTags.forEach(
-            (tag) => {
-                tag.addEventListener(
-                    "mouseenter",
-                    () => {
-                        tag.classList.add(
-                            "is-hovered"
-                        );
-                    }
-                );
-
-
-                tag.addEventListener(
-                    "mouseleave",
-                    () => {
-                        tag.classList.remove(
-                            "is-hovered"
-                        );
-                    }
-                );
-            }
-        );
-
-
-        /* ---------------------------------------------
-           KEYBOARD / ACCESSIBILITY
-           --------------------------------------------- */
-
-        stations.forEach(
-            (station) => {
-                const card =
-                    qs(
-                        ".experience-path-story",
-                        station
-                    );
-
-
-                if (!card) {
-                    return;
-                }
-
-
-                card.setAttribute(
-                    "tabindex",
-                    "0"
-                );
-
-
-                card.addEventListener(
-                    "focus",
-                    () => {
-                        card.classList.add(
-                            "is-focused"
-                        );
-                    }
-                );
-
-
-                card.addEventListener(
-                    "blur",
-                    () => {
-                        card.classList.remove(
-                            "is-focused"
-                        );
-                    }
-                );
-
-
-                card.addEventListener(
-                    "keydown",
-                    (event) => {
-                        if (
-                            event.key ===
-                                "Enter" ||
-                            event.key ===
-                                " "
-                        ) {
-                            event.preventDefault();
-
-                            card.classList.toggle(
-                                "is-focused"
-                            );
-                        }
-                    }
-                );
-            }
-        );
-
-
-        /* ---------------------------------------------
-           BACKGROUND PARALLAX
-           --------------------------------------------- */
-
-        if (!reduceMotion) {
-            let ticking = false;
-
-
-            const updateBackground =
-                () => {
-                    const rect =
-                        section.getBoundingClientRect();
-
-                    const viewport =
-                        window.innerHeight;
-
-
-                    if (
-                        rect.bottom < 0 ||
-                        rect.top > viewport
-                    ) {
-                        ticking = false;
-                        return;
-                    }
-
-
-                    const progress =
-                        Math.max(
-                            0,
-                            Math.min(
-                                1,
-                                (
-                                    viewport -
-                                    rect.top
-                                ) /
-                                (
-                                    viewport +
-                                    rect.height
-                                )
-                            )
-                        );
-
-
-                    if (backgroundWord) {
-                        backgroundWord.style.transform =
-                            `rotate(90deg)
-                             translate3d(
-                                ${progress * -28}px,
-                                ${progress * 38}px,
-                                0
-                             )`;
-                    }
-
-
-                    if (backgroundOrb) {
-                        backgroundOrb.style.transform =
-                            `translate3d(
-                                ${progress * 30}px,
-                                ${progress * -22}px,
-                                0
-                             )`;
-                    }
-
-
-                    if (backgroundLine) {
-                        backgroundLine.style.transform =
-                            `rotate(
-                                ${8 + progress * 3}deg
-                             )
-                             translate3d(
-                                0,
-                                ${progress * 24}px,
-                                0
-                             )`;
-                    }
-
-
-                    ticking = false;
-                };
-
-
-            window.addEventListener(
-                "scroll",
-                () => {
-                    if (ticking) {
-                        return;
-                    }
-
-
-                    ticking = true;
-
-
-                    window.requestAnimationFrame(
-                        updateBackground
-                    );
-                },
-                {
-                    passive: true
-                }
-            );
-
-
-            updateBackground();
-        }
-
-
-        /* ---------------------------------------------
-           LIVE STATUS MICRO INTERACTION
-           --------------------------------------------- */
-
-        const liveDot =
-            qs(
-                ".experience-live-dot",
-                section
-            );
-
-
-        if (
-            liveDot &&
-            !reduceMotion
-        ) {
-            liveDot.addEventListener(
-                "mouseenter",
-                () => {
-                    liveDot.classList.add(
-                        "is-active"
-                    );
-                }
-            );
-
-
-            liveDot.addEventListener(
-                "mouseleave",
-                () => {
-                    liveDot.classList.remove(
-                        "is-active"
-                    );
-                }
-            );
-        }
     }
 
+    // Works with both defer-loaded scripts and late-loaded scripts.
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeProjects,
+            { once: true }
+        );
+    } else {
+        initializeProjects();
+    }
+})();
+
+    /* SECTION: PROJECTS - END */
+
+
+    
+/* ============================================
+   HOW I WORK â€” SCROLL REVEAL ANIMATION
+============================================ */
+
+(function initHowIWork() {
+    "use strict";
+
+    function setupHowIWorkAnimation() {
+        const section = document.querySelector("#how-i-work");
+
+        if (!section || section.dataset.revealInitialized === "true") {
+            return;
+        }
+
+        section.dataset.revealInitialized = "true";
+
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        // Show content immediately if animations are unavailable.
+        if (
+            prefersReducedMotion ||
+            !("IntersectionObserver" in window)
+        ) {
+            section.classList.add("is-visible");
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+
+                    section.classList.add("is-visible");
+
+                    // Animate only once when the section enters view.
+                    observer.unobserve(section);
+                });
+            },
+            {
+                threshold: 0.08,
+                rootMargin: "0px 0px -30px 0px"
+            }
+        );
+
+        // Enable the CSS reveal states before observing.
+        section.classList.add("reveal-enabled");
+        observer.observe(section);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            setupHowIWorkAnimation,
+            { once: true }
+        );
+    } else {
+        setupHowIWorkAnimation();
+    }
+})();
 
     /* =====================================================
-       FUTURE SECTION SPACE
+       CORE IIFE END / STANDALONE SECTIONS FOLLOW
        -----------------------------------------------------
-       Keep adding future section initializers BELOW
-       this line.
+       Standalone section modules start below this line.
 
        Example:
 
@@ -3251,8 +2059,301 @@
 
 })();
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const section = document.querySelector(".case-studies-section");
+
+    if (!section) return;
+
+    const revealElements = section.querySelectorAll(
+        ".cs-reveal, .cs-reveal-right"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+        revealElements.forEach(function (element) {
+            element.classList.add("is-visible");
+        });
+        return;
+    }
+
+    document.documentElement.classList.add("js-enabled");
+
+    const observer = new IntersectionObserver(
+        function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -30px 0px"
+        }
+    );
+
+    revealElements.forEach(function (element, index) {
+        element.style.transitionDelay = (index % 3) * 100 + "ms";
+        observer.observe(element);
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const section = document.querySelector(".testimonials-section");
+    const toggle = document.getElementById("testimonialThemeToggle");
+    const motionToggle = document.getElementById("testimonialMotionToggle");
+    const heading = document.querySelector(
+        ".testimonials-heading[data-reveal]"
+    );
+
+    if (!section) return;
+
+    // Use clean, accessible glyphs even if older template text has a legacy encoding.
+    const eyebrowIcon = section.querySelector(".testimonial-eyebrow > span");
+    if (eyebrowIcon) eyebrowIcon.textContent = String.fromCharCode(10077);
+    section.querySelectorAll(".testimonial-quote").forEach(function (quote) {
+        quote.textContent = String.fromCharCode(8220);
+    });
+    const sunIcon = section.querySelector(".theme-sun");
+    const moonIcon = section.querySelector(".theme-moon");
+    if (sunIcon) sunIcon.textContent = String.fromCharCode(9728);
+    if (moonIcon) moonIcon.textContent = String.fromCharCode(9790);
+
+    // Light / dark theme toggle
+    if (toggle) {
+        toggle.addEventListener("click", function () {
+            const isDark = section.classList.toggle("testimonials-dark");
+
+            toggle.setAttribute("aria-pressed", String(isDark));
+            toggle.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light theme" : "Switch to dark theme"
+            );
+        });
+    }
+
+    if (motionToggle) {
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+        motionToggle.hidden = reduceMotion;
+
+        motionToggle.addEventListener("click", function () {
+            const isPaused = section.classList.toggle("testimonials-paused");
+            motionToggle.setAttribute("aria-pressed", String(isPaused));
+            motionToggle.setAttribute(
+                "aria-label",
+                isPaused ? "Resume testimonial movement" : "Pause testimonial movement"
+            );
+            const label = motionToggle.querySelector(".testimonial-control-label");
+            const icon = motionToggle.querySelector("[aria-hidden='true']");
+            if (label) label.textContent = isPaused ? "Play" : "Pause";
+            if (icon) icon.textContent = isPaused ? String.fromCharCode(9654) : String.fromCharCode(8214);
+        });
+    }
+
+    // Reveal heading when it enters the viewport
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (heading && "IntersectionObserver" in window && !prefersReducedMotion) {
+        section.classList.add("testimonial-reveal-ready");
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        heading.classList.add("is-visible");
+                        observer.unobserve(heading);
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+
+        observer.observe(heading);
+    } else if (heading) {
+        heading.classList.add("is-visible");
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const section = document.querySelector(".services-showcase");
+    if (!section) return;
+
+    const rows = section.querySelectorAll("[data-service-index]");
+    const preview = section.querySelector("[data-showcase-preview]");
+    const art = section.querySelector("[data-showcase-art]");
+
+    if (!preview || !art || !rows.length) return;
+
+    const services = [
+        {
+            title: "Django Web Development",
+            className: "showcase-art--django",
+            imageUrl: "https://images.unsplash.com/photo-1555066931-bf19f8fd1085?auto=format&fit=crop&w=1200&q=80",
+            code: [
+                "class Project:",
+                "  def __init__(self):",
+                '    self.status =',
+                '    "building"'
+            ],
+            caption: "PYTHON + DJANGO"
+        },
+        {
+            title: "REST API Development",
+            className: "showcase-art--api",
+            imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+            code: [
+                "@api_view(['GET'])",
+                "def projects(request):",
+                "  return Response(",
+                "    project_data)"
+            ],
+            caption: "REST API / JSON"
+        },
+        {
+            title: "WordPress Development",
+            className: "showcase-art--wordpress",
+            imageUrl: "https://images.unsplash.com/photo-1502882705085-fd1fd2ecefd0?auto=format&fit=crop&w=1200&q=80",
+            code: [
+                "function theme_setup() {",
+                "  add_theme_support(",
+                "    'custom-logo'",
+                "  );"
+            ],
+            caption: "WORDPRESS / CMS"
+        },
+        {
+            title: "Debugging & Maintenance",
+            className: "showcase-art--maintenance",
+            imageUrl: "https://images.unsplash.com/photo-1760670399462-f5e479452c27?auto=format&fit=crop&w=1200&q=80",
+            code: [
+                "def fix_issue():",
+                "  inspect_logs()",
+                "  find_root_cause()",
+                "  test_solution()"
+            ],
+            caption: "DEBUG / IMPROVE"
+        }
+    ];
+
+    const sectionIcon = section.querySelector(".services-showcase__eyebrow-icon");
+    if (sectionIcon) sectionIcon.textContent = String.fromCharCode(10022);
+    section.querySelectorAll(".showcase-service__arrow, .services-showcase__cta span")
+        .forEach(function (icon) {
+            icon.textContent = String.fromCharCode(8599);
+            icon.setAttribute("aria-hidden", "true");
+        });
+
+    function renderPreview(index) {
+        rows.forEach(function (row, rowIndex) {
+            const active = rowIndex === index;
+            row.classList.toggle("is-active", active);
+            row.setAttribute("aria-pressed", String(active));
+        });
+
+        const service = services[index];
+        if (!service) return;
+
+        art.classList.remove(
+            "showcase-art--django",
+            "showcase-art--api",
+            "showcase-art--wordpress",
+            "showcase-art--maintenance"
+        );
+        art.classList.add(service.className);
+        const image = art.querySelector("[data-showcase-image]");
+        if (image && image.src !== service.imageUrl) {
+            image.classList.add("is-changing");
+            image.onload = function () {
+                image.classList.remove("is-changing");
+            };
+            image.onerror = function () {
+                image.classList.remove("is-changing");
+            };
+            image.src = service.imageUrl;
+        }
+
+        const codeBox = art.querySelector(".showcase-art__code");
+        const caption = art.querySelector(".showcase-art__caption");
+        const toolbar = art.querySelector(".showcase-art__toolbar");
+
+        if (codeBox) {
+            codeBox.replaceChildren();
+
+            service.code.forEach(function (line, lineIndex) {
+                const span = document.createElement("span");
+                span.textContent = line;
+
+                if (lineIndex === 0) {
+                    const strong = document.createElement("b");
+                    strong.textContent = line;
+                    span.replaceChildren(strong);
+                }
+
+                codeBox.appendChild(span);
+            });
+
+            const accent = document.createElement("span");
+            accent.className = "showcase-art__code-accent";
+            accent.textContent = "</> " + service.caption;
+            codeBox.appendChild(accent);
+        }
+
+        if (caption) caption.textContent = service.caption;
+
+        if (toolbar) {
+            const title = toolbar.querySelector("span");
+            if (title) {
+                title.textContent = [
+                    "project.py",
+                    "api.py",
+                    "theme.php",
+                    "maintenance.py"
+                ][index];
+            }
+        }
+    }
+
+    let activeIndex = -1;
+
+    function showPreview(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= services.length) return;
+        if (index === activeIndex) return;
+        activeIndex = index;
+        renderPreview(index);
+        preview.classList.add("is-visible");
+        preview.setAttribute("aria-hidden", "true");
+    }
+
+    // Delegate pointer events so hovering any child inside a service row works.
+    section.addEventListener("pointerover", function (event) {
+        const row = event.target.closest("[data-service-index]");
+        if (!row || !section.contains(row)) return;
+        showPreview(Number(row.dataset.serviceIndex));
+    });
+
+    section.addEventListener("focusin", function (event) {
+        const row = event.target.closest("[data-service-index]");
+        if (row) showPreview(Number(row.dataset.serviceIndex));
+    });
+
+    section.addEventListener("click", function (event) {
+        const row = event.target.closest("[data-service-index]");
+        if (row) showPreview(Number(row.dataset.serviceIndex));
+    });
+
+    renderPreview(0);
+    activeIndex = 0;
+});
+
 // =========================================================
-// CERTIFICATES / CREDENTIALS
+// SECTION: CERTIFICATES / CREDENTIALS - START
 // Handles:
 // - Section reveal
 // - Certificate document tilt
@@ -3262,2100 +2363,659 @@
 // - Reduced-motion support
 // =========================================================
 
-function initCertificates() {
-    const section = document.querySelector(
-        "#certificates.certificates-section"
-    );
 
-    // Stop safely when the section does not exist.
-    if (!section) return;
+/* =====================================================
+   CREDENTIALS: FILTERS + HOVER PDF + CLICK MODAL
+===================================================== */
+(function () {
+    "use strict";
 
-    // -------------------------------------------------------
-    // Main elements
-    // -------------------------------------------------------
+    function initCredentials() {
+        const section = document.querySelector("#credentials");
+        if (!section || section.dataset.credentialsInit === "true") return;
 
-    const documentWrap = section.querySelector(
-        ".certificate-document-wrap"
-    );
+        const cards = Array.from(section.querySelectorAll(".credential-card"));
+        const filters = Array.from(section.querySelectorAll(".credential-filter"));
+        const modal = section.querySelector("#credentialModal");
+        const modalFrame = section.querySelector("#credentialFrame");
+        const hoverPreview = document.querySelector("#credentialHoverPreview");
+        const hoverFrame = document.querySelector("#credentialHoverFrame");
+        const hoverTitle = document.querySelector("#credentialHoverTitle");
 
-    const documentCard = section.querySelector(
-        ".certificate-document"
-    );
-
-    const credentialCards = section.querySelectorAll(
-        "[data-certificate-card]"
-    );
-
-    const ticker = section.querySelector(
-        ".certificates-learning-track"
-    );
-
-    // -------------------------------------------------------
-    // Background elements
-    // -------------------------------------------------------
-
-    const backgroundWord = section.querySelector(
-        ".certificates-bg-word"
-    );
-
-    const backgroundCircleOne = section.querySelector(
-        ".certificates-bg-circle.circle-one"
-    );
-
-    const backgroundCircleTwo = section.querySelector(
-        ".certificates-bg-circle.circle-two"
-    );
-
-    const backgroundLineOne = section.querySelector(
-        ".certificates-bg-line.line-one"
-    );
-
-    const backgroundLineTwo = section.querySelector(
-        ".certificates-bg-line.line-two"
-    );
-
-    // -------------------------------------------------------
-    // Motion settings
-    // -------------------------------------------------------
-
-    const reduceMotion =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-    const finePointer =
-        window.matchMedia &&
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches;
-
-    let sectionVisible = false;
-
-    // -------------------------------------------------------
-    // Mark section as JS-ready
-    // -------------------------------------------------------
-
-    section.classList.add("certificates-js-ready");
-
-    // -------------------------------------------------------
-    // Intersection Observer
-    // Starts section animation when visible.
-    // -------------------------------------------------------
-
-    const sectionObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-
-                sectionVisible = true;
-
-                section.classList.add("is-visible");
-
-                // Add a clean stagger to certificate cards.
-                credentialCards.forEach((card, index) => {
-                    card.style.setProperty(
-                        "--certificate-delay",
-                        `${index * 120}ms`
-                    );
-                });
-
-                sectionObserver.unobserve(section);
-            });
-        },
-        {
-            threshold: 0.14,
-            rootMargin: "0px 0px -8% 0px",
-        }
-    );
-
-    sectionObserver.observe(section);
-
-    // -------------------------------------------------------
-    // Initial visibility fallback
-    // Useful when browser restores previous scroll position.
-    // -------------------------------------------------------
-
-    const checkInitialVisibility = () => {
-        const rect = section.getBoundingClientRect();
-
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
-
-        const isVisible =
-            rect.top < viewportHeight * 0.9 &&
-            rect.bottom > viewportHeight * 0.08;
-
-        if (isVisible) {
-            sectionVisible = true;
-            section.classList.add("is-visible");
-        }
-    };
-
-    window.requestAnimationFrame(
-        checkInitialVisibility
-    );
-
-    // -------------------------------------------------------
-    // Reduced motion
-    // -------------------------------------------------------
-
-    if (reduceMotion) {
-        section.classList.add(
-            "certificates-reduced-motion"
-        );
-
-        if (ticker) {
-            ticker.style.animationPlayState = "paused";
+        // The floating PDF must live outside the section's overflow clipping.
+        if (hoverPreview && hoverPreview.parentElement !== document.body) {
+            document.body.appendChild(hoverPreview);
         }
 
-        return;
-    }
-
-    // -------------------------------------------------------
-    // Featured TCS certificate tilt
-    // -------------------------------------------------------
-
-    if (
-        documentWrap &&
-        documentCard &&
-        finePointer
-    ) {
-        const updateDocumentTilt = (event) => {
-            if (!sectionVisible) return;
-
-            const rect =
-                documentWrap.getBoundingClientRect();
-
-            if (!rect.width || !rect.height) return;
-
-            const x =
-                (event.clientX - rect.left) /
-                    rect.width -
-                0.5;
-
-            const y =
-                (event.clientY - rect.top) /
-                    rect.height -
-                0.5;
-
-            const rotateX = y * -5;
-            const rotateY = x * 6;
-
-            documentCard.style.setProperty(
-                "--certificate-rotate-x",
-                `${rotateX}deg`
-            );
-
-            documentCard.style.setProperty(
-                "--certificate-rotate-y",
-                `${rotateY}deg`
-            );
-        };
-
-        const resetDocumentTilt = () => {
-            documentCard.style.setProperty(
-                "--certificate-rotate-x",
-                "0deg"
-            );
-
-            documentCard.style.setProperty(
-                "--certificate-rotate-y",
-                "0deg"
-            );
-        };
-
-        documentWrap.addEventListener(
-            "pointermove",
-            updateDocumentTilt,
-            { passive: true }
-        );
-
-        documentWrap.addEventListener(
-            "pointerleave",
-            resetDocumentTilt
-        );
-    }
-
-    // -------------------------------------------------------
-    // Secondary certificate card tilt
-    // Works for Zetheta and future certificate cards.
-    // -------------------------------------------------------
-
-    credentialCards.forEach((card) => {
-        if (finePointer) {
-            const updateCardTilt = (event) => {
-                const rect =
-                    card.getBoundingClientRect();
-
-                if (!rect.width || !rect.height) {
-                    return;
-                }
-
-                const x =
-                    (event.clientX - rect.left) /
-                        rect.width -
-                    0.5;
-
-                const y =
-                    (event.clientY - rect.top) /
-                        rect.height -
-                    0.5;
-
-                card.style.setProperty(
-                    "--credential-rx",
-                    `${y * -2}deg`
-                );
-
-                card.style.setProperty(
-                    "--credential-ry",
-                    `${x * 2}deg`
-                );
-            };
-
-            const resetCardTilt = () => {
-                card.style.setProperty(
-                    "--credential-rx",
-                    "0deg"
-                );
-
-                card.style.setProperty(
-                    "--credential-ry",
-                    "0deg"
-                );
-            };
-
-            card.addEventListener(
-                "pointermove",
-                updateCardTilt,
-                { passive: true }
-            );
-
-            card.addEventListener(
-                "pointerleave",
-                resetCardTilt
-            );
-        }
-
-        // Keyboard focus state.
-        card.addEventListener(
-            "focusin",
-            () => {
-                card.classList.add("is-focused");
-            }
-        );
-
-        card.addEventListener(
-            "focusout",
-            () => {
-                card.classList.remove("is-focused");
-            }
-        );
-    });
-
-    // -------------------------------------------------------
-    // Learning ticker
-    // Pause when user hovers or focuses it.
-    // -------------------------------------------------------
-
-    if (ticker) {
-        ticker.addEventListener(
-            "mouseenter",
-            () => {
-                ticker.style.animationPlayState =
-                    "paused";
-            }
-        );
-
-        ticker.addEventListener(
-            "mouseleave",
-            () => {
-                ticker.style.animationPlayState =
-                    "running";
-            }
-        );
-
-        ticker.addEventListener(
-            "focusin",
-            () => {
-                ticker.style.animationPlayState =
-                    "paused";
-            }
-        );
-
-        ticker.addEventListener(
-            "focusout",
-            () => {
-                ticker.style.animationPlayState =
-                    "running";
-            }
-        );
-    }
-
-    // -------------------------------------------------------
-    // Background mouse parallax
-    // -------------------------------------------------------
-
-    let pointerX = 0;
-    let pointerY = 0;
-
-    let currentX = 0;
-    let currentY = 0;
-
-    if (finePointer) {
-        window.addEventListener(
-            "pointermove",
-            (event) => {
-                pointerX =
-                    event.clientX /
-                        window.innerWidth -
-                    0.5;
-
-                pointerY =
-                    event.clientY /
-                        window.innerHeight -
-                    0.5;
-            },
-            { passive: true }
-        );
-
-        const animateBackground = () => {
-            currentX +=
-                (pointerX - currentX) * 0.035;
-
-            currentY +=
-                (pointerY - currentY) * 0.035;
-
-            if (sectionVisible) {
-                if (backgroundWord) {
-                    backgroundWord.style.transform =
-                        `translate3d(
-                            ${currentX * -16}px,
-                            ${currentY * -9}px,
-                            0
-                        )`;
-                }
-
-                if (backgroundCircleOne) {
-                    backgroundCircleOne.style.transform =
-                        `translate3d(
-                            ${currentX * 20}px,
-                            ${currentY * 14}px,
-                            0
-                        )`;
-                }
-
-                if (backgroundCircleTwo) {
-                    backgroundCircleTwo.style.transform =
-                        `translate3d(
-                            ${currentX * -14}px,
-                            ${currentY * -11}px,
-                            0
-                        )`;
-                }
-
-                if (backgroundLineOne) {
-                    backgroundLineOne.style.transform =
-                        `translate3d(
-                            ${currentX * -8}px,
-                            ${currentY * 6}px,
-                            0
-                        ) rotate(-8deg)`;
-                }
-
-                if (backgroundLineTwo) {
-                    backgroundLineTwo.style.transform =
-                        `translate3d(
-                            ${currentX * 8}px,
-                            ${currentY * -6}px,
-                            0
-                        ) rotate(10deg)`;
-                }
-            }
-
-            window.requestAnimationFrame(
-                animateBackground
-            );
-        };
-
-        window.requestAnimationFrame(
-            animateBackground
-        );
-    }
-
-    // -------------------------------------------------------
-    // Scroll-based subtle movement
-    // -------------------------------------------------------
-
-    let scrollTicking = false;
-
-    const updateScrollMotion = () => {
-        scrollTicking = false;
-
-        if (!sectionVisible) return;
-
-        const rect =
-            section.getBoundingClientRect();
-
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
-
-        const progress =
-            (viewportHeight - rect.top) /
-            (viewportHeight + rect.height);
-
-        const amount = Math.max(
-            0,
-            Math.min(1, progress)
-        );
-
-        if (backgroundWord) {
-            backgroundWord.style.marginTop =
-                `${amount * -20}px`;
-        }
-
-        if (backgroundCircleOne) {
-            backgroundCircleOne.style.marginTop =
-                `${amount * 15}px`;
-        }
-
-        if (backgroundCircleTwo) {
-            backgroundCircleTwo.style.marginTop =
-                `${amount * -12}px`;
-        }
-    };
-
-    const handleScroll = () => {
-        if (scrollTicking) return;
-
-        scrollTicking = true;
-
-        window.requestAnimationFrame(
-            updateScrollMotion
-        );
-    };
-
-    window.addEventListener(
-        "scroll",
-        handleScroll,
-        { passive: true }
-    );
-
-    // -------------------------------------------------------
-    // Refresh helper
-    // Can be used later if content is dynamically replaced.
-    // -------------------------------------------------------
-
-    window.VikasPortfolio =
-        window.VikasPortfolio || {};
-
-    window.VikasPortfolio.refreshCertificates =
-        () => {
-            section.classList.remove(
-                "is-visible"
-            );
-
-            sectionVisible = false;
-
-            window.requestAnimationFrame(() => {
-                checkInitialVisibility();
-            });
-        };
-}
-
-
-// =========================================================
-// REGISTER CERTIFICATES
-// Uses the central portfolio section system.
-// =========================================================
-
-if (
-    window.VikasPortfolio &&
-    typeof window.VikasPortfolio.registerSection ===
-        "function"
-) {
-    window.VikasPortfolio.registerSection(
-        "certificates",
-        initCertificates
-    );
-} else {
-    // Development fallback if main.js boot system
-    // has not been loaded yet.
-    document.addEventListener(
-        "DOMContentLoaded",
-        initCertificates
-    );
-}
-
-// =========================================================
-// SKILLS / DEVELOPER ARSENAL
-// Premium Light Brand System
-//
-// Handles:
-// - Section reveal
-// - Skill category switching
-// - Keyboard navigation
-// - Active skill panel animation
-// - VK logo / core interaction
-// - Background parallax
-// - Scroll-based ambient motion
-// - Technology strip interactions
-// - Reduced-motion support
-// =========================================================
-
-function initSkills() {
-    const section = document.querySelector(
-        "#skills.skills-section"
-    );
-
-    // -------------------------------------------------------
-    // Safety check
-    // -------------------------------------------------------
-
-    if (!section) return;
-
-    // -------------------------------------------------------
-    // Main elements
-    // -------------------------------------------------------
-
-    const categories = section.querySelectorAll(
-        "[data-skill-category]"
-    );
-
-    const panels = section.querySelectorAll(
-        "[data-skill-panel]"
-    );
-
-    const core = section.querySelector(
-        ".skills-brand-core"
-    );
-
-    const coreLogo = section.querySelector(
-        ".skills-logo-box"
-    );
-
-    const coreRings = section.querySelectorAll(
-        ".skills-core-ring"
-    );
-
-    const floatingTags = section.querySelectorAll(
-        ".skills-floating-tag"
-    );
-
-    // -------------------------------------------------------
-    // Background elements
-    // -------------------------------------------------------
-
-    const backgroundWord = section.querySelector(
-        ".skills-bg-word"
-    );
-
-    const backgroundGlow = section.querySelector(
-        ".skills-bg-glow"
-    );
-
-    const backgroundCircleOne = section.querySelector(
-        ".skills-bg-circle.circle-one"
-    );
-
-    const backgroundCircleTwo = section.querySelector(
-        ".skills-bg-circle.circle-two"
-    );
-
-    const backgroundLineOne = section.querySelector(
-        ".skills-bg-line.line-one"
-    );
-
-    const backgroundLineTwo = section.querySelector(
-        ".skills-bg-line.line-two"
-    );
-
-    // -------------------------------------------------------
-    // Other elements
-    // -------------------------------------------------------
-
-    const techItems = section.querySelectorAll(
-        ".skills-tech-list span"
-    );
-
-    const techStrip = section.querySelector(
-        ".skills-tech-list"
-    );
-
-    // -------------------------------------------------------
-    // Motion preferences
-    // -------------------------------------------------------
-
-    const reduceMotion =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-    const finePointer =
-        window.matchMedia &&
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches;
-
-    let sectionVisible = false;
-    let activeCategory = "backend";
-
-    // -------------------------------------------------------
-    // Mark section as initialized
-    // -------------------------------------------------------
-
-    section.classList.add(
-        "skills-js-ready"
-    );
-
-    // -------------------------------------------------------
-    // Helper: activate skill category
-    // -------------------------------------------------------
-
-    const activateCategory = (
-        category,
-        restartAnimation = true
-    ) => {
-        if (!category) return;
-
-        const targetButton =
-            Array.from(categories).find(
-                (button) =>
-                    button.dataset.skillCategory ===
-                    category
-            );
-
-        const targetPanel =
-            Array.from(panels).find(
-                (panel) =>
-                    panel.dataset.skillPanel ===
-                    category
-            );
-
-        if (!targetButton || !targetPanel) {
+        if (!cards.length || !filters.length) {
+            console.error("Credentials: cards or filters are missing.");
             return;
         }
 
-        activeCategory = category;
+        section.dataset.credentialsInit = "true";
 
-        // ---------------------------------------------------
-        // Update navigation buttons
-        // ---------------------------------------------------
+        const modalTitle = section.querySelector("#credentialModalTitle");
+        const modalDescription = section.querySelector("#credentialModalDescription");
+        const modalDate = section.querySelector("#credentialModalDate");
+        const modalCategory = section.querySelector("#credentialModalCategory");
+        const originalLink = section.querySelector("#credentialOriginal");
+        const closeButtons = section.querySelectorAll("[data-modal-close]");
+        const prevButton = section.querySelector(".credential-prev");
+        const nextButton = section.querySelector(".credential-next");
 
-        categories.forEach((button) => {
-            const isActive =
-                button.dataset.skillCategory ===
-                category;
+        let visibleCards = cards.slice();
+        let activeIndex = 0;
+        let lastFocus = null;
+        let hoveredCard = null;
 
-            button.classList.toggle(
-                "is-active",
-                isActive
-            );
+        const categoryLabels = {
+            certification: "Certification",
+            internship: "Internship",
+            project: "Project",
+            achievement: "Achievement"
+        };
 
-            button.setAttribute(
-                "aria-selected",
-                isActive
-                    ? "true"
-                    : "false"
-            );
-        });
-
-        // ---------------------------------------------------
-        // Update information panels
-        // ---------------------------------------------------
-
-        panels.forEach((panel) => {
-            const isActive =
-                panel.dataset.skillPanel ===
-                category;
-
-            panel.classList.toggle(
-                "is-active",
-                isActive
-            );
-
-            panel.setAttribute(
-                "aria-hidden",
-                isActive
-                    ? "false"
-                    : "true"
-            );
-        });
-
-        // ---------------------------------------------------
-        // Tell the core which system is active
-        // ---------------------------------------------------
-
-        if (core) {
-            core.dataset.activeSkill =
-                category;
-        }
-
-        // ---------------------------------------------------
-        // Give floating system markers a small response
-        // ---------------------------------------------------
-
-        floatingTags.forEach(
-            (tag, index) => {
-                tag.style.setProperty(
-                    "--skill-tag-delay",
-                    `${index * 40}ms`
-                );
+        function getPDF(card) {
+            const url = card.dataset.file;
+            if (!url) {
+                console.error("Missing data-file on certificate card:", card);
+                return "";
             }
-        );
-
-        // ---------------------------------------------------
-        // Restart panel entrance animation
-        // ---------------------------------------------------
-
-        if (
-            restartAnimation &&
-            targetPanel &&
-            !reduceMotion
-        ) {
-            targetPanel.style.animation =
-                "none";
-
-            // Force reflow.
-            void targetPanel.offsetWidth;
-
-            targetPanel.style.animation = "";
+            return url;
         }
-    };
 
-    // -------------------------------------------------------
-    // Initial state
-    // -------------------------------------------------------
+        /* FILTERS */
+        function applyFilter(filter) {
+            filters.forEach(function (button) {
+                const active = button.dataset.filter === filter;
+                button.classList.toggle("is-active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
 
-    activateCategory(
-        activeCategory,
-        false
-    );
+            cards.forEach(function (card, index) {
+                const isVisible =
+                    filter === "all" || card.dataset.category === filter;
+                card.hidden = !isVisible;
 
-    // -------------------------------------------------------
-    // Section reveal observer
-    // -------------------------------------------------------
-
-    const sectionObserver =
-        new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
-
-                    sectionVisible = true;
-
-                    section.classList.add(
-                        "is-visible"
+                if (isVisible) {
+                    card.style.setProperty(
+                        "--credential-stagger",
+                        (index * 45) + "ms"
                     );
+                    card.classList.remove("is-filter-entering");
+                    void card.offsetWidth;
+                    card.classList.add("is-filter-entering");
+                    window.setTimeout(function () {
+                        card.classList.remove("is-filter-entering");
+                    }, 520 + index * 45);
+                }
+            });
 
-                    sectionObserver.unobserve(
-                        section
-                    );
+            visibleCards = cards.filter(function (card) {
+                return !card.hidden;
+            });
+
+            hideHoverPreview();
+        }
+
+        filters.forEach(function (button) {
+            button.addEventListener("click", function () {
+                applyFilter(button.dataset.filter);
+            });
+        });
+
+        /* HOVER PREVIEW */
+        function positionHoverPreview(event) {
+            if (!hoverPreview || !event) return;
+
+            const width = hoverPreview.offsetWidth || 390;
+            const height = hoverPreview.offsetHeight || 320;
+            const gap = 20;
+
+            let x = event.clientX + gap;
+            let y = event.clientY + gap;
+
+            if (x + width > window.innerWidth - 12) {
+                x = event.clientX - width - gap;
+            }
+            if (y + height > window.innerHeight - 12) {
+                y = window.innerHeight - height - 12;
+            }
+
+            x = Math.max(12, x);
+            y = Math.max(12, y);
+
+            hoverPreview.style.left = x + "px";
+            hoverPreview.style.top = y + "px";
+        }
+
+        function showHoverPreview(card, event) {
+            if (!hoverPreview || !hoverFrame || !hoverTitle) return;
+            if (window.matchMedia("(hover: none)").matches) return;
+            if (modal && modal.classList.contains("is-open")) return;
+
+            const pdf = getPDF(card);
+            if (!pdf) return;
+
+            hoveredCard = card;
+            hoverTitle.textContent = card.dataset.title || "Certificate Preview";
+
+            // Load only when the hovered certificate changes.
+            if (hoverFrame.dataset.currentPdf !== pdf) {
+                hoverFrame.dataset.currentPdf = pdf;
+                hoverFrame.src = pdf + "#toolbar=0&navpanes=0&view=FitH";
+            }
+
+            hoverPreview.classList.add("is-visible");
+            hoverPreview.setAttribute("aria-hidden", "false");
+            positionHoverPreview(event);
+        }
+
+        function hideHoverPreview() {
+            if (!hoverPreview) return;
+
+            hoverPreview.classList.remove("is-visible");
+            hoverPreview.setAttribute("aria-hidden", "true");
+            hoveredCard = null;
+
+            // Leave the PDF loaded briefly; next hover can reuse it.
+        }
+
+        cards.forEach(function (card) {
+            card.addEventListener("mouseenter", function (event) {
+                showHoverPreview(card, event);
+            });
+
+            card.addEventListener("mousemove", function (event) {
+                if (hoveredCard === card) {
+                    positionHoverPreview(event);
+                }
+            });
+
+            card.addEventListener("mouseleave", hideHoverPreview);
+
+            const openButton = card.querySelector(".credential-open");
+            if (openButton) {
+                openButton.addEventListener("focus", function () {
+                    // Keyboard users can still open the modal with Enter.
                 });
-            },
-            {
-                threshold: 0.12,
-                rootMargin:
-                    "0px 0px -8% 0px",
+
+                openButton.addEventListener("click", function () {
+                    hideHoverPreview();
+                    openModal(card);
+                });
             }
-        );
+        });
 
-    sectionObserver.observe(section);
+        /* MODAL */
+        function renderModal() {
+            const card = visibleCards[activeIndex];
+            if (!card) return;
 
-    // -------------------------------------------------------
-    // Initial visibility fallback
-    // -------------------------------------------------------
+            const pdf = getPDF(card);
+            if (!pdf) return;
 
-    const checkInitialVisibility = () => {
-        const rect =
-            section.getBoundingClientRect();
+            if (modalTitle) {
+                modalTitle.textContent = card.dataset.title || "Certificate";
+            }
+            if (modalDescription) {
+                modalDescription.textContent = card.dataset.description || "";
+            }
+            if (modalDate) {
+                modalDate.textContent = card.dataset.date || "";
+            }
+            if (modalCategory) {
+                modalCategory.textContent =
+                    categoryLabels[card.dataset.category] || "Credential";
+            }
 
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
+            modalFrame.src = pdf + "#toolbar=1&navpanes=0&view=FitH";
+            if (originalLink) originalLink.href = pdf;
 
-        const visible =
-            rect.top <
-                viewportHeight * 0.9 &&
-            rect.bottom >
-                viewportHeight * 0.08;
-
-        if (visible) {
-            sectionVisible = true;
-
-            section.classList.add(
-                "is-visible"
-            );
+            const canMove = visibleCards.length > 1;
+            if (prevButton) prevButton.disabled = !canMove;
+            if (nextButton) nextButton.disabled = !canMove;
         }
-    };
 
-    window.requestAnimationFrame(
-        checkInitialVisibility
-    );
+        function openModal(card) {
+            if (!modal || !modalFrame) return;
 
-    // -------------------------------------------------------
-    // Category interaction
-    // -------------------------------------------------------
+            const index = visibleCards.indexOf(card);
+            if (index < 0) return;
 
-    categories.forEach(
-        (button, index) => {
-            const category =
-                button.dataset.skillCategory;
+            activeIndex = index;
+            lastFocus = document.activeElement;
+            renderModal();
 
-            if (!category) return;
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.classList.add("credentials-modal-open");
 
-            // Click.
-            button.addEventListener(
-                "click",
-                () => {
-                    activateCategory(
-                        category,
-                        true
-                    );
-                }
-            );
-
-            // ------------------------------------------------
-            // Desktop hover
-            // ------------------------------------------------
-
-            if (finePointer) {
-                button.addEventListener(
-                    "mouseenter",
-                    () => {
-                        activateCategory(
-                            category,
-                            true
-                        );
-                    }
-                );
-            }
-
-            // ------------------------------------------------
-            // Keyboard navigation
-            // ------------------------------------------------
-
-            button.addEventListener(
-                "keydown",
-                (event) => {
-                    const allowedKeys = [
-                        "ArrowDown",
-                        "ArrowUp",
-                        "ArrowRight",
-                        "ArrowLeft",
-                    ];
-
-                    if (
-                        !allowedKeys.includes(
-                            event.key
-                        )
-                    ) {
-                        return;
-                    }
-
-                    event.preventDefault();
-
-                    let nextIndex =
-                        index;
-
-                    if (
-                        event.key ===
-                            "ArrowDown" ||
-                        event.key ===
-                            "ArrowRight"
-                    ) {
-                        nextIndex =
-                            (index + 1) %
-                            categories.length;
-                    } else {
-                        nextIndex =
-                            (index -
-                                1 +
-                                categories.length) %
-                            categories.length;
-                    }
-
-                    const nextButton =
-                        categories[nextIndex];
-
-                    if (!nextButton) {
-                        return;
-                    }
-
-                    nextButton.focus();
-
-                    activateCategory(
-                        nextButton.dataset
-                            .skillCategory,
-                        true
-                    );
-                }
-            );
+            const closeButton = modal.querySelector(".credential-close");
+            if (closeButton) closeButton.focus();
         }
-    );
 
-    // -------------------------------------------------------
-    // Core logo interaction
-    // -------------------------------------------------------
+        function closeModal() {
+            if (!modal || !modal.classList.contains("is-open")) return;
 
-    if (
-        core &&
-        coreLogo &&
-        finePointer &&
-        !reduceMotion
-    ) {
-        const moveCore = (event) => {
-            const rect =
-                core.getBoundingClientRect();
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("credentials-modal-open");
 
-            if (
-                !rect.width ||
-                !rect.height
-            ) {
-                return;
+            if (modalFrame) modalFrame.src = "about:blank";
+
+            if (lastFocus && typeof lastFocus.focus === "function") {
+                lastFocus.focus();
             }
+        }
 
-            const x =
-                (event.clientX -
-                    rect.left) /
-                    rect.width -
-                0.5;
+        function navigate(direction) {
+            if (visibleCards.length < 2) return;
 
-            const y =
-                (event.clientY -
-                    rect.top) /
-                    rect.height -
-                0.5;
+            activeIndex =
+                (activeIndex + direction + visibleCards.length) %
+                visibleCards.length;
 
-            core.style.setProperty(
-                "--core-rx",
-                `${y * -2.5}deg`
-            );
+            renderModal();
+        }
 
-            core.style.setProperty(
-                "--core-ry",
-                `${x * 3.5}deg`
-            );
+        closeButtons.forEach(function (button) {
+            button.addEventListener("click", closeModal);
+        });
 
-            coreLogo.style.transform =
-                `translate(
-                    ${x * 4}px,
-                    ${y * 4}px
-                ) scale(1.035)`;
-        };
+        if (prevButton) {
+            prevButton.addEventListener("click", function () {
+                navigate(-1);
+            });
+        }
 
-        const resetCore = () => {
-            core.style.setProperty(
-                "--core-rx",
-                "0deg"
-            );
+        if (nextButton) {
+            nextButton.addEventListener("click", function () {
+                navigate(1);
+            });
+        }
 
-            core.style.setProperty(
-                "--core-ry",
-                "0deg"
-            );
+        document.addEventListener("keydown", function (event) {
+            if (!modal || !modal.classList.contains("is-open")) return;
 
-            coreLogo.style.transform =
-                "";
-        };
+            if (event.key === "Escape") closeModal();
+            if (event.key === "ArrowLeft") navigate(-1);
+            if (event.key === "ArrowRight") navigate(1);
+        });
 
-        core.addEventListener(
-            "pointermove",
-            moveCore,
-            { passive: true }
-        );
+        window.addEventListener("resize", hideHoverPreview);
+        window.addEventListener("scroll", hideHoverPreview, { passive: true });
 
-        core.addEventListener(
-            "pointerleave",
-            resetCore
-        );
+        applyFilter("all");
+        console.info("Credentials: filters and preview initialized.");
     }
 
-    // -------------------------------------------------------
-    // Ring response
-    // Gives the core slightly different movement
-    // depending on the active category.
-    // -------------------------------------------------------
-
-    const categoryAngles = {
-        backend: 0,
-        frontend: 45,
-        database: 90,
-        tools: 135,
-        ai: 180,
-    };
-
-    const updateRingState = (category) => {
-        const angle =
-            categoryAngles[category] ?? 0;
-
-        coreRings.forEach(
-            (ring, index) => {
-                ring.style.setProperty(
-                    "--skill-category-angle",
-                    `${angle +
-                        index * 18}deg`
-                );
-            }
-        );
-    };
-
-    const originalActivateCategory =
-        activateCategory;
-
-    // Keep ring state synced with the active panel.
-    const setCategoryWithRings = (
-        category,
-        restartAnimation = true
-    ) => {
-        originalActivateCategory(
-            category,
-            restartAnimation
-        );
-
-        updateRingState(category);
-    };
-
-    setCategoryWithRings(
-        activeCategory,
-        false
-    );
-
-    // -------------------------------------------------------
-    // Replace category handlers with ring-aware version
-    // -------------------------------------------------------
-
-    categories.forEach(
-        (button, index) => {
-            const category =
-                button.dataset.skillCategory;
-
-            if (!category) return;
-
-            button.onclick = () => {
-                setCategoryWithRings(
-                    category,
-                    true
-                );
-            };
-
-            if (finePointer) {
-                button.onmouseenter = () => {
-                    setCategoryWithRings(
-                        category,
-                        true
-                    );
-                };
-            }
-
-            button.onkeydown = (event) => {
-                const allowedKeys = [
-                    "ArrowDown",
-                    "ArrowUp",
-                    "ArrowRight",
-                    "ArrowLeft",
-                ];
-
-                if (
-                    !allowedKeys.includes(
-                        event.key
-                    )
-                ) {
-                    return;
-                }
-
-                event.preventDefault();
-
-                let nextIndex =
-                    index;
-
-                if (
-                    event.key ===
-                        "ArrowDown" ||
-                    event.key ===
-                        "ArrowRight"
-                ) {
-                    nextIndex =
-                        (index + 1) %
-                        categories.length;
-                } else {
-                    nextIndex =
-                        (index -
-                            1 +
-                            categories.length) %
-                        categories.length;
-                }
-
-                const nextButton =
-                    categories[nextIndex];
-
-                if (!nextButton) {
-                    return;
-                }
-
-                nextButton.focus();
-
-                setCategoryWithRings(
-                    nextButton.dataset
-                        .skillCategory,
-                    true
-                );
-            };
-        }
-    );
-
-    // -------------------------------------------------------
-    // Technology strip interaction
-    // -------------------------------------------------------
-
-    techItems.forEach((item) => {
-        item.addEventListener(
-            "mouseenter",
-            () => {
-                techItems.forEach(
-                    (other) => {
-                        if (
-                            other !== item
-                        ) {
-                            other.classList.remove(
-                                "is-highlighted"
-                            );
-                        }
-                    }
-                );
-
-                item.classList.add(
-                    "is-highlighted"
-                );
-            }
-        );
-
-        item.addEventListener(
-            "mouseleave",
-            () => {
-                item.classList.remove(
-                    "is-highlighted"
-                );
-            }
-        );
-
-        item.addEventListener(
-            "focusin",
-            () => {
-                item.classList.add(
-                    "is-highlighted"
-                );
-            }
-        );
-
-        item.addEventListener(
-            "focusout",
-            () => {
-                item.classList.remove(
-                    "is-highlighted"
-                );
-            }
-        );
-    });
-
-    // -------------------------------------------------------
-    // Pause decorative animation while technology
-    // strip is being interacted with.
-    // -------------------------------------------------------
-
-    if (techStrip && !reduceMotion) {
-        techStrip.addEventListener(
-            "mouseenter",
-            () => {
-                section.classList.add(
-                    "skills-tech-hover"
-                );
-            }
-        );
-
-        techStrip.addEventListener(
-            "mouseleave",
-            () => {
-                section.classList.remove(
-                    "skills-tech-hover"
-                );
-            }
-        );
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCredentials, { once: true });
+    } else {
+        initCredentials();
     }
+})();
 
-    // -------------------------------------------------------
-    // Reduced motion
-    // -------------------------------------------------------
 
-    if (reduceMotion) {
-        section.classList.add(
-            "skills-reduced-motion"
-        );
+// SECTION: CERTIFICATES / CREDENTIALS - END
 
-        return;
-    }
 
-    // -------------------------------------------------------
-    // Background mouse parallax
-    // -------------------------------------------------------
+/* =========================================================
+   SECTION 08 — BLOG INTERACTIONS
+   File: static/js/main.js
+   Works with the existing Blog HTML
+   ========================================================= */
 
-    let pointerX = 0;
-    let pointerY = 0;
+(() => {
+    "use strict";
 
-    let currentX = 0;
-    let currentY = 0;
+    function initBlogSection() {
+        const blog = document.querySelector("#blog");
 
-    if (finePointer) {
-        window.addEventListener(
-            "pointermove",
-            (event) => {
-                pointerX =
-                    event.clientX /
-                        window.innerWidth -
-                    0.5;
-
-                pointerY =
-                    event.clientY /
-                        window.innerHeight -
-                    0.5;
-            },
-            { passive: true }
-        );
-
-        const animateBackground =
-            () => {
-                currentX +=
-                    (pointerX -
-                        currentX) *
-                    0.035;
-
-                currentY +=
-                    (pointerY -
-                        currentY) *
-                    0.035;
-
-                if (sectionVisible) {
-                    if (
-                        backgroundWord
-                    ) {
-                        backgroundWord.style.transform =
-                            `translate3d(
-                                ${currentX * -18}px,
-                                ${currentY * -10}px,
-                                0
-                            )`;
-                    }
-
-                    if (
-                        backgroundCircleOne
-                    ) {
-                        backgroundCircleOne.style.marginTop =
-                            `${currentY * 18}px`;
-
-                        backgroundCircleOne.style.marginLeft =
-                            `${currentX * 20}px`;
-                    }
-
-                    if (
-                        backgroundCircleTwo
-                    ) {
-                        backgroundCircleTwo.style.marginTop =
-                            `${currentY * -12}px`;
-
-                        backgroundCircleTwo.style.marginLeft =
-                            `${currentX * -14}px`;
-                    }
-
-                    if (
-                        backgroundLineOne
-                    ) {
-                        backgroundLineOne.style.translate =
-                            `${currentX * -7}px ${currentY * 5}px`;
-                    }
-
-                    if (
-                        backgroundLineTwo
-                    ) {
-                        backgroundLineTwo.style.translate =
-                            `${currentX * 7}px ${currentY * -5}px`;
-                    }
-
-                    if (
-                        backgroundGlow
-                    ) {
-                        backgroundGlow.style.transform =
-                            `translate(
-                                calc(-50% + ${currentX * 24}px),
-                                calc(-50% + ${currentY * 18}px)
-                            )`;
-                    }
-                }
-
-                window.requestAnimationFrame(
-                    animateBackground
-                );
-            };
-
-        window.requestAnimationFrame(
-            animateBackground
-        );
-    }
-
-    // -------------------------------------------------------
-    // Scroll ambient movement
-    // -------------------------------------------------------
-
-    let scrollTicking = false;
-
-    const updateScrollMotion = () => {
-        scrollTicking = false;
-
-        if (!sectionVisible) return;
-
-        const rect =
-            section.getBoundingClientRect();
-
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
-
-        const progress =
-            (viewportHeight - rect.top) /
-            (viewportHeight +
-                rect.height);
-
-        const amount = Math.max(
-            0,
-            Math.min(1, progress)
-        );
-
-        if (backgroundWord) {
-            backgroundWord.style.marginTop =
-                `${amount * -20}px`;
+        if (!blog || blog.dataset.blogInitialized === "true") {
+            return;
         }
 
-        if (backgroundGlow) {
-            backgroundGlow.style.marginTop =
-                `${amount * 13}px`;
-        }
-    };
+        blog.dataset.blogInitialized = "true";
 
-    const handleScroll = () => {
-        if (scrollTicking) return;
+        const cards = [
+            ...blog.querySelectorAll(
+                ".blog-featured, .blog-card"
+            )
+        ];
 
-        scrollTicking = true;
+        /* -----------------------------------------
+           1. Reveal animation
+           ----------------------------------------- */
 
-        window.requestAnimationFrame(
-            updateScrollMotion
-        );
-    };
-
-    window.addEventListener(
-        "scroll",
-        handleScroll,
-        { passive: true }
-    );
-
-    // -------------------------------------------------------
-    // Public API
-    // -------------------------------------------------------
-
-    window.VikasPortfolio =
-        window.VikasPortfolio || {};
-
-    window.VikasPortfolio.setSkillCategory =
-        (category) => {
-            setCategoryWithRings(
-                category,
-                true
-            );
-        };
-
-    // -------------------------------------------------------
-    // Refresh helper
-    // -------------------------------------------------------
-
-    window.VikasPortfolio.refreshSkills =
-        () => {
-            sectionVisible = false;
-
-            section.classList.remove(
-                "is-visible"
-            );
-
-            window.requestAnimationFrame(
-                checkInitialVisibility
-            );
-        };
-}
-
-
-// =========================================================
-// REGISTER SKILLS
-// Uses the central portfolio boot system.
-// =========================================================
-
-if (
-    window.VikasPortfolio &&
-    typeof window.VikasPortfolio
-        .registerSection ===
-        "function"
-) {
-    window.VikasPortfolio.registerSection(
-        "skills",
-        initSkills
-    );
-} else {
-    // Fallback for direct development/loading.
-    document.addEventListener(
-        "DOMContentLoaded",
-        initSkills
-    );
-}
-
-// =========================================================
-// SECTION 08 — BLOG
-// Premium Editorial Journal System
-//
-// Handles:
-// - Section reveal
-// - Featured article interaction
-// - Blog card hover depth
-// - Mouse parallax
-// - Image movement
-// - Background motion
-// - Keyboard accessibility
-// - Reduced-motion support
-// =========================================================
-
-function initBlog() {
-    const section = document.querySelector(
-        "#blog.blog-section"
-    );
-
-    // -------------------------------------------------------
-    // Safety check
-    // -------------------------------------------------------
-
-    if (!section) return;
-
-    // -------------------------------------------------------
-    // Main elements
-    // -------------------------------------------------------
-
-    const featuredArticle = section.querySelector(
-        ".blog-featured"
-    );
-
-    const featuredImage = section.querySelector(
-        ".blog-featured-image"
-    );
-
-    const featuredImageInner = featuredImage
-        ? featuredImage.querySelector("img")
-        : null;
-
-    const featuredScan = section.querySelector(
-        ".featured-image-scan"
-    );
-
-    const cards = section.querySelectorAll(
-        ".blog-card"
-    );
-
-    const cardImages = section.querySelectorAll(
-        ".blog-card-image"
-    );
-
-    const readLinks = section.querySelectorAll(
-        ".blog-read-link, .blog-small-arrow, .blog-view-all"
-    );
-
-    // -------------------------------------------------------
-    // Background elements
-    // -------------------------------------------------------
-
-    const backgroundWord = section.querySelector(
-        ".blog-bg-word"
-    );
-
-    const backgroundOrbOne = section.querySelector(
-        ".blog-bg-orb-one"
-    );
-
-    const backgroundOrbTwo = section.querySelector(
-        ".blog-bg-orb-two"
-    );
-
-    const backgroundLineOne = section.querySelector(
-        ".blog-bg-line-one"
-    );
-
-    const backgroundLineTwo = section.querySelector(
-        ".blog-bg-line-two"
-    );
-
-    // -------------------------------------------------------
-    // Motion preferences
-    // -------------------------------------------------------
-
-    const reduceMotion =
-        window.matchMedia &&
-        window.matchMedia(
+        const reducedMotion = window.matchMedia(
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
-    const finePointer =
-        window.matchMedia &&
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches;
+        if (!reducedMotion && "IntersectionObserver" in window) {
+            const revealItems = [
+                ...blog.querySelectorAll(
+                    ".blog-hero-copy, .blog-hero-visual, .blog-toolbar, .blog-card, .blog-stats"
+                )
+            ];
+            const observer = new IntersectionObserver(
+                (entries, currentObserver) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
 
-    let sectionVisible = false;
+                        entry.target.classList.add("is-revealed");
+                        currentObserver.unobserve(entry.target);
+                    });
+                },
+                {
+                    threshold: 0.08,
+                    rootMargin: "0px 0px -35px 0px"
+                }
+            );
 
-    // -------------------------------------------------------
-    // JS ready state
-    // -------------------------------------------------------
+            revealItems.forEach((item, index) => {
+                item.classList.add("blog-reveal");
+                if (item.classList.contains("blog-card")) {
+                    item.style.setProperty("--reveal-delay", `${(index % 3) * 90}ms`);
+                }
+                observer.observe(item);
+            });
+        }
 
-    section.classList.add(
-        "blog-js-ready"
-    );
+        /* -----------------------------------------
+           2. Image fallback
+           ----------------------------------------- */
 
-    // -------------------------------------------------------
-    // Section reveal observer
-    // -------------------------------------------------------
+        const images = blog.querySelectorAll(
+            ".blog-featured-image img, .blog-card-image img"
+        );
 
-    const sectionObserver =
-        new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
+        images.forEach((img) => {
+            const showFallback = () => {
+                img.classList.add("blog-image-error");
+                img.style.display = "none";
 
-                    sectionVisible = true;
+                const container = img.closest(
+                    ".blog-featured-image, .blog-card-image"
+                );
 
-                    section.classList.add(
-                        "is-visible"
-                    );
+                if (!container) return;
 
-                    sectionObserver.unobserve(
-                        section
+                container.classList.add("blog-image-fallback");
+
+                if (!container.querySelector(".blog-image-placeholder")) {
+                    const placeholder = document.createElement("span");
+
+                    placeholder.className = "blog-image-placeholder";
+                    placeholder.textContent = "ARTICLE";
+
+                    Object.assign(placeholder.style, {
+                        position: "absolute",
+                        inset: "0",
+                        display: "grid",
+                        placeItems: "center",
+                        color: "#7b3f1d",
+                        background: "#f3e5d6",
+                        fontSize: "12px",
+                        fontWeight: "800",
+                        letterSpacing: "0.18em"
+                    });
+
+                    container.appendChild(placeholder);
+                }
+            };
+
+            img.addEventListener("error", showFallback, {
+                once: true
+            });
+
+            // Handle images that failed before this script ran.
+            if (img.complete && img.naturalWidth === 0) {
+                showFallback();
+            }
+        });
+
+        /* Search filters cards by their visible text. */
+
+        const searchInput = blog.querySelector("[data-blog-search], #blogSearch");
+        const searchClear = blog.querySelector("#blogSearchClear");
+
+        const searchStatus = blog.querySelector(
+            "[data-blog-search-status], #blog-posts"
+        );
+
+        let activeFilter = "all";
+
+        function getCardCategory(card) {
+            return (
+                card.dataset.category ||
+                card.querySelector("[data-category]")?.dataset.category ||
+                ""
+            ).trim().toLowerCase();
+        }
+
+        function applyBlogFilters() {
+            const query = (searchInput?.value || "")
+                .trim()
+                .toLowerCase();
+
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                const category = getCardCategory(card).split(/\s+/).filter(Boolean);
+
+                const matchesCategory =
+                    activeFilter === "all" ||
+                    category.includes(activeFilter);
+
+                const matchesSearch =
+                    !query ||
+                    card.textContent.toLowerCase().includes(query);
+
+                const visible = matchesCategory && matchesSearch;
+
+                card.hidden = !visible;
+
+                if (visible) visibleCount++;
+            });
+
+            if (searchStatus) {
+                searchStatus.textContent = query || activeFilter !== "all"
+                    ? `${visibleCount} article${visibleCount === 1 ? "" : "s"} found`
+                    : "";
+            }
+
+            updateCarousel();
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener("input", applyBlogFilters);
+        }
+
+        searchClear?.addEventListener("click", () => {
+            if (!searchInput) return;
+            searchInput.value = "";
+            searchInput.focus();
+            applyBlogFilters();
+        });
+
+        /* Category filters can match multiple category tokens per article. */
+
+        const filterButtons = blog.querySelectorAll(
+            "[data-blog-filter]"
+        );
+
+        filterButtons.forEach((button) => {
+            button.setAttribute(
+                "aria-pressed",
+                button.dataset.blogFilter === "all" ? "true" : "false"
+            );
+
+            button.addEventListener("click", () => {
+                activeFilter = (
+                    button.dataset.blogFilter || "all"
+                ).trim().toLowerCase();
+
+                filterButtons.forEach((item) => {
+                    const active =
+                        item.dataset.blogFilter.trim().toLowerCase() ===
+                        activeFilter;
+
+                    item.classList.toggle("is-active", active);
+                    item.setAttribute(
+                        "aria-pressed",
+                        String(active)
                     );
                 });
-            },
-            {
-                threshold: 0.12,
-                rootMargin:
-                    "0px 0px -7% 0px",
+
+                applyBlogFilters();
+            });
+        });
+
+        /* -----------------------------------------
+           5. Responsive carousel controls
+           ----------------------------------------- */
+
+        const track = blog.querySelector("#blogTrack");
+        const trackWindow = blog.querySelector(".blog-track-window");
+        const prevButton = blog.querySelector(".blog-prev");
+        const nextButton = blog.querySelector(".blog-next");
+        let carouselPage = 0;
+        let carouselPages = 1;
+
+        function updateCarousel() {
+            if (!track || !trackWindow) return;
+
+            const visibleCards = [...track.querySelectorAll(".blog-card")]
+                .filter((card) => !card.hidden);
+            const perPage = window.matchMedia("(max-width: 650px)").matches
+                ? 1
+                : window.matchMedia("(max-width: 1100px)").matches ? 2 : 3;
+            carouselPages = Math.max(1, Math.ceil(visibleCards.length / perPage));
+            carouselPage = Math.min(carouselPage, carouselPages - 1);
+
+            const pageDots = blog.querySelector("#blogDots");
+            if (pageDots) {
+                pageDots.innerHTML = "";
+                for (let page = 0; page < carouselPages; page++) {
+                    const dot = document.createElement("button");
+                    dot.type = "button";
+                    dot.setAttribute("aria-label", `Go to article page ${page + 1}`);
+                    dot.setAttribute("aria-current", page === carouselPage ? "true" : "false");
+                    dot.classList.toggle("is-active", page === carouselPage);
+                    dot.addEventListener("click", () => {
+                        carouselPage = page;
+                        updateCarousel();
+                    });
+                    pageDots.appendChild(dot);
+                }
             }
-        );
 
-    sectionObserver.observe(section);
+            if (visibleCards.length) {
+                const first = visibleCards[0];
+                const step = first.getBoundingClientRect().width +
+                    (parseFloat(getComputedStyle(track).columnGap) || 0);
+                track.style.transform = `translate3d(${-carouselPage * perPage * step}px, 0, 0)`;
+            } else {
+                track.style.transform = "translate3d(0, 0, 0)";
+            }
 
-    // -------------------------------------------------------
-    // Initial visibility fallback
-    // -------------------------------------------------------
-
-    const checkInitialVisibility = () => {
-        const rect =
-            section.getBoundingClientRect();
-
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
-
-        if (
-            rect.top <
-                viewportHeight * 0.9 &&
-            rect.bottom >
-                viewportHeight * 0.08
-        ) {
-            sectionVisible = true;
-
-            section.classList.add(
-                "is-visible"
-            );
+            if (prevButton) prevButton.disabled = carouselPage === 0;
+            if (nextButton) nextButton.disabled = carouselPage >= carouselPages - 1;
+            if (prevButton) prevButton.hidden = carouselPages <= 1;
+            if (nextButton) nextButton.hidden = carouselPages <= 1;
         }
-    };
 
-    window.requestAnimationFrame(
-        checkInitialVisibility
-    );
+        prevButton?.addEventListener("click", () => {
+            carouselPage = Math.max(0, carouselPage - 1);
+            updateCarousel();
+        });
+        nextButton?.addEventListener("click", () => {
+            carouselPage = Math.min(carouselPages - 1, carouselPage + 1);
+            updateCarousel();
+        });
+        window.addEventListener("resize", updateCarousel, { passive: true });
+        updateCarousel();
 
-    // -------------------------------------------------------
-    // Featured article depth effect
-    // -------------------------------------------------------
+        /* -----------------------------------------
+           5. External links safety
 
-    if (
-        featuredArticle &&
-        finePointer &&
-        !reduceMotion
-    ) {
-        const handleFeaturedMove = (event) => {
-            if (!sectionVisible) return;
+           Only applies to links that open new tabs.
+           ----------------------------------------- */
 
-            const rect =
-                featuredArticle.getBoundingClientRect();
-
-            if (
-                !rect.width ||
-                !rect.height
-            ) {
-                return;
-            }
-
-            const x =
-                (event.clientX - rect.left) /
-                    rect.width -
-                0.5;
-
-            const y =
-                (event.clientY - rect.top) /
-                    rect.height -
-                0.5;
-
-            featuredArticle.style.setProperty(
-                "--blog-feature-rx",
-                `${y * -1.2}deg`
+        blog.querySelectorAll('a[target="_blank"]').forEach((link) => {
+            const relTokens = new Set(
+                (link.getAttribute("rel") || "")
+                    .split(/\s+/)
+                    .filter(Boolean)
             );
 
-            featuredArticle.style.setProperty(
-                "--blog-feature-ry",
-                `${x * 1.7}deg`
-            );
+            relTokens.add("noopener");
+            relTokens.add("noreferrer");
 
-            if (featuredImageInner) {
-                featuredImageInner.style.transform =
-                    `scale(1.045)
-                     translate(
-                        ${x * -4}px,
-                        ${y * -4}px
-                     )`;
-            }
+            link.setAttribute("rel", [...relTokens].join(" "));
+        });
 
-            if (featuredScan) {
-                featuredScan.style.transform =
-                    `translateY(
-                        ${y * 12}px
-                    ) skewX(-14deg)`;
-            }
-        };
+        /* -----------------------------------------
+           6. Optional back-to-top link
 
-        const resetFeatured = () => {
-            featuredArticle.style.setProperty(
-                "--blog-feature-rx",
-                "0deg"
-            );
+           Add: data-blog-top
+           ----------------------------------------- */
 
-            featuredArticle.style.setProperty(
-                "--blog-feature-ry",
-                "0deg"
-            );
+        blog.querySelectorAll("[data-blog-top]").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
 
-            if (featuredImageInner) {
-                featuredImageInner.style.transform =
-                    "";
-            }
+                blog.scrollIntoView({
+                    behavior: reducedMotion ? "auto" : "smooth",
+                    block: "start"
+                });
+            });
+        });
 
-            if (featuredScan) {
-                featuredScan.style.transform =
-                    "skewX(-14deg)";
-            }
-        };
-
-        featuredArticle.addEventListener(
-            "pointermove",
-            handleFeaturedMove,
-            { passive: true }
-        );
-
-        featuredArticle.addEventListener(
-            "pointerleave",
-            resetFeatured
-        );
+        console.info("Blog section initialized.");
     }
 
-    // -------------------------------------------------------
-    // Secondary card depth interaction
-    // -------------------------------------------------------
-
-    cards.forEach((card) => {
-        if (finePointer && !reduceMotion) {
-            const handleCardMove = (
-                event
-            ) => {
-                const rect =
-                    card.getBoundingClientRect();
-
-                if (
-                    !rect.width ||
-                    !rect.height
-                ) {
-                    return;
-                }
-
-                const x =
-                    (event.clientX -
-                        rect.left) /
-                        rect.width -
-                    0.5;
-
-                const y =
-                    (event.clientY -
-                        rect.top) /
-                        rect.height -
-                    0.5;
-
-                card.style.setProperty(
-                    "--blog-card-rx",
-                    `${y * -1.5}deg`
-                );
-
-                card.style.setProperty(
-                    "--blog-card-ry",
-                    `${x * 2}deg`
-                );
-
-                const image =
-                    card.querySelector(
-                        ".blog-card-image img"
-                    );
-
-                if (image) {
-                    image.style.transform =
-                        `scale(1.055)
-                         translate(
-                            ${x * -3}px,
-                            ${y * -3}px
-                         )`;
-                }
-            };
-
-            const resetCard = () => {
-                card.style.setProperty(
-                    "--blog-card-rx",
-                    "0deg"
-                );
-
-                card.style.setProperty(
-                    "--blog-card-ry",
-                    "0deg"
-                );
-
-                const image =
-                    card.querySelector(
-                        ".blog-card-image img"
-                    );
-
-                if (image) {
-                    image.style.transform =
-                        "";
-                }
-            };
-
-            card.addEventListener(
-                "pointermove",
-                handleCardMove,
-                { passive: true }
-            );
-
-            card.addEventListener(
-                "pointerleave",
-                resetCard
-            );
-        }
-
-        // ---------------------------------------------------
-        // Keyboard accessibility
-        // ---------------------------------------------------
-
-        card.addEventListener(
-            "focusin",
-            () => {
-                card.classList.add(
-                    "is-focused"
-                );
-            }
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initBlogSection,
+            { once: true }
         );
-
-        card.addEventListener(
-            "focusout",
-            () => {
-                card.classList.remove(
-                    "is-focused"
-                );
-            }
-        );
-    });
-
-    // -------------------------------------------------------
-    // Image hover preparation
-    // -------------------------------------------------------
-
-    cardImages.forEach((imageLink) => {
-        imageLink.addEventListener(
-            "mouseenter",
-            () => {
-                imageLink.classList.add(
-                    "is-hovered"
-                );
-            }
-        );
-
-        imageLink.addEventListener(
-            "mouseleave",
-            () => {
-                imageLink.classList.remove(
-                    "is-hovered"
-                );
-            }
-        );
-    });
-
-    // -------------------------------------------------------
-    // Read-link interaction
-    // -------------------------------------------------------
-
-    readLinks.forEach((link) => {
-        link.addEventListener(
-            "focusin",
-            () => {
-                link.classList.add(
-                    "is-focused"
-                );
-            }
-        );
-
-        link.addEventListener(
-            "focusout",
-            () => {
-                link.classList.remove(
-                    "is-focused"
-                );
-            }
-        );
-    });
-
-    // -------------------------------------------------------
-    // Mouse position for background parallax
-    // -------------------------------------------------------
-
-    let pointerX = 0;
-    let pointerY = 0;
-
-    let currentX = 0;
-    let currentY = 0;
-
-    if (
-        finePointer &&
-        !reduceMotion
-    ) {
-        window.addEventListener(
-            "pointermove",
-            (event) => {
-                pointerX =
-                    event.clientX /
-                        window.innerWidth -
-                    0.5;
-
-                pointerY =
-                    event.clientY /
-                        window.innerHeight -
-                    0.5;
-            },
-            { passive: true }
-        );
-
-        const animateBackground =
-            () => {
-                currentX +=
-                    (pointerX -
-                        currentX) *
-                    0.035;
-
-                currentY +=
-                    (pointerY -
-                        currentY) *
-                    0.035;
-
-                if (sectionVisible) {
-                    // Large JOURNAL word.
-                    if (backgroundWord) {
-                        backgroundWord.style.transform =
-                            `translate3d(
-                                ${currentX * -24}px,
-                                ${currentY * -12}px,
-                                0
-                            )`;
-                    }
-
-                    // Background circles.
-                    if (
-                        backgroundOrbOne
-                    ) {
-                        backgroundOrbOne.style.marginLeft =
-                            `${currentX * 18}px`;
-
-                        backgroundOrbOne.style.marginTop =
-                            `${currentY * 16}px`;
-                    }
-
-                    if (
-                        backgroundOrbTwo
-                    ) {
-                        backgroundOrbTwo.style.marginLeft =
-                            `${currentX * -13}px`;
-
-                        backgroundOrbTwo.style.marginTop =
-                            `${currentY * -10}px`;
-                    }
-
-                    // Editorial lines.
-                    if (
-                        backgroundLineOne
-                    ) {
-                        backgroundLineOne.style.translate =
-                            `${currentX * -10}px ${currentY * 5}px`;
-                    }
-
-                    if (
-                        backgroundLineTwo
-                    ) {
-                        backgroundLineTwo.style.translate =
-                            `${currentX * 8}px ${currentY * -5}px`;
-                    }
-                }
-
-                window.requestAnimationFrame(
-                    animateBackground
-                );
-            };
-
-        window.requestAnimationFrame(
-            animateBackground
-        );
+    } else {
+        initBlogSection();
     }
+})();
 
-    // -------------------------------------------------------
-    // Scroll-based ambient movement
-    // -------------------------------------------------------
+// SECTION 08: BLOG - END
 
-    let scrollTicking = false;
+// SECTION 09: CONTACT REVEAL
+(() => {
+    "use strict";
 
-    const updateScrollMotion = () => {
-        scrollTicking = false;
+    const section = document.querySelector("#contact");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        if (!sectionVisible) return;
+    if (!section || reduceMotion || !("IntersectionObserver" in window)) return;
 
-        const rect =
-            section.getBoundingClientRect();
+    const items = [...section.querySelectorAll(
+        ".contact-top, .contact-left, .contact-right, .contact-bottom"
+    )];
 
-        const viewportHeight =
-            window.innerHeight ||
-            document.documentElement.clientHeight;
+    section.classList.add("contact-reveal-enabled");
 
-        const progress =
-            (viewportHeight - rect.top) /
-            (viewportHeight +
-                rect.height);
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-revealed");
+            currentObserver.unobserve(entry.target);
+        });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px 0px" });
 
-        const amount = Math.max(
-            0,
-            Math.min(1, progress)
-        );
+    items.forEach((item) => {
+        item.classList.add("contact-reveal-item");
+        observer.observe(item);
+    });
+})();
 
-        if (backgroundWord) {
-            backgroundWord.style.marginTop =
-                `${amount * -22}px`;
-        }
-
-        if (backgroundOrbOne) {
-            backgroundOrbOne.style.marginTop =
-                `${amount * 13}px`;
-        }
-
-        if (backgroundOrbTwo) {
-            backgroundOrbTwo.style.marginTop =
-                `${amount * -10}px`;
-        }
-    };
-
-    const handleScroll = () => {
-        if (scrollTicking) return;
-
-        scrollTicking = true;
-
-        window.requestAnimationFrame(
-            updateScrollMotion
-        );
-    };
-
-    window.addEventListener(
-        "scroll",
-        handleScroll,
-        { passive: true }
-    );
-
-    // -------------------------------------------------------
-    // Reduced motion
-    // -------------------------------------------------------
-
-    if (reduceMotion) {
-        section.classList.add(
-            "blog-reduced-motion"
-        );
-
-        return;
-    }
-
-    // -------------------------------------------------------
-    // Public refresh helper
-    // -------------------------------------------------------
-
-    window.VikasPortfolio =
-        window.VikasPortfolio || {};
-
-    window.VikasPortfolio.refreshBlog =
-        () => {
-            sectionVisible = false;
-
-            section.classList.remove(
-                "is-visible"
-            );
-
-            window.requestAnimationFrame(
-                checkInitialVisibility
-            );
-        };
-}
-
-
-// =========================================================
-// REGISTER BLOG
-// Uses the central portfolio section boot system.
-// =========================================================
-
-if (
-    window.VikasPortfolio &&
-    typeof window.VikasPortfolio
-        .registerSection ===
-        "function"
-) {
-    window.VikasPortfolio.registerSection(
-        "blog",
-        initBlog
-    );
-} else {
-    // Fallback when the main boot system
-    // is not loaded yet.
-    document.addEventListener(
-        "DOMContentLoaded",
-        initBlog
-    );
-}

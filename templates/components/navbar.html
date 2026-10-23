@@ -1,174 +1,47 @@
+<!-- PREMIUM RESPONSIVE NAVBAR -->
 {% load static %}
 
-<!-- =========================================================
-     VIKAS.DEV
-     START — PREMIUM NAVBAR
-========================================================= -->
-
-<header
-    class="site-header"
-    id="site-header"
->
-
-    <nav
-        class="navbar"
-        aria-label="Primary navigation"
-    >
-
-        <!-- =================================================
-             NAVBAR MAIN
-        ================================================== -->
-
+<header class="site-header" id="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
         <div class="navbar-container">
 
-
-            <!-- =============================================
-                 BRAND
-            ============================================== -->
-
-            <a
-                href="#home"
-                class="navbar-brand"
-                aria-label="Vikas Kumar home"
-            >
-
+            <!-- Brand -->
+            <a href="#home" class="navbar-brand" aria-label="Vikas Kumar home">
                 <span class="navbar-logo">
-
                     <img
-                        src="{% static 'images/profile/vikas-logo.png' %}"
-                        alt="Vikas Kumar"
+                        src="{% static 'images/profile/fav-logo.png' %}"
+                        alt="Vikas Kumar logo"
                     >
-
                 </span>
 
                 <span class="navbar-brand-copy">
-
-                    <span class="navbar-brand-name">
-                        VIKAS KUMAR
-                    </span>
-
-                    <span class="navbar-brand-role">
-                        SOFTWARE DEVELOPER
-                    </span>
-
+                    <span class="navbar-brand-name">VIKAS KUMAR</span>
+                    <span class="navbar-brand-role">SOFTWARE DEVELOPER</span>
                 </span>
-
             </a>
 
-
-            <!-- =============================================
-                 DESKTOP NAVIGATION
-                 Section names only — no numbers
-            ============================================== -->
-
+            <!-- Desktop links -->
             <div class="navbar-links">
-
-                <a
-                    href="#home"
-                    class="navbar-link is-active"
-                    data-section="home"
-                >
-                    HOME
-                </a>
-
-                <a
-                    href="#about"
-                    class="navbar-link"
-                    data-section="about"
-                >
-                    ABOUT
-                </a>
-
-                <a
-                    href="#projects"
-                    class="navbar-link"
-                    data-section="projects"
-                >
-                    WORK
-                </a>
-
-                <a
-                    href="#experience"
-                    class="navbar-link"
-                    data-section="experience"
-                >
-                    EXPERIENCE
-                </a>
-
-                <a
-                    href="#certificates"
-                    class="navbar-link"
-                    data-section="certificates"
-                >
-                    CERTIFICATES
-                </a>
-
-                <a
-                    href="#skills"
-                    class="navbar-link"
-                    data-section="skills"
-                >
-                    SKILLS
-                </a>
-
-                <a
-                    href="#blog"
-                    class="navbar-link"
-                    data-section="blog"
-                >
-                    BLOG
-                </a>
-
-                <a
-                    href="#contact"
-                    class="navbar-link"
-                    data-section="contact"
-                >
-                    CONTACT
-                </a>
-
+                <a href="#home" class="navbar-link is-active" data-section="home">Home</a>
+                <a href="#about" class="navbar-link" data-section="about">About</a>
+                <a href="#projects" class="navbar-link" data-section="projects">Work</a>
+                <a href="#how-i-work" class="navbar-link" data-section="how-i-work">Process</a>
+                <a href="#services" class="navbar-link" data-section="services">Services</a>
+                <a href="#case-studies" class="navbar-link" data-section="case-studies">Case Studies</a>
+                <a href="#credentials" class="navbar-link" data-section="credentials">Certificates</a>
             </div>
 
-
-            <!-- =============================================
-                 RIGHT SIDE
-            ============================================== -->
-
+            <!-- Actions -->
             <div class="navbar-actions">
-
-
-                <!-- Availability -->
-
                 <div class="navbar-availability">
-
                     <span class="navbar-availability-dot"></span>
-
-                    <span>
-                        AVAILABLE
-                    </span>
-
+                    <span>AVAILABLE</span>
                 </div>
 
-
-                <!-- CTA -->
-
-                <a
-                    href="#contact"
-                    class="navbar-cta"
-                >
-
-                    <span>
-                        LET'S TALK
-                    </span>
-
-                    <span class="navbar-cta-arrow">
-                        ↗
-                    </span>
-
+                <a href="#contact" class="navbar-cta">
+                    <span>Let's Talk</span>
+                    <span class="navbar-cta-arrow" aria-hidden="true">↗</span>
                 </a>
-
-
-                <!-- Mobile Menu -->
 
                 <button
                     type="button"
@@ -177,146 +50,38 @@
                     aria-expanded="false"
                     aria-controls="navbar-mobile-menu"
                 >
-
                     <span></span>
                     <span></span>
-
                 </button>
-
             </div>
-
         </div>
 
-
-        <!-- =================================================
-             MOBILE NAVIGATION
-        ================================================== -->
-
-        <div
-            class="navbar-mobile"
-            id="navbar-mobile-menu"
-        >
-
+        <!-- Mobile menu -->
+        <div class="navbar-mobile" id="navbar-mobile-menu" aria-hidden="true">
             <div class="navbar-mobile-header">
-
-                <span>
-                    NAVIGATION
-                </span>
-
-                <span>
-                    VK.DEV
-                </span>
-
+                <span>EXPLORE</span>
+                <span>VK.DEV / 001</span>
             </div>
-
 
             <div class="navbar-mobile-links">
-
-                <a
-                    href="#home"
-                    data-section="home"
-                >
-                    HOME
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#about"
-                    data-section="about"
-                >
-                    ABOUT
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#projects"
-                    data-section="projects"
-                >
-                    WORK
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#experience"
-                    data-section="experience"
-                >
-                    EXPERIENCE
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#certificates"
-                    data-section="certificates"
-                >
-                    CERTIFICATES
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#skills"
-                    data-section="skills"
-                >
-                    SKILLS
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#blog"
-                    data-section="blog"
-                >
-                    BLOG
-                    <strong>↗</strong>
-                </a>
-
-                <a
-                    href="#contact"
-                    data-section="contact"
-                >
-                    CONTACT
-                    <strong>↗</strong>
-                </a>
-
+                <a href="#home" data-section="home">Home <span>01</span></a>
+                <a href="#about" data-section="about">About <span>02</span></a>
+                <a href="#projects" data-section="projects">Work <span>03</span></a>
+                <a href="#how-i-work" data-section="how-i-work">Process <span>04</span></a>
+                <a href="#services" data-section="services">Services <span>05</span></a>
+                <a href="#case-studies" data-section="case-studies">Case Studies <span>06</span></a>
+                <a href="#credentials" data-section="credentials">Certificates <span>07</span></a>
             </div>
 
-
-            <!-- Mobile CTA -->
-
-            <a
-                href="#contact"
-                class="navbar-mobile-cta"
-            >
-
-                <span>
-                    LET'S TALK
-                </span>
-
-                <strong>
-                    ↗
-                </strong>
-
+            <a href="#contact" class="navbar-mobile-cta">
+                <span>Let's build something useful.</span>
+                <strong>LET'S TALK ↗</strong>
             </a>
 
-
-            <!-- Mobile Footer -->
-
             <div class="navbar-mobile-footer">
-
-                <span>
-                    PYTHON / DJANGO
-                </span>
-
-                <span>
-                    NEW DELHI, INDIA
-                </span>
-
+                <span>PYTHON / DJANGO</span>
+                <span>NEW DELHI, INDIA</span>
             </div>
-
         </div>
-
     </nav>
-
 </header>
-
-<!-- =========================================================
-     END — PREMIUM NAVBAR
-========================================================= -->

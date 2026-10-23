@@ -1,520 +1,1191 @@
+
 /* =========================================================
-   START — TECHNOLOGY RIBBON
+   TECHNOLOGY SHOWCASE — COMPLETE STYLESHEET
+   Theme: Cream • Forest Green • Bronze
+   File: static/css/tech-ribbon.css
 ========================================================= */
 
-.tech-ribbon {
+.tech-showcase {
+    --ts-cream: #fbf6eb;
+    --ts-card: #fffaf2;
+    --ts-green: #28643a;
+    --ts-green-dark: #153d25;
+    --ts-bronze: #a45b25;
+    --ts-text: #15241b;
+    --ts-muted: #62665e;
+    --ts-border: #ded9c5;
+
     position: relative;
     isolation: isolate;
-
-    width: 100%;
-    height: clamp(155px, 13vw, 205px);
-
     overflow: hidden;
-
+    padding: clamp(48px, 5vw, 76px) clamp(18px, 3.1vw, 52px) 42px;
+    color: var(--ts-text);
     background:
-        linear-gradient(
-            120deg,
-            #f5f1e8 0%,
-            #eee8dc 48%,
-            #f5f1e8 100%
-        );
-
-    color: #171411;
-
-    border-top:
-        1px solid rgba(23,20,17,0.12);
-
-    border-bottom:
-        1px solid rgba(23,20,17,0.12);
+        radial-gradient(ellipse at 0% 0%, #f0e3ca 0, transparent 24%),
+        radial-gradient(ellipse at 100% 100%, #efe5cf 0, transparent 22%),
+        linear-gradient(135deg, #fffaf2, var(--ts-cream) 65%, #f8f0e3);
+    font-family: inherit;
 }
 
-
-/* =========================================================
-   BACKGROUND WORD
-========================================================= */
-
-.tech-ribbon-bg-word {
-    position: absolute;
-
-    right: -0.02em;
-    bottom: -0.2em;
-
-    z-index: -2;
-
-    font-size:
-        clamp(7rem, 17vw, 18rem);
-
-    line-height: 0.8;
-
-    font-weight: 900;
-
-    letter-spacing: -0.09em;
-
-    color: transparent;
-
-    -webkit-text-stroke:
-        1px rgba(23,20,17,0.045);
-
-    pointer-events: none;
+.tech-showcase *,
+.tech-showcase *::before,
+.tech-showcase *::after {
+    box-sizing: border-box;
 }
 
+.tech-showcase img {
+    display: block;
+    max-width: 100%;
+}
+
+.tech-showcase button {
+    font: inherit;
+}
+
+.tech-showcase-container {
+    display: grid;
+    grid-template-columns: minmax(280px, .78fr) minmax(0, 2fr);
+    align-items: stretch;
+    gap: clamp(25px, 3.2vw, 48px);
+    max-width: 1700px;
+    margin: 0 auto;
+}
 
 /* =========================================================
-   TOP LINE
+   LEFT INTRODUCTION
 ========================================================= */
 
-.tech-ribbon-top {
-    position: absolute;
+.tech-intro {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding-top: 5px;
+}
 
-    top: 16px;
-    left: clamp(1rem, 4vw, 4rem);
-
+.tech-eyebrow {
     display: flex;
     align-items: center;
-
-    gap: 0.7rem;
-
-    z-index: 5;
+    gap: 13px;
+    color: var(--ts-bronze);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 3px;
 }
 
-.tech-ribbon-index {
-    font-family: var(--font-mono, monospace);
-
-    font-size: 0.5rem;
-    font-weight: 900;
-
-    color: #ff9f1c;
-}
-
-.tech-ribbon-line {
-    width: 34px;
-    height: 1px;
-
-    background: #ff9f1c;
-}
-
-.tech-ribbon-label {
-    font-family: var(--font-mono, monospace);
-
-    font-size: 0.5rem;
-    font-weight: 800;
-
-    letter-spacing: 0.12em;
-
-    color: rgba(23,20,17,0.42);
-}
-
-
-/* =========================================================
-   STAGE
-========================================================= */
-
-.tech-ribbon-stage {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    height: 92px;
-
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* =========================================================
-   FADE EDGES
-========================================================= */
-
-.tech-ribbon-stage::before,
-.tech-ribbon-stage::after {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    width: 12%;
-
-    z-index: 10;
-
-    pointer-events: none;
-}
-
-.tech-ribbon-stage::before {
-    left: 0;
-
-    background:
-        linear-gradient(
-            to right,
-            #f5f1e8,
-            rgba(245,241,232,0)
-        );
-}
-
-.tech-ribbon-stage::after {
-    right: 0;
-
-    background:
-        linear-gradient(
-            to left,
-            #f5f1e8,
-            rgba(245,241,232,0)
-        );
-}
-
-
-/* =========================================================
-   TRACK
-========================================================= */
-
-.tech-ribbon-track {
-    display: flex;
-    align-items: center;
-
+.tech-eyebrow > span {
+    width: 43px;
+    height: 3px;
     flex-shrink: 0;
+    background: var(--ts-bronze);
+    border-radius: 8px;
+}
 
+.tech-title {
+    margin: 24px 0 0;
+    color: var(--ts-green-dark);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(39px, 3.6vw, 62px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -1.7px;
+}
+
+.tech-title span {
+    display: block;
+    margin-top: 5px;
+    color: var(--ts-bronze);
+}
+
+.tech-underline {
+    width: 145px;
+    height: 14px;
+    margin: 12px 0 22px;
+    border-top: 4px solid #52613a;
+    border-radius: 50%;
+    transform: rotate(-3deg);
+}
+
+.tech-description {
+    max-width: 430px;
+    margin: 0 0 25px;
+    color: #20271f;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Benefit rows */
+
+.tech-benefits {
+    display: grid;
+    gap: 10px;
+}
+
+.tech-benefit {
+    display: flex;
+    min-width: 0;
+    min-height: 42px;
+    align-items: center;
+    gap: 9px;
+}
+
+.tech-check {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    place-items: center;
+    color: white;
+    background: linear-gradient(145deg, #34844a, #205b33);
+    border: 1px solid #3d8b50;
+    border-radius: 9px;
+    font-size: 20px;
+    font-weight: 900;
+    box-shadow: 0 4px 9px #245c3620;
+}
+
+.tech-benefit-icon {
+    display: grid;
+    width: 30px;
+    flex: 0 0 30px;
+    place-items: center;
+    color: var(--ts-green);
+    font-size: 20px;
+    font-weight: 850;
+}
+
+.tech-benefit strong {
+    display: flex;
+    min-height: 41px;
+    flex: 1;
+    align-items: center;
+    padding: 8px 12px;
+    color: #15251a;
+    background: linear-gradient(110deg, #f5ead8, #f8f0e3);
+    border: 1px solid #eee2ce;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px #49361a0a;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   CSS-DRAWN LAPTOP WORKSPACE
+========================================================= */
+
+.tech-workspace {
+    position: relative;
+    display: flex;
+    min-height: 245px;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: center;
+    margin-top: auto;
+    padding-top: 35px;
+    isolation: isolate;
+    animation: techWorkspaceEnter .9s ease both;
+    animation-delay: .3s;
+}
+
+.tech-workspace::before {
+    position: absolute;
+    z-index: -1;
+    right: -18%;
+    bottom: 0;
+    left: -18%;
+    height: 38px;
+    background: linear-gradient(180deg, #f1e3cc, #e7d5b7);
+    border-radius: 50% 50% 0 0;
+    content: "";
+}
+
+.tech-laptop {
+    position: relative;
+    z-index: 2;
+    width: 77%;
+    max-width: 310px;
+    transform: rotate(-5deg);
+    transition: transform .4s ease;
+}
+
+.tech-workspace:hover .tech-laptop {
+    transform: rotate(-1deg) translateY(-5px);
+}
+
+.tech-screen {
+    position: relative;
+    min-height: 157px;
+    padding: 11px 13px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #31403f, #172522);
+    border: 6px solid #69736e;
+    border-bottom-width: 9px;
+    border-radius: 13px 13px 5px 5px;
+    box-shadow: 0 12px 25px #1a291d25;
+}
+
+.tech-window-dots {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 16px;
+}
+
+.tech-window-dots i {
+    width: 6px;
+    height: 6px;
+    background: #d98763;
+    border-radius: 50%;
+}
+
+.tech-window-dots i:nth-child(2) {
+    background: #e9ca76;
+}
+
+.tech-window-dots i:nth-child(3) {
+    background: #78ac77;
+}
+
+.tech-code-lines {
+    display: grid;
+    gap: 7px;
+    padding-right: 40px;
+}
+
+.tech-code-lines span {
+    display: block;
+    width: 85%;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        #df8b48 0 22%,
+        #e6cf7b 22% 48%,
+        #80b98b 48% 76%,
+        #6aa1a4 76%
+    );
+    border-radius: 4px;
+}
+
+.tech-code-lines span:nth-child(2) {
+    width: 68%;
+    margin-left: 12px;
+}
+
+.tech-code-lines span:nth-child(3) {
+    width: 78%;
+    margin-left: 20px;
+}
+
+.tech-code-lines span:nth-child(4) {
+    width: 60%;
+    margin-left: 20px;
+}
+
+.tech-code-lines span:nth-child(5) {
+    width: 82%;
+    margin-left: 12px;
+}
+
+.tech-code-lines span:nth-child(6) {
+    width: 54%;
+}
+
+.tech-code-lines b {
+    position: absolute;
+    right: 15px;
+    bottom: 18px;
+    color: #fff9eb;
+    font-size: 26px;
+}
+
+.tech-laptop-base {
+    width: 114%;
+    height: 10px;
+    margin-left: -7%;
+    background: linear-gradient(180deg, #dfe1d9, #a3a99f 75%, #757e75);
+    border-radius: 2px 2px 12px 12px;
+    box-shadow: 0 7px 9px #24341e20;
+}
+
+/* Plant */
+
+.tech-plant {
+    position: absolute;
+    z-index: 1;
+    bottom: 31px;
+    left: 2%;
+    width: 78px;
+    height: 145px;
+    color: #58894a;
+}
+
+.tech-plant span {
+    position: absolute;
+    bottom: 45px;
+    font-size: 65px;
+    line-height: 1;
+}
+
+.tech-plant span:nth-child(1) {
+    left: -5px;
+    transform: rotate(-36deg);
+}
+
+.tech-plant span:nth-child(2) {
+    left: 20px;
+    bottom: 70px;
+}
+
+.tech-plant span:nth-child(3) {
+    right: -7px;
+    transform: rotate(32deg);
+}
+
+.tech-plant i {
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    width: 48px;
+    height: 39px;
+    background: #c57c45;
+    border: 3px solid #aa663b;
+    border-radius: 5px 5px 16px 16px;
+}
+
+/* Books */
+
+.tech-books {
+    position: absolute;
+    z-index: 1;
+    bottom: 13px;
+    left: -4%;
+    display: flex;
+    width: 100px;
+    flex-direction: column;
+    gap: 3px;
+    transform: rotate(-3deg);
+}
+
+.tech-books i {
+    display: block;
+    height: 11px;
+    background: #52684a;
+    border: 1px solid #a8a17b;
+    border-radius: 3px 7px 7px 3px;
+}
+
+.tech-books i:nth-child(2) {
+    width: 91%;
+    margin-left: 5px;
+    background: #d0b58a;
+}
+
+.tech-books i:nth-child(3) {
+    width: 96%;
+    background: #344f39;
+}
+
+/* Mug */
+
+.tech-mug {
+    position: absolute;
+    z-index: 4;
+    bottom: 0;
+    left: 27%;
+    display: grid;
+    width: 49px;
+    height: 43px;
+    place-items: center;
+    color: #fff6df;
+    background: linear-gradient(135deg, #387346, #164426);
+    border: 2px solid #d4c5a2;
+    border-radius: 5px 5px 13px 13px;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 7px 10px #1b35201e;
+}
+
+/* =========================================================
+   RIGHT SIDE TECHNOLOGY ROWS
+========================================================= */
+
+.tech-rows {
+    display: grid;
+    min-width: 0;
+    gap: 19px;
+}
+
+.tech-row {
+    min-width: 0;
+    padding: 14px 15px 12px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fffaf2, #fbf3e7);
+    border: 1px solid #dcd7c4;
+    border-radius: 25px;
+    box-shadow: 0 7px 18px #49371b08;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.tech-row:hover {
+    border-color: #bfc9aa;
+    box-shadow: 0 12px 25px #29452a10;
+}
+
+.tech-row-header {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 12px;
+    margin: 0 10px 15px;
+}
+
+.tech-category-icon {
+    display: grid;
+    width: 49px;
+    height: 49px;
+    flex: 0 0 49px;
+    place-items: center;
+    color: #fffaf0;
+    background: linear-gradient(145deg, #367c46, #205631);
+    border: 1px solid #477f4c;
+    border-radius: 14px;
+    font-size: 19px;
+    font-weight: 900;
+    box-shadow: 0 5px 12px #245c3620;
+}
+
+.tech-row-header h3 {
+    flex: 0 0 auto;
+    margin: 0;
+    color: #111d15;
+    font-size: clamp(14px, 1.5vw, 22px);
+    font-weight: 850;
+    letter-spacing: -.6px;
+}
+
+.tech-divider {
+    width: 1px;
+    height: 26px;
+    flex: 0 0 1px;
+    margin: 0 5px;
+    background: #a58a67;
+}
+
+.tech-row-header p {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    color: #20251f;
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.tech-tag {
+    flex: 0 0 auto;
+    padding: 9px 12px;
+    color: #17351f;
+    background: #eeedcf;
+    border: 1px solid #e7e4c7;
+    border-radius: 40px;
+    font-size: 10px;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   STANDARD CAROUSEL / ARROWS
+========================================================= */
+
+.tech-carousel {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+}
+
+.tech-arrow {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    place-items: center;
+    padding: 0 0 4px;
+    color: #29432c;
+    background: #fff7e9;
+    border: 1px solid #e1d3b8;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px #47361d0c;
+    font-family: Arial, sans-serif;
+    font-size: 29px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .25s ease, background .25s ease;
+}
+
+.tech-arrow[data-tech-next] {
+    color: white;
+    background: linear-gradient(145deg, #347644, #164626);
+    border-color: #3e7949;
+}
+
+.tech-arrow:hover {
+    transform: scale(1.07);
+}
+
+.tech-arrow:disabled {
+    opacity: .42;
+    cursor: default;
+}
+
+.tech-track {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    padding: 3px 0 9px;
+    touch-action: pan-y;
+}
+
+.tech-track-inner {
+    display: flex;
     width: max-content;
-
-    gap:
-        clamp(2.4rem, 4.5vw, 5.5rem);
-
-    animation:
-        techRibbonMove
-        32s
-        linear
-        infinite;
-
+    flex-wrap: nowrap;
+    gap: 12px;
+    transform: translate3d(0, 0, 0);
     will-change: transform;
 }
 
+/* Technology cards */
 
-/* =========================================================
-   LOGO
-========================================================= */
-
-.tech-ribbon-logo {
-    position: relative;
-
-    flex: 0 0 auto;
-
-    width:
-        clamp(35px, 3.2vw, 53px);
-
-    height:
-        clamp(35px, 3.2vw, 53px);
-
-    display: grid;
-    place-items: center;
-
-    opacity: 0.62;
-
-    transform: scale(0.92);
-
-    transition:
-        opacity 0.35s ease,
-        transform 0.4s
-        cubic-bezier(.2,.7,.2,1),
-        filter 0.35s ease;
+.tech-card {
+    display: flex;
+    width: clamp(82px, 7.6vw, 114px);
+    min-height: 100px;
+    flex: 0 0 clamp(82px, 7.6vw, 114px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 5px;
+    color: #111b14;
+    background: linear-gradient(145deg, #fffdf9, #fcf4e9);
+    border: 1px solid #f0e5d5;
+    border-radius: 17px;
+    box-shadow: 0 7px 13px #49371b0c;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
-
-/* SMALL ORANGE MARK */
-
-.tech-ribbon-logo::before {
-    content: "";
-
-    position: absolute;
-
-    width: 6px;
-    height: 6px;
-
-    right: -13px;
-    top: 50%;
-
-    margin-top: -3px;
-
-    border-radius: 50%;
-
-    background: #ff9f1c;
-
-    opacity: 0.35;
+.tech-card:hover {
+    transform: translateY(-4px);
+    border-color: #d4c7aa;
+    box-shadow: 0 12px 20px #49371b15;
 }
 
-
-/* IMAGE */
-
-.tech-ribbon-logo img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
+.tech-card img {
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
     object-fit: contain;
-
-    transition:
-        transform 0.4s
-        cubic-bezier(.2,.7,.2,1),
-        filter 0.35s ease;
+    transition: transform .3s ease;
 }
 
-
-/* DARK / BLACK ICONS */
-
-.tech-ribbon-dark-icon img {
-    filter:
-        brightness(0)
-        saturate(100%);
+.tech-card:hover img {
+    transform: scale(1.12) rotate(-3deg);
 }
 
+.tech-card span {
+    max-width: 100%;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* Pagination dots for manually controlled carousels */
+
+.tech-dots {
+    display: flex;
+    min-height: 8px;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 7px;
+}
+
+.tech-dots span {
+    display: block;
+    width: 9px;
+    height: 9px;
+    background: #d8d3b8;
+    border-radius: 50%;
+}
+
+.tech-dots span.is-active {
+    background: #286239;
+}
 
 /* =========================================================
-   HOVER
+   CONTINUOUS OPPOSITE-DIRECTION MARQUEES
+   Requires data-tech-marquee and duplicated card sets.
 ========================================================= */
 
-.tech-ribbon-logo:hover {
-    opacity: 1;
-
-    transform:
-        scale(1.28)
-        translateY(-3px);
-
-    z-index: 20;
+.tech-showcase .tech-row[data-tech-marquee] .tech-arrow,
+.tech-showcase .tech-row[data-tech-marquee] .tech-dots {
+    display: none !important;
 }
 
-.tech-ribbon-logo:hover img {
-    transform: scale(1.05);
-
-    filter:
-        drop-shadow(
-            0 8px 18px
-            rgba(23,20,17,0.2)
-        );
+.tech-showcase .tech-row[data-tech-marquee] .tech-carousel {
+    display: block;
+    overflow: hidden;
 }
 
-.tech-ribbon:hover .tech-ribbon-track {
+.tech-showcase .tech-row[data-tech-marquee] .tech-track {
+    width: 100%;
+    overflow: hidden;
+    cursor: default;
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 4%,
+        #000 96%,
+        transparent
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 4%,
+        #000 96%,
+        transparent
+    );
+}
+
+.tech-showcase .tech-row[data-tech-marquee] .tech-track-inner {
+    width: max-content;
+    gap: 12px;
+    transition: none !important;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}
+
+/* Frontend: right to left */
+
+.tech-showcase .tech-row[data-tech-marquee="frontend"] .tech-track-inner {
+    animation-name: techMarqueeLeft;
+    animation-duration: 28s;
+}
+
+/* Backend: left to right */
+
+.tech-showcase .tech-row[data-tech-marquee="backend"] .tech-track-inner {
+    animation-name: techMarqueeRight;
+    animation-duration: 32s;
+}
+
+/* Tools: right to left */
+
+.tech-showcase .tech-row[data-tech-marquee="tools"] .tech-track-inner {
+    animation-name: techMarqueeLeft;
+    animation-duration: 36s;
+}
+
+/*
+  For a seamless loop, the second half of the track must
+  duplicate the first half with the same cards and spacing.
+*/
+
+@keyframes techMarqueeLeft {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@keyframes techMarqueeRight {
+    from {
+        transform: translate3d(-50%, 0, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.tech-showcase .tech-row[data-tech-marquee]:hover .tech-track-inner,
+.tech-showcase .tech-row[data-tech-marquee]:focus-within .tech-track-inner {
     animation-play-state: paused;
 }
 
-
 /* =========================================================
-   ORANGE LIGHT
+   BOTTOM DARK GREEN FEATURE STRIP
 ========================================================= */
 
-.tech-ribbon-light {
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    left: -15%;
-
-    width: 180px;
-
-    z-index: 7;
-
-    pointer-events: none;
-
+.tech-feature-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 1700px;
+    margin: 32px auto 0;
+    padding: 27px 22px;
+    color: #fffaf0;
     background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,159,28,0.08),
-            rgba(255,159,28,0.18),
-            rgba(255,159,28,0.04),
-            transparent
-        );
-
-    transform: skewX(-14deg);
-
-    animation:
-        techRibbonLight
-        6s
-        ease-in-out
-        infinite;
+        radial-gradient(ellipse at 0% 120%, #2b6338 0, transparent 35%),
+        radial-gradient(ellipse at 100% 0%, #255732 0, transparent 32%),
+        linear-gradient(110deg, #19482a, #10351e 70%, #19482a);
+    border: 1px solid #356c41;
+    border-radius: 25px;
+    box-shadow: 0 12px 28px #1d4a2b16;
 }
 
-
-/* =========================================================
-   BOTTOM
-========================================================= */
-
-.tech-ribbon-bottom {
-    position: absolute;
-
-    left: clamp(1rem, 4vw, 4rem);
-    right: clamp(1rem, 4vw, 4rem);
-
-    bottom: 12px;
-
+.tech-feature {
     display: flex;
-    justify-content: center;
+    min-width: 0;
     align-items: center;
-
-    gap: 0.6rem;
-
-    font-family: var(--font-mono, monospace);
-
-    font-size: 0.45rem;
-    font-weight: 800;
-
-    letter-spacing: 0.13em;
-
-    color: rgba(23,20,17,0.28);
+    gap: 15px;
+    padding: 6px 18px;
 }
 
-.tech-bottom-dot {
-    width: 3px;
-    height: 3px;
-
-    border-radius: 50%;
-
-    background: #ff9f1c;
+.tech-feature + .tech-feature {
+    border-left: 1px solid #c0c9ad69;
 }
 
+.tech-feature-icon {
+    display: grid;
+    width: 62px;
+    height: 62px;
+    flex: 0 0 62px;
+    place-items: center;
+    color: #f5dfaa;
+    border: 2px solid #f0dfb4;
+    border-radius: 18px;
+    font-size: 29px;
+    transition: color .25s ease, background .25s ease, transform .25s ease;
+}
+
+.tech-feature:hover .tech-feature-icon {
+    color: #1a4a2a;
+    background: #f5dfaa;
+    transform: translateY(-3px);
+}
+
+.tech-feature h4 {
+    margin: 0 0 8px;
+    color: #fffaf0;
+    font-size: 15px;
+    font-weight: 850;
+    line-height: 1.4;
+}
+
+.tech-feature p {
+    margin: 0;
+    color: #f0f0e5;
+    font-size: 12px;
+    line-height: 1.7;
+}
 
 /* =========================================================
-   ANIMATION
+   SCROLL REVEAL — CLASSES ADDED BY JAVASCRIPT
 ========================================================= */
 
-@keyframes techRibbonMove {
+.tech-showcase .tech-reveal-ready {
+    opacity: 0;
+    translate: 0 22px;
+    transition:
+        opacity .7s cubic-bezier(.2, .7, .25, 1),
+        translate .7s cubic-bezier(.2, .7, .25, 1);
+}
 
+.tech-showcase .tech-reveal-ready.tech-is-visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee]) .tech-card {
+    animation: techCardRise .48s cubic-bezier(.2, .7, .25, 1) both;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(2) {
+    animation-delay: .04s;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(3) {
+    animation-delay: .08s;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(4) {
+    animation-delay: .12s;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(5) {
+    animation-delay: .16s;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(6) {
+    animation-delay: .20s;
+}
+
+.tech-showcase .tech-row.tech-is-visible:not([data-tech-marquee])
+.tech-card:nth-child(7) {
+    animation-delay: .24s;
+}
+
+@keyframes techCardRise {
     from {
-        transform: translate3d(0,0,0);
+        opacity: 0;
+        translate: 0 12px;
     }
-
     to {
-        transform: translate3d(-50%,0,0);
+        opacity: 1;
+        translate: 0 0;
     }
 }
 
-@keyframes techRibbonLight {
-
-    0% {
-        left: -20%;
+@keyframes techWorkspaceEnter {
+    from {
         opacity: 0;
+        transform: translateY(24px) scale(.97);
     }
-
-    20% {
+    to {
         opacity: 1;
-    }
-
-    70% {
-        opacity: 1;
-    }
-
-    100% {
-        left: 115%;
-        opacity: 0;
+        transform: translateY(0) scale(1);
     }
 }
-
 
 /* =========================================================
    TABLET
 ========================================================= */
 
-@media (max-width: 900px) {
-
-    .tech-ribbon {
-        height: 165px;
+@media (max-width: 1200px) {
+    .tech-showcase-container {
+        grid-template-columns: minmax(230px, .7fr) minmax(0, 1.5fr);
+        gap: 24px;
     }
 
-    .tech-ribbon-track {
-        gap: 3.1rem;
+    .tech-row-header {
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-inline: 5px;
     }
 
+    .tech-row-header h3 {
+        flex: 1 1 auto;
+    }
+
+    .tech-divider,
+    .tech-row-header p {
+        display: none;
+    }
+
+    .tech-tag {
+        padding: 8px 10px;
+        font-size: 9px;
+    }
+
+    .tech-card {
+        width: 86px;
+        flex-basis: 86px;
+        min-height: 91px;
+    }
+
+    .tech-arrow {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+        font-size: 26px;
+    }
+
+    .tech-feature-strip {
+        padding-inline: 12px;
+    }
+
+    .tech-feature {
+        gap: 10px;
+        padding-inline: 11px;
+    }
+
+    .tech-feature-icon {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+        border-radius: 14px;
+        font-size: 24px;
+    }
+
+    .tech-feature h4 {
+        font-size: 12px;
+    }
+
+    .tech-feature p {
+        font-size: 10px;
+    }
 }
-
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 600px) {
-
-    .tech-ribbon {
-        height: 145px;
+@media (max-width: 760px) {
+    .tech-showcase {
+        padding: 48px 16px 30px;
     }
 
-    .tech-ribbon-top {
-        top: 12px;
+    .tech-showcase-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
     }
 
-    .tech-ribbon-stage {
-        height: 70px;
+    .tech-title {
+        font-size: clamp(40px, 10vw, 56px);
     }
 
-    .tech-ribbon-track {
-        gap: 2.5rem;
+    .tech-description {
+        max-width: 520px;
+        font-size: 14px;
     }
 
-    .tech-ribbon-logo {
+    .tech-workspace {
+        display: none;
+    }
+
+    .tech-rows {
+        gap: 16px;
+    }
+
+    .tech-row {
+        padding: 13px 9px 11px;
+        border-radius: 19px;
+    }
+
+    .tech-row-header {
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 0 3px 12px;
+    }
+
+    .tech-category-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 11px;
+        font-size: 17px;
+    }
+
+    .tech-row-header h3 {
+        font-size: 15px;
+    }
+
+    .tech-tag {
+        margin-left: auto;
+        font-size: 8px;
+    }
+
+    .tech-carousel {
+        gap: 5px;
+    }
+
+    .tech-arrow {
+        width: 29px;
+        height: 29px;
+        flex-basis: 29px;
+        font-size: 24px;
+    }
+
+    .tech-card {
+        width: 79px;
+        min-height: 86px;
+        flex-basis: 79px;
+        gap: 7px;
+        border-radius: 13px;
+    }
+
+    .tech-card img {
         width: 30px;
         height: 30px;
+        flex-basis: 30px;
     }
 
-    .tech-ribbon-logo::before {
-        right: -10px;
-
-        width: 4px;
-        height: 4px;
-
-        margin-top: -2px;
+    .tech-card span {
+        font-size: 10px;
     }
 
-    .tech-ribbon-bottom {
-        bottom: 9px;
-
-        font-size: 0.4rem;
+    .tech-feature-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 0;
+        margin-top: 24px;
+        padding: 18px 10px;
+        border-radius: 19px;
     }
 
+    .tech-feature {
+        align-items: flex-start;
+        gap: 9px;
+        padding: 8px;
+    }
+
+    .tech-feature:nth-child(3) {
+        border-left: 0;
+    }
+
+    .tech-feature-icon {
+        width: 35px;
+        height: 35px;
+        flex-basis: 35px;
+        border-radius: 10px;
+        font-size: 20px;
+    }
+
+    .tech-feature h4 {
+        font-size: 11px;
+    }
+
+    .tech-feature p {
+        font-size: 10px;
+        line-height: 1.6;
+    }
 }
-
-
-/* =========================================================
-   SMALL PHONE
-========================================================= */
 
 @media (max-width: 390px) {
-
-    .tech-ribbon {
-        height: 130px;
+    .tech-showcase {
+        padding-inline: 12px;
     }
 
-    .tech-ribbon-track {
-        gap: 2.1rem;
+    .tech-title {
+        font-size: 38px;
+        letter-spacing: -1px;
     }
 
-    .tech-ribbon-logo {
-        width: 26px;
-        height: 26px;
+    .tech-benefit strong {
+        padding-inline: 8px;
+        font-size: 11px;
     }
 
+    .tech-tag {
+        display: none;
+    }
+
+    .tech-card {
+        width: 70px;
+        flex-basis: 70px;
+    }
+
+    .tech-feature-strip {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tech-feature + .tech-feature {
+        padding-top: 14px;
+        border-top: 1px solid #c0c9ad50;
+        border-left: 0;
+    }
 }
 
-
 /* =========================================================
-   REDUCED MOTION
+   ACCESSIBILITY: REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
-    .tech-ribbon-track,
-    .tech-ribbon-light {
-        animation: none;
+    .tech-showcase .tech-reveal-ready {
+        opacity: 1;
+        translate: none;
+        transition: none;
     }
 
+    .tech-showcase .tech-row .tech-card {
+        animation: none !important;
+    }
+
+    .tech-showcase .tech-row[data-tech-marquee] .tech-track-inner {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .tech-intro .tech-eyebrow,
+    .tech-intro .tech-title,
+    .tech-intro .tech-underline,
+    .tech-intro .tech-description,
+    .tech-intro .tech-benefit,
+    .tech-workspace {
+        animation: none !important;
+    }
 }
 
+/* Match the Hero and About palette with a cleaner premium finish. */
+.tech-showcase {
+    --ts-cream: #f7f5ed;
+    --ts-card: #fffef9;
+    --ts-green: #304b38;
+    --ts-green-dark: #203629;
+    --ts-bronze: #a96338;
+    --ts-text: #30372e;
+    --ts-muted: #697166;
+    --ts-border: rgba(48, 75, 56, .13);
+    background:
+        radial-gradient(ellipse at 82% 28%, rgba(206, 220, 202, .48), transparent 38%),
+        radial-gradient(ellipse at 5% 100%, rgba(169, 99, 56, .055), transparent 28%),
+        linear-gradient(135deg, #fbf9f3 0%, #f7f5ed 58%, #f0f0e7 100%);
+}
 
-/* =========================================================
-   END — TECHNOLOGY RIBBON
-========================================================= */
+.tech-title {
+    color: #203629;
+    font-family: "Manrope", "Inter", Arial, sans-serif;
+    font-weight: 850;
+    letter-spacing: -.055em;
+}
+
+.tech-title span { color: #a96338; }
+.tech-description { color: #555f54; }
+
+.tech-row {
+    background: linear-gradient(145deg, rgba(255, 254, 249, .96), rgba(248, 249, 243, .94));
+    border-color: rgba(48, 75, 56, .14);
+    border-radius: 24px;
+    box-shadow: 0 14px 34px rgba(32, 54, 41, .055), inset 0 1px rgba(255,255,255,.9);
+    backdrop-filter: blur(10px);
+}
+
+.tech-row:hover {
+    border-color: rgba(48, 75, 56, .28);
+    box-shadow: 0 20px 42px rgba(32, 54, 41, .095), inset 0 1px rgba(255,255,255,.95);
+}
+
+.tech-category-icon {
+    background: linear-gradient(145deg, #42654a, #263f30);
+    border-color: rgba(255,255,255,.45);
+    box-shadow: 0 8px 18px rgba(32, 54, 41, .18);
+}
+
+.tech-row-header h3 { color: #203629; }
+.tech-row-header p { color: #697166; }
+.tech-divider { background: rgba(169, 99, 56, .55); }
+
+.tech-tag {
+    color: #304b38;
+    background: #e8eee5;
+    border-color: rgba(48, 75, 56, .1);
+}
+
+.tech-card {
+    color: #30372e;
+    background: linear-gradient(150deg, #fffefb, #f4f6ef);
+    border-color: rgba(48, 75, 56, .11);
+    box-shadow: 0 8px 20px rgba(32, 54, 41, .055);
+}
+
+.tech-card:hover {
+    border-color: rgba(48, 75, 56, .28);
+    box-shadow: 0 14px 26px rgba(32, 54, 41, .12);
+}
+
+.tech-feature-strip {
+    background:
+        radial-gradient(ellipse at 0% 120%, #42654a 0, transparent 38%),
+        linear-gradient(110deg, #304b38, #203629 72%, #304b38);
+    border-color: rgba(48, 75, 56, .35);
+    box-shadow: 0 18px 38px rgba(32, 54, 41, .15);
+}
+
+@media (max-width: 760px) {
+    .tech-row { border-radius: 20px; }
+}
