@@ -19,6 +19,14 @@ class ContentSecurityPolicyMiddleware:
         if request.path.startswith("/admin/"):
             return response
 
+        # Certificate PDFs are intentionally embedded by the portfolio's
+        # same-origin preview modal. Keep normal pages unframeable, while
+        # allowing only these static documents to be framed by this site.
+        is_certificate_pdf = (
+            request.path.startswith("/static/certificates/")
+            and request.path.lower().endswith(".pdf")
+        )
+
         directives = [
             "default-src 'self'",
             f"script-src 'self' 'nonce-{nonce}'",
@@ -30,10 +38,12 @@ class ContentSecurityPolicyMiddleware:
             "object-src 'none'",
             "base-uri 'self'",
             "form-action 'self'",
-            "frame-ancestors 'none'",
+            "frame-ancestors 'self'" if is_certificate_pdf else "frame-ancestors 'none'",
         ]
         if settings.SECURE_SSL_REDIRECT:
             directives.append("upgrade-insecure-requests")
 
-        response.headers.setdefault("Content-Security-Policy", "; ".join(directives))
+        response.headers["Content-Security-Policy"] = "; ".join(directives)
+        if is_certificate_pdf:
+            response.headers["X-Frame-Options"] = "SAMEORIGIN"
         return response
